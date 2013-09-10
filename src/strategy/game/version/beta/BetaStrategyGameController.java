@@ -10,10 +10,12 @@
 
 package strategy.game.version.beta;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.common.Coordinate;
@@ -31,13 +33,21 @@ import strategy.game.common.PieceType;
  * @version Sep 9, 2013
  */
 public class BetaStrategyGameController implements StrategyGameController {
-
-	final private Map<Location,Piece> pieceLocationMap;
-	private boolean gameStarted = false;
-	private boolean gameOver = false;
-	final private List<PieceLocationDescriptor> pieceLocations;
+	
 	final private int BOARD_HEIGHT = 6;
 	final private int BOARD_WIDTH = 6;
+	final private int MAX_MOVE_DISTANCE = 2;
+	
+	final private Map<Location,Piece> pieceLocationMap;
+	final private List<PieceLocationDescriptor> pieceLocations;
+	final private Map<PieceType,Integer> pieceRank = new HashMap<PieceType,Integer>();
+	
+	private boolean gameStarted = false;
+	private boolean gameOver = false;
+	
+	private int turnsPlayed;
+	
+	private PlayerColor playerTurn = PlayerColor.RED;
 	
 	
 	
@@ -48,10 +58,22 @@ public class BetaStrategyGameController implements StrategyGameController {
 	public BetaStrategyGameController(List<PieceLocationDescriptor> pieces) {
 		this.pieceLocations = pieces;
 		this.pieceLocationMap = new HashMap<Location,Piece>();
+		
+		pieceRank.put(PieceType.MARSHAL, 12);
+		pieceRank.put(PieceType.CAPTAIN, 8);
+		pieceRank.put(PieceType.COLONEL, 10);
+		pieceRank.put(PieceType.LIEUTENANT, 7);
+		pieceRank.put(PieceType.SERGEANT, 6);
+		pieceRank.put(PieceType.FLAG, 1);
 	}
 	
 	@Override
 	public void startGame() throws StrategyException {
+		
+		if (gameStarted) {
+			throw new StrategyException("game is already in progress");
+		}
+		
 		pieceLocationMap.clear();
 		for (PieceLocationDescriptor pieceLocation : pieceLocations) {
 			pieceLocationMap.put(pieceLocation.getLocation(), pieceLocation.getPiece());
@@ -59,6 +81,7 @@ public class BetaStrategyGameController implements StrategyGameController {
 		
 		gameStarted = true;
 		gameOver = false;
+		turnsPlayed = 0;
 	}
 
 	@Override
@@ -67,12 +90,40 @@ public class BetaStrategyGameController implements StrategyGameController {
 		
 		verifyMove(piece,from,to); //check that we can make this move.
 		Piece movePiece = getPieceAt(from);
-	
-		pieceLocationMap.remove(from);
-		pieceLocationMap.put(to, movePiece);
+		Piece opponentPiece;
+		final MoveResultStatus moveResult;
+		final PieceLocationDescriptor battleWinner;
 		
+		if (pieceLocationMap.containsKey(to)) {
+			opponentPiece = getPieceAt(to);
+			if (opponentPiece.getType() == PieceType.FLAG){ //game over
+				battleWinner = new PieceLocationDescriptor(movePiece,to);
+				moveResult = playerTurn == PlayerColor.BLUE ? MoveResultStatus.BLUE_WINS : MoveResultStatus.RED_WINS;
+			} else if (getPieceRank(movePiece) > getPieceRank(opponentPiece)) { //moving player wins
+				battleWinner = new PieceLocationDescriptor(movePiece,to);
+				moveResult = MoveResultStatus.OK;
+				pieceLocationMap.remove(from);
+				pieceLocationMap.put(to, movePiece);
+			} else if (getPieceRank(movePiece) == getPieceRank(opponentPiece)){ //draw
+				pieceLocationMap.remove(to);
+				pieceLocationMap.remove(from);
+				battleWinner = null;
+				moveResult = MoveResultStatus.OK;
+			} else { //opponent wins
+				battleWinner = new PieceLocationDescriptor(opponentPiece,to);
+				moveResult = MoveResultStatus.OK;
+				pieceLocationMap.remove(from);
+			}
+		} else {
+			battleWinner = new PieceLocationDescriptor(movePiece,to);
+			moveResult = MoveResultStatus.OK;
+			pieceLocationMap.remove(from);
+			pieceLocationMap.put(to, movePiece);
+		}
 		
-		return new MoveResult(MoveResultStatus.OK,null);
+		turnsPlayed++;
+		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE; //change the player turn
+		return new MoveResult(moveResult,battleWinner);
 	}
 
 	@Override
@@ -101,6 +152,21 @@ public class BetaStrategyGameController implements StrategyGameController {
 			|| to.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_HEIGHT || to.getCoordinate(Coordinate.Y_COORDINATE) < 0){
 			throw new StrategyException("Move coordinate out of board bounds");
 		}
+		
+		if(getPieceAt(from).getOwner() != playerTurn){
+			throw new StrategyException("Not correct player turn");
+		}
+		
+		if(pieceLocationMap.containsKey(to) && getPieceAt(to).getOwner() == playerTurn) {
+			throw new StrategyException("Cant attack own piece");
+		}
+		
+		if(from.distanceTo(to) >= MAX_MOVE_DISTANCE) {
+			throw new StrategyException("Moved too far");
+		}
 	}
 
+	private int getPieceRank(Piece piece) throws StrategyException{
+		return pieceRank.get(piece.getType());
+	}
 }
