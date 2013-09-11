@@ -10,7 +10,6 @@
 
 package strategy.game.common;
 
-import strategy.game.common.*;
 
 /**
  * Description

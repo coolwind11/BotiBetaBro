@@ -13,9 +13,11 @@ package strategy.game;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import strategy.common.*;
+import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.StrategyBoard;
 import strategy.game.version.alpha.AlphaStrategyGameController;
+import strategy.game.version.beta.BetaStrategyBoard;
 import strategy.game.version.beta.BetaStrategyGameController;
 
 /**
@@ -71,11 +73,13 @@ public class StrategyGameFactory
 			Collection<PieceLocationDescriptor> redConfiguration,
 			Collection<PieceLocationDescriptor> blueConfiguration)
 		throws StrategyException
-	{
+	{	
 		final ArrayList<PieceLocationDescriptor> pieceLocations = new ArrayList<PieceLocationDescriptor>();
 		pieceLocations.addAll(redConfiguration);
 		pieceLocations.addAll(blueConfiguration);
 		
-		return new BetaStrategyGameController(pieceLocations);
+		StrategyBoard gameBoard = new BetaStrategyBoard(pieceLocations);
+		
+		return new BetaStrategyGameController(gameBoard);
 	}
 }
