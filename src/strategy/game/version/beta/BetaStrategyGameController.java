@@ -23,7 +23,6 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
 
 /**
  * The BetaStrategyGameController implements the game core for the Beta Strategy
@@ -35,12 +34,12 @@ import strategy.game.common.StrategyBoard;
 public class BetaStrategyGameController implements StrategyGameController
 {
 
-	final private int BOARD_HEIGHT = 6;
-	final private int BOARD_WIDTH = 6;
-	final private int MAX_MOVE_DISTANCE = 2;
+	private final int BOARD_HEIGHT = 6;
+	private final int BOARD_WIDTH = 6;
+	private final int MAX_MOVE_DISTANCE = 2;
 
-	final private StrategyBoard gameBoard;
-	final private Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
+	private final BetaStrategyBoard gameBoard;
+	private final Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
 
 	private boolean gameStarted = false;
 	private boolean gameOver = false;
@@ -50,14 +49,11 @@ public class BetaStrategyGameController implements StrategyGameController
 	private PlayerColor playerTurn = PlayerColor.RED;
 
 	/**
-	 * Pass the piece arrangements to the controller so it has a clue what's
-	 * going on
+	 * Creates a BetaStrategyGameController with the given game board
 	 * 
-	 * @param Location
-	 *            of all pieces at the start of the game, ~provided by the
-	 *            player~
+	 * @param gameBoard the game board to use for this BetaStrategyGameController
 	 */
-	public BetaStrategyGameController(StrategyBoard gameBoard)
+	public BetaStrategyGameController(BetaStrategyBoard gameBoard)
 	{
 		this.gameBoard = gameBoard;
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -73,22 +69,18 @@ public class BetaStrategyGameController implements StrategyGameController
 	 */
 	@Override
 	public void startGame() throws StrategyException
-	{
-		if (gameStarted)
-		{
-			throw new StrategyException("Game is already in progress");
-		}
-
-		gameBoard.resetBoard();
-
+	{	
 		if (!gameBoard.hasValidInitialBoardSetup())
 		{
 			throw new StrategyException("Game board is invalid");
 		}
 
+		gameBoard.resetBoard();
+
 		gameStarted = true;
 		gameOver = false;
 		turnsPlayed = 0;
+		playerTurn = PlayerColor.RED;
 	}
 
 	/**
@@ -101,8 +93,8 @@ public class BetaStrategyGameController implements StrategyGameController
 	{
 		verifyMove(piece, from, to); // check that we can make this move.
 
-		Piece movePiece = getPieceAt(from);
-		Piece opponentPiece = getPieceAt(to);
+		final Piece movePiece = getPieceAt(from);
+		final Piece opponentPiece = getPieceAt(to);
 
 		final PieceLocationDescriptor battleWinner;
 		MoveResultStatus moveResult = MoveResultStatus.OK;
@@ -113,7 +105,7 @@ public class BetaStrategyGameController implements StrategyGameController
 			if (opponentPiece.getType() == PieceType.FLAG)
 			{ // game over
 				gameOver = true;
-
+				
 				battleWinner = new PieceLocationDescriptor(movePiece, to);
 				moveResult = playerTurn == PlayerColor.BLUE ? MoveResultStatus.BLUE_WINS
 						: MoveResultStatus.RED_WINS;
@@ -180,8 +172,7 @@ public class BetaStrategyGameController implements StrategyGameController
 	{
 		if (!gameStarted)
 		{
-			throw new StrategyException(
-					"Wait until game begins before making a move");
+			throw new StrategyException("Game hasn't been started yet.");
 		}
 
 		if (gameOver)

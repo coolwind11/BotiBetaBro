@@ -21,6 +21,11 @@ public class Location2D implements Location
 	private final int xCoordinate;
 	private final int yCoordinate;
 	
+	/**
+	 * Creates a 2d Location with the given coordinates
+	 * @param xCoordinate the x coordinate
+	 * @param yCoordinate the y coordinate
+	 */
 	public Location2D(int xCoordinate, int yCoordinate) {
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;

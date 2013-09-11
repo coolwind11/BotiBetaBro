@@ -27,14 +27,14 @@ import strategy.game.common.StrategyBoard;
  * @version Sep 9, 2013
  */
 public class BetaStrategyBoard implements StrategyBoard
-{	
+{
 	private final int MAX_PIECE_COUNT = 24;
 	
 	/**
 	 * Describes the valid initial setup for pieces including the piece types that are valid and the 
 	 * number of those pieces that should be present.
 	 */
-	private final Map<PieceType, Integer> validPieceSetup = new HashMap<PieceType, Integer>();	
+	private final Map<PieceType, Integer> validPieceSetup = new HashMap<PieceType, Integer>();
 	
 	private final Map<Location, Piece> boardRepresentationMap = new HashMap<Location, Piece>();
 	private Collection<PieceLocationDescriptor> initialPieceLocations = null;
@@ -46,7 +46,7 @@ public class BetaStrategyBoard implements StrategyBoard
 	 */
 	public BetaStrategyBoard(Collection<PieceLocationDescriptor> initialPieces)
 	{
-		this.initialPieceLocations = initialPieces;
+		initialPieceLocations = initialPieces;
 		
 		validPieceSetup.put(PieceType.FLAG, 1);
 		validPieceSetup.put(PieceType.MARSHAL, 1);
@@ -125,13 +125,19 @@ public class BetaStrategyBoard implements StrategyBoard
 			for(PieceLocationDescriptor otherPiece : initialPieceLocations)
 			{
 				if(pieceOnBoard.equals(otherPiece))
+				{
 					continue;
+				}
 				
 				if(pieceOnBoard.getLocation().equals(otherPiece.getLocation()))
+				{
 					return false;
+				}
 				
 				if(pieceOnBoard.getPiece().getOwner().equals(otherPiece.getPiece().getOwner()))
+				{
 					continue;
+				}
 				
 				if(pieceOnBoard.getLocation().distanceTo(otherPiece.getLocation()) < 2)
 				{
