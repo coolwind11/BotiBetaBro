@@ -50,7 +50,9 @@ public class AlphaStrategyGameController implements StrategyGameController
 	}
 
 	/*
-	 * @see strategy.game.StrategyGameController#move(strategy.game.common.PieceType, strategy.game.common.Location, strategy.game.common.Location)
+	 * @see strategy.game.StrategyGameController
+	 * #move(strategy.game.common.PieceType, strategy.game.common.Location, 
+	 * strategy.game.common.Location)
 	 */
 	@Override
 	public MoveResult move(PieceType piece, Location from, Location to)

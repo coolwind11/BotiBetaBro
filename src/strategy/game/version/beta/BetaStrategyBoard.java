@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import strategy.common.PlayerColor;
+import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
@@ -31,8 +32,9 @@ public class BetaStrategyBoard implements StrategyBoard
 	private final int MAX_PIECE_COUNT = 24;
 	
 	/**
-	 * Describes the valid initial setup for pieces including the piece types that are valid and the 
-	 * number of those pieces that should be present.
+	 * Describes the valid initial setup for pieces including 
+	 * the piece types that are valid and the number of those
+	 * pieces that should be present.
 	 */
 	private final Map<PieceType, Integer> validPieceSetup = new HashMap<PieceType, Integer>();
 	
@@ -133,21 +135,21 @@ public class BetaStrategyBoard implements StrategyBoard
 				{
 					return false;
 				}
-				
-				if(pieceOnBoard.getPiece().getOwner().equals(otherPiece.getPiece().getOwner()))
-				{
-					continue;
+			}
+			
+			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
+				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > 1) {
+					return false;
 				}
-				
-				if(pieceOnBoard.getLocation().distanceTo(otherPiece.getLocation()) < 2)
-				{
+			} else {
+				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < 4) {
 					return false;
 				}
 			}
 			
-			
 			//Record how many of each piece there is.
-			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner() == PlayerColor.RED ? redPieceCountMap : bluePieceCountMap;
+			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner() == PlayerColor.RED ?
+					redPieceCountMap : bluePieceCountMap;
 			int currentCountForPiece = 0;
 			if(pieceCountMap.containsKey(pieceOnBoard.getPiece().getType()))
 			{
