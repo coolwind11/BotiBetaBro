@@ -32,7 +32,7 @@ import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 
 /**
- * Description 
+ * Tests for the BetaStrategyGame  
  * @author Dan Robertson, Chris Botaish
  * @version September 9th, 2013
  */
@@ -502,7 +502,13 @@ public class BetaStrategyGameTest {
 		game.move(PieceType.MARSHAL, new Location2D(3,1), new Location2D(4,1));
 		game.move(PieceType.LIEUTENANT,new Location2D(2,0), new Location2D(1,0));
 		game.move(PieceType.MARSHAL, new Location2D(4,1), new Location2D(3,1));
-		MoveResult result = game.move(PieceType.LIEUTENANT, new Location2D(1,0), new Location2D(2,0));
+		game.move(PieceType.LIEUTENANT, new Location2D(1,0), new Location2D(2,0));
+		game.move(PieceType.MARSHAL, new Location2D(3,1), new Location2D(4,1));
+		game.move(PieceType.LIEUTENANT, new Location2D(2,0), new Location2D(1,0));
+		game.move(PieceType.MARSHAL, new Location2D(4,1), new Location2D(3,1));
+		game.move(PieceType.LIEUTENANT,new Location2D(1,0), new Location2D(2,0));
+		game.move(PieceType.MARSHAL, new Location2D(3,1), new Location2D(4,1));
+		MoveResult result =	game.move(PieceType.LIEUTENANT, new Location2D(2,0), new Location2D(1,0));
 		
 		assertEquals(result.getStatus(), MoveResultStatus.DRAW);
 	}

@@ -37,6 +37,7 @@ public class BetaStrategyGameController implements StrategyGameController
 	private final int BOARD_HEIGHT = 6;
 	private final int BOARD_WIDTH = 6;
 	private final int MAX_MOVE_DISTANCE = 2;
+	private final int MAX_TURNS = 12;
 
 	private final BetaStrategyBoard gameBoard;
 	private final Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
@@ -52,8 +53,9 @@ public class BetaStrategyGameController implements StrategyGameController
 	 * Creates a BetaStrategyGameController with the given game board
 	 * 
 	 * @param gameBoard the game board to use for this BetaStrategyGameController
+	 * @throws StrategyException if the initial game board is invalid.
 	 */
-	public BetaStrategyGameController(BetaStrategyBoard gameBoard)
+	public BetaStrategyGameController(BetaStrategyBoard gameBoard) throws StrategyException
 	{
 		this.gameBoard = gameBoard;
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -62,6 +64,11 @@ public class BetaStrategyGameController implements StrategyGameController
 		pieceRank.put(PieceType.LIEUTENANT, 7);
 		pieceRank.put(PieceType.SERGEANT, 6);
 		pieceRank.put(PieceType.FLAG, 1);
+		
+		if (!gameBoard.hasValidInitialBoardSetup())
+		{
+			throw new StrategyException("Game board is invalid");
+		}
 	}
 
 	/**
@@ -69,12 +76,7 @@ public class BetaStrategyGameController implements StrategyGameController
 	 */
 	@Override
 	public void startGame() throws StrategyException
-	{	
-		if (!gameBoard.hasValidInitialBoardSetup())
-		{
-			throw new StrategyException("Game board is invalid");
-		}
-
+	{
 		gameBoard.resetBoard();
 
 		gameStarted = true;
@@ -96,7 +98,7 @@ public class BetaStrategyGameController implements StrategyGameController
 		final Piece movePiece = getPieceAt(from);
 		final Piece opponentPiece = getPieceAt(to);
 
-		final PieceLocationDescriptor battleWinner;
+		PieceLocationDescriptor battleWinner = null;
 		MoveResultStatus moveResult = MoveResultStatus.OK;
 
 		// If theres a battle.
@@ -120,7 +122,6 @@ public class BetaStrategyGameController implements StrategyGameController
 				// Both pieces get removed in a draw.
 				gameBoard.removePiece(to);
 				gameBoard.removePiece(from);
-				battleWinner = null;
 			}
 			else
 			{ // opponent wins
@@ -130,12 +131,11 @@ public class BetaStrategyGameController implements StrategyGameController
 		}
 		else
 		{
-			battleWinner = new PieceLocationDescriptor(movePiece, to);
 			gameBoard.movePiece(from, to);
 		}
 
 		// end the game after 6 turns if nobody has won.
-		if (turnsPlayed == 5 && moveResult == MoveResultStatus.OK)
+		if (turnsPlayed >= MAX_TURNS - 1 && moveResult == MoveResultStatus.OK)
 		{
 			moveResult = MoveResultStatus.DRAW;
 			gameOver = true;
