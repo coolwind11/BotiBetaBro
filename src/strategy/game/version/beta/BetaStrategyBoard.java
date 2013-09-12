@@ -138,6 +138,7 @@ public class BetaStrategyBoard implements StrategyBoard
 				}
 			}
 			
+			//Check for offsides 
 			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
 				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > 1) {
 					isValid = false;
