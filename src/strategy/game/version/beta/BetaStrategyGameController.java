@@ -138,7 +138,7 @@ public class BetaStrategyGameController implements StrategyGameController
 		}
 
 		// end the game after 6 turns if nobody has won.
-		if (turnsPlayed >= MAX_TURNS - 1 && moveResult == MoveResultStatus.OK)
+		if (turnsPlayed == MAX_TURNS - 1 && moveResult == MoveResultStatus.OK)
 		{
 			moveResult = MoveResultStatus.DRAW;
 			gameOver = true;

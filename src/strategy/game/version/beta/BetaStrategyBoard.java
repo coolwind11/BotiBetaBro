@@ -105,10 +105,11 @@ public class BetaStrategyBoard implements StrategyBoard
 	@Override
 	public boolean hasValidInitialBoardSetup()
 	{
+		boolean isValid = true;
 		//Check for right number of pieces.
 		if(initialPieceLocations.size() > MAX_PIECE_COUNT)
 		{
-			return false;
+			isValid = false;
 		}
 		
 		//Maps to hold the count of pieces on the board.
@@ -120,7 +121,7 @@ public class BetaStrategyBoard implements StrategyBoard
 		{
 			if(!validPieceSetup.containsKey(pieceOnBoard.getPiece().getType()))
 			{
-				return false;
+				isValid = false;
 			}
 			
 			//Check for offsides pieces or overlapping placements.
@@ -133,17 +134,17 @@ public class BetaStrategyBoard implements StrategyBoard
 				
 				if(pieceOnBoard.getLocation().equals(otherPiece.getLocation()))
 				{
-					return false;
+					isValid = false;
 				}
 			}
 			
 			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
 				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > 1) {
-					return false;
+					isValid = false;
 				}
 			} else {
 				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < 4) {
-					return false;
+					isValid = false;
 				}
 			}
 			
@@ -165,17 +166,16 @@ public class BetaStrategyBoard implements StrategyBoard
 		{
 			if(redPieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
 			{
-				return false;
+				isValid = false;
 			}
 			
 			if(bluePieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
 			{
-				return false;
+				isValid = false;
 			}
 		}
 		
-		
-		return true;
+		return isValid;
 	}
 	
 	
