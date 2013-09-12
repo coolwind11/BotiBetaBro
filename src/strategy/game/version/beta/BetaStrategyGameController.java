@@ -173,16 +173,19 @@ public class BetaStrategyGameController implements StrategyGameController
 	private void verifyMove(PieceType piece, Location from, Location to)
 			throws StrategyException
 	{
+		//if the game hasn't started, the move is invalid
 		if (!gameStarted)
 		{
 			throw new StrategyException("Game hasn't been started yet.");
 		}
 
+		//if the game is already over, the move is invalid
 		if (gameOver)
 		{
 			throw new StrategyException("The game is already over");
 		}
 
+		//if the from coordinate is out of bounds, the move is invalid
 		if (from.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_WIDTH
 				|| from.getCoordinate(Coordinate.X_COORDINATE) < 0
 				|| from.getCoordinate(Coordinate.Y_COORDINATE) >= BOARD_HEIGHT
@@ -191,6 +194,7 @@ public class BetaStrategyGameController implements StrategyGameController
 			throw new StrategyException("From coordinate out of board bounds");
 		}
 
+		//if the to coordinate is out of bounds...the move; is invalid
 		if (to.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_WIDTH
 				|| to.getCoordinate(Coordinate.X_COORDINATE) < 0
 				|| to.getCoordinate(Coordinate.Y_COORDINATE) >= BOARD_HEIGHT
@@ -199,26 +203,31 @@ public class BetaStrategyGameController implements StrategyGameController
 			throw new StrategyException("To coordinate out of board bounds");
 		}
 
+		//if there is no piece at the supplied location, the move is invalid
 		if (getPieceAt(from) == null)
 		{
 			throw new StrategyException("No piece to move at location");
 		}
 
+		//if you try to move your opponents piece, the move is invalid
 		if (getPieceAt(from).getOwner() != playerTurn)
 		{
 			throw new StrategyException("Not correct player turn");
 		}
 
+		//if the piece is the flag, ya can't move that.
 		if (getPieceAt(from).getType() == PieceType.FLAG)
 		{
 			throw new StrategyException("Cannot move the flag");
 		}
 
+		//if you move onto your own piece, your gonna have a bad time
 		if (getPieceAt(to) != null && getPieceAt(to).getOwner() == playerTurn)
 		{
 			throw new StrategyException("Cant attack own piece");
 		}
 
+		//if you try to move too far, THE MOVE IS INVALID
 		if (from.distanceTo(to) >= MAX_MOVE_DISTANCE)
 		{
 			throw new StrategyException("Moved too far");
