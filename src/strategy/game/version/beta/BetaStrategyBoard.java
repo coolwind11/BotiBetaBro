@@ -23,7 +23,7 @@ import strategy.game.common.PieceType;
 import strategy.game.common.StrategyBoard;
 
 /**
- * Provides a representation of a strategy board.
+ * Provides a representation of a strategy board used in the BetaStrategy implementation.
  * @author Chris Botaish, Dan Robertson
  * @version Sep 9, 2013
  */
