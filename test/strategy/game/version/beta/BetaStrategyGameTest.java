@@ -228,8 +228,8 @@ public class BetaStrategyGameTest {
 		pieceLocationsBlue.add(new PieceLocationDescriptor(new Piece(PieceType.SCOUT, PlayerColor.BLUE), new Location2D(1,5)));
 		
 		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.FLAG, PlayerColor.RED), new Location2D(4,0)));
-		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.MARSHAL, PlayerColor.RED), new Location2D(4,1)));
-		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.LIEUTENANT, PlayerColor.RED), new Location2D(4,2)));
+		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.MARSHAL, PlayerColor.RED), new Location2D(-1,-1)));
+		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.LIEUTENANT, PlayerColor.RED), new Location2D(8,8)));
 		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.SERGEANT, PlayerColor.RED), new Location2D(4,3)));
 		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.CAPTAIN, PlayerColor.RED), new Location2D(4,4)));
 		pieceLocationsRed.add(new PieceLocationDescriptor(new Piece(PieceType.CAPTAIN, PlayerColor.RED), new Location2D(4,5)));
@@ -318,6 +318,12 @@ public class BetaStrategyGameTest {
 		game = gameFactory.makeBetaStrategyGame(pieceLocationsRed,pieceLocationsBlue);	
 		
 		game.startGame();
+	}
+	
+	@Test(expected=StrategyException.class)
+	public void cannotCreateBetaStrategyWithNullConfigurations() throws StrategyException
+	{
+		gameFactory.makeBetaStrategyGame(null, null);
 	}
 	
 	@Test

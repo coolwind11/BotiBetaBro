@@ -41,8 +41,10 @@ public class Location2D implements Location
 	@Override
 	public int distanceTo(Location otherLocation)
 	{
-		final int differenceY = Math.abs(yCoordinate - otherLocation.getCoordinate(Coordinate.Y_COORDINATE));
-		final int differenceX = Math.abs(xCoordinate - otherLocation.getCoordinate(Coordinate.X_COORDINATE));
+		final int differenceY = Math.abs(yCoordinate - 
+				otherLocation.getCoordinate(Coordinate.Y_COORDINATE));
+		final int differenceX = Math.abs(xCoordinate - 
+				otherLocation.getCoordinate(Coordinate.X_COORDINATE));
 		
 		return differenceX + differenceY;
 	}

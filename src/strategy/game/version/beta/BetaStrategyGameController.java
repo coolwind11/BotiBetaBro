@@ -78,7 +78,8 @@ public class BetaStrategyGameController implements StrategyGameController
 	public void startGame() throws StrategyException
 	{
 		if(gameStarted && !gameOver) {
-			throw new StrategyException("Must complete the current game before beginning a new one");
+			throw new StrategyException("Must complete the current game "
+					+ "before beginning a new one");
 		}
 		gameBoard.resetBoard();
 

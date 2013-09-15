@@ -30,6 +30,12 @@ import strategy.game.common.StrategyBoard;
 public class BetaStrategyBoard implements StrategyBoard
 {
 	private final int MAX_PIECE_COUNT = 24;
+	private final int MIN_BLUE_POS = 4;
+	private final int MAX_RED_POS = 1;
+	private final int MIN_X = 0;
+	private final int MAX_X = 5;
+	private final int MIN_Y = 0;
+	private final int MAX_Y = 5;
 	
 	/**
 	 * Describes the valid initial setup for pieces including 
@@ -119,6 +125,7 @@ public class BetaStrategyBoard implements StrategyBoard
 		//Check if any of the pieces are invalid.
 		for(PieceLocationDescriptor pieceOnBoard : initialPieceLocations) 
 		{
+			//Check for valid piece type
 			if(!validPieceSetup.containsKey(pieceOnBoard.getPiece().getType()))
 			{
 				isValid = false;
@@ -140,18 +147,33 @@ public class BetaStrategyBoard implements StrategyBoard
 			
 			//Check for offsides 
 			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
-				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > 1) {
+				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
+						> MAX_RED_POS) {
 					isValid = false;
 				}
 			} else {
-				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < 4) {
+				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
+						< MIN_BLUE_POS) {
 					isValid = false;
 				}
 			}
 			
+			//Check for valid column
+			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) < MIN_X 
+					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) > MAX_X)
+			{
+				isValid = false;
+			}
+			//Check for valid row
+			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < MIN_Y 
+					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > MAX_Y)
+			{
+				isValid = false;
+			}
+			
 			//Record how many of each piece there is.
-			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner() == PlayerColor.RED ?
-					redPieceCountMap : bluePieceCountMap;
+			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner()
+					== PlayerColor.RED ? redPieceCountMap : bluePieceCountMap;
 			int currentCountForPiece = 0;
 			if(pieceCountMap.containsKey(pieceOnBoard.getPiece().getType()))
 			{
