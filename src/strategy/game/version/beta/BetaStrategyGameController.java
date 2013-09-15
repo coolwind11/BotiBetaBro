@@ -25,8 +25,7 @@ import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 
 /**
- * The BetaStrategyGameController implements the game core for the Beta Strategy
- * version.
+ * An implementation of the game controller for the Beta Strategy version.
  * 
  * @author Dan Robertson, Chris Botaish
  * @version Sep 9, 2013
