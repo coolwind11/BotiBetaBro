@@ -25,8 +25,7 @@ import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 
 /**
- * The BetaStrategyGameController implements the game core for the Beta Strategy
- * version.
+ * An implementation of the game controller for the Beta Strategy version.
  * 
  * @author Dan Robertson, Chris Botaish
  * @version Sep 9, 2013
@@ -78,7 +77,8 @@ public class BetaStrategyGameController implements StrategyGameController
 	public void startGame() throws StrategyException
 	{
 		if(gameStarted && !gameOver) {
-			throw new StrategyException("Must complete the current game before beginning a new one");
+			throw new StrategyException("Must complete the current game "
+					+ "before beginning a new one");
 		}
 		gameBoard.resetBoard();
 

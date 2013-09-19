@@ -74,7 +74,14 @@ public class StrategyGameFactory
 			Collection<PieceLocationDescriptor> blueConfiguration)
 		throws StrategyException
 	{
-		final List<PieceLocationDescriptor> pieceLocations = new ArrayList<PieceLocationDescriptor>();
+		if(redConfiguration == null || blueConfiguration == null)
+		{
+			throw new StrategyException("Cannot have null red or blue configuration.");
+		}
+		
+		final List<PieceLocationDescriptor> pieceLocations = 
+				new ArrayList<PieceLocationDescriptor>();
+		
 		pieceLocations.addAll(redConfiguration);
 		pieceLocations.addAll(blueConfiguration);
 		
