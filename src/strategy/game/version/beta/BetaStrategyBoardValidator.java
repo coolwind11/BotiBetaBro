@@ -45,8 +45,6 @@ public class BetaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		MIN_Y = 0;
 		
 		MIN_BLUE_STARTING_Y = 4;
-		MAX_RED_STARTING_Y = 1;		
+		MAX_RED_STARTING_Y = 1;
 	}
-	
-
 }

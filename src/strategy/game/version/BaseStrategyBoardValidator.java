@@ -44,7 +44,7 @@ public abstract class BaseStrategyBoardValidator implements
 	/**
 	 * Creates a Gamma Strategy board validator
 	 */
-	public BaseStrategyBoardValidator() {
+	protected BaseStrategyBoardValidator() {
 		setupValidBoardConfiguration();
 	}
 	

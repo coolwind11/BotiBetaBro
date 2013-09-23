@@ -44,7 +44,6 @@ public class BetaStrategyMoveResolver extends BaseStrategyMoveResolver
 		turnsPlayed++;
 		
 		return new MoveResult(resultStatus, firstResult.getBattleWinner());
-
 	}
 
 	@Override

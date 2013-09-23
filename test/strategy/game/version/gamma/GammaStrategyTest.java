@@ -528,6 +528,18 @@ public class GammaStrategyTest {
 		
 		game.move(CHOKE_POINT, new Location2D(3,2), new Location2D(3,1));
 	}
+	
+	@Test
+	public void pieceMoveEntryTest()
+	{
+		PieceMoveEntry entry = new PieceMoveEntry(new Piece(SERGEANT, BLUE), new Location2D(0,0), new Location2D(0,1));
+		PieceMoveEntry entry2 = new PieceMoveEntry(new Piece(SERGEANT, BLUE), new Location2D(0,0), new Location2D(0,1));
+
+		assertTrue(!entry.equals("Test"));
+		assertTrue(entry.equals(entry));
+		assertTrue(entry.equals(entry2));
+		assertTrue(entry.hashCode() == entry2.hashCode());
+	}
 		
 	@Test
 	public void moveRememberatorRemembersPastThreeMoves() {

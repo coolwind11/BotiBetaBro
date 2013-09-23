@@ -30,7 +30,6 @@ import strategy.game.common.PieceType;
  */
 public class BaseStrategyGameController implements StrategyGameController
 {
-	
 	private final StrategyBoardValidator boardValidator;
 	
 	private final StrategyMoveValidator moveValidator;
