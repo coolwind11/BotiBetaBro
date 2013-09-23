@@ -326,6 +326,13 @@ public class BetaStrategyGameTest {
 		gameFactory.makeBetaStrategyGame(null, null);
 	}
 	
+	@Test(expected=StrategyException.class)
+	public void cannotCreateBetaStrategyWithNullConfigurations2() throws StrategyException
+	{
+		gameFactory.makeBetaStrategyGame(pieceLocationsRed, null);
+	}
+	
+	
 	@Test
 	public void testStartGame() throws StrategyException {
 		game.startGame();
