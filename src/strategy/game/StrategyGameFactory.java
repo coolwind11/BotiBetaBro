@@ -14,9 +14,13 @@ import java.util.Collection;
 
 import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.version.BaseStrategyGameController;
 import strategy.game.version.alpha.AlphaStrategyGameController;
-import strategy.game.version.beta.BetaStrategyGameController;
-import strategy.game.version.gamma.GammaStrategyGameController;
+import strategy.game.version.beta.BetaStrategyBoardValidator;
+import strategy.game.version.beta.BetaStrategyMoveResolver;
+import strategy.game.version.beta.BetaStrategyMoveValidator;
+import strategy.game.version.gamma.GammaStrategyBoardValidator;
+import strategy.game.version.gamma.GammaStrategyMoveValidator;
 
 /**
  * <p>
@@ -77,7 +81,8 @@ public class StrategyGameFactory
 			throw new StrategyException("Cannot have null red or blue configuration.");
 		}
 				
-		return new BetaStrategyGameController(redConfiguration, blueConfiguration);
+		return new BaseStrategyGameController(new BetaStrategyBoardValidator(), new BetaStrategyMoveValidator(),
+				new BetaStrategyMoveResolver(), redConfiguration, blueConfiguration);
 	}
 	
 	/**
@@ -95,6 +100,7 @@ public class StrategyGameFactory
 			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
 		}
 			
-		return new GammaStrategyGameController(redConfiguration, blueConfiguration);
+		return new BaseStrategyGameController(new GammaStrategyBoardValidator(), new GammaStrategyMoveValidator(),
+				new BetaStrategyMoveResolver(), redConfiguration, blueConfiguration);
 	}
 }

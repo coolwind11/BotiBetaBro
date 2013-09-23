@@ -51,8 +51,10 @@ public class GammaStrategyMoveValidator extends BaseStrategyMoveValidator
 			throw new StrategyException("Cannot move onto a chokepoint!");
 		}
 		
+		//Check the base functionality.
 		super.checkMoveValidity(gameBoard, currentTurn, movePiece, moveFromLocation, moveToLocation);
 		
+		//Add to the rememberator
 		final PieceMoveEntry entry = new PieceMoveEntry(gameBoard.getPieceAt(moveFromLocation), moveFromLocation, moveToLocation);
 		
 		if(moveRememberator.isMoveInList(entry))
