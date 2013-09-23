@@ -62,7 +62,7 @@ public class GammaStrategyGameController implements StrategyGameController
 	public GammaStrategyGameController(Collection<PieceLocationDescriptor> redPieces, 
 			Collection<PieceLocationDescriptor> bluePieces) throws StrategyException
 	{
-		boardValidator = new BetaStrategyBoardValidator();
+		boardValidator = new GammaStrategyBoardValidator();
 		moveValidator = new GammaStrategyMoveValidator();
 		moveResolver = new BetaStrategyMoveResolver();
 		

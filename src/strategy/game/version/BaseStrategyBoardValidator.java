@@ -1,14 +1,4 @@
-/*******************************************************************************
- * This files was developed for CS4233: Object-Oriented Analysis & Design.
- * The course was taken at Worcester Polytechnic Institute.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
-
-package strategy.game.version.beta;
+package strategy.game.version;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,39 +10,41 @@ import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.StrategyBoardValidator;
+
 
 /**
- * This class provides validations for the initial board setups.
- * @author drob, cbotaish
- * @version Sept 22, 2013
+ * abstract class for StrategyBoardValidator which contains all the assumed standard logic for
+ * validating any strategy board
+ * @author Dan Robertson, Chris Botaish
+ * @version 9/23/13
  */
-public class BetaStrategyBoardValidator implements StrategyBoardValidator {
+public abstract class BaseStrategyBoardValidator implements
+		StrategyBoardValidator {
 
-	private final int MAX_PIECES = 24;
-	private final int MAX_X = 5;
-	private final int MAX_Y = 5;
-	private final int MIN_X = 0;
-	private final int MIN_Y = 0;
+	protected int MAX_PIECES = 24;
+	protected int MAX_X = 5;
+	protected int MAX_Y = 5;
+	protected int MIN_X = 0;
+	protected int MIN_Y = 0;
 	
-	private final int MIN_BLUE_STARTING_Y = 4;
-	private final int MAX_RED_STARTING_Y = 1;
+	protected int MIN_BLUE_STARTING_Y = 4;
+	protected int MAX_RED_STARTING_Y = 1;
 	
-	private final Map<PieceType,Integer> validPieceCount;
+	protected Map<PieceType,Integer> validPieceCount;
 	
 	/**
 	 * Creates a Gamma Strategy board validator
 	 */
-	public BetaStrategyBoardValidator() {
-		validPieceCount = new HashMap<PieceType, Integer>();
-		validPieceCount.put(PieceType.FLAG, 1);
-		validPieceCount.put(PieceType.MARSHAL, 1);
-		validPieceCount.put(PieceType.COLONEL, 2);
-		validPieceCount.put(PieceType.CAPTAIN, 2);
-		validPieceCount.put(PieceType.LIEUTENANT, 3);
-		validPieceCount.put(PieceType.SERGEANT, 3);
+	public BaseStrategyBoardValidator() {
+		setupValidBoardConfiguration();
 	}
 	
+	/**
+	 * Set up the allowable piece : count map 
+	 * 		
+	 */
+	protected abstract void setupValidBoardConfiguration();
+
 	/**
 	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
 	 */
@@ -154,7 +146,5 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 		
 		return true;
 	}
-	
-	
 
 }
