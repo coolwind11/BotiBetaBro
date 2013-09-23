@@ -52,7 +52,6 @@ public class StrategyMoveRememberator {
 	 * @return whether or not the given move is present in the rememberator.
 	 */
 	public boolean isMoveInList(PieceMoveEntry move) {
-		
 		for(int i = 0; i < buffer.length; i++)
 		{
 			if(buffer[i] == null)

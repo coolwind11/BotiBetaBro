@@ -17,6 +17,7 @@ import strategy.game.common.Piece;
  * This class is a data structure that defines a past move that a piece has made.
  * this is necessary for removing piece move ambiguity.
  * @author danrobertson, cbotaish
+<<<<<<< HEAD
  * @version Sept 22, 2013
  */
 public class PieceMoveEntry {
@@ -57,5 +58,4 @@ public class PieceMoveEntry {
 	{
 		return movePiece.hashCode() + fromLocation.hashCode() + toLocation.hashCode();
 	}
-	
 }
