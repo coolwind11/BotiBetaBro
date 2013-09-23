@@ -142,6 +142,23 @@ public class GammaStrategyTest {
 		fail();
 	}
 	
+	@Test
+	public void moveRememberatorRemembersPastThreeMoves() {
+		StrategyMoveRememberator pastMoves = new StrategyMoveRememberator(3);
+		
+		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1)));
+		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
+		assertTrue(pastMoves.moveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1))));
+	}
+	
+	@Test
+	public void moveRememberatorDoesntRememberMovesItDidntMake() {
+		StrategyMoveRememberator pastMoves = new StrategyMoveRememberator(3);
+		
+		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1)));
+		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
+		assertTrue(!pastMoves.moveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(1,0))));
+	}
 	// Helper methods
 	private void addToConfiguration(PieceType type, PlayerColor color, int x, int y)
 	{
@@ -154,4 +171,5 @@ public class GammaStrategyTest {
 			blueConfiguration.add(confItem);
 		}
 	}
+
 }
