@@ -19,6 +19,7 @@ import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.version.alpha.AlphaStrategyGameController;
 import strategy.game.version.beta.BetaStrategyBoard;
 import strategy.game.version.beta.BetaStrategyGameController;
+import strategy.game.version.gamma.GammaStrategyGameController;
 
 /**
  * <p>
@@ -88,5 +89,22 @@ public class StrategyGameFactory
 		final BetaStrategyBoard gameBoard = new BetaStrategyBoard(pieceLocations);
 		
 		return new BetaStrategyGameController(gameBoard);
+	}
+	
+	/**
+	 * Factorify a gamma strategy game instance
+	 * @param redConfiguration pieces provided by the red player(s)
+	 * @param blueConfiguration pieces provided by the blue player(s)
+	 */
+	public StrategyGameController makeGammaStrategyGame(Collection<PieceLocationDescriptor> redConfiguration, Collection<PieceLocationDescriptor> blueConfiguration)
+		throws StrategyException
+	{
+		// TODO Auto-generated method stub
+		if(redConfiguration == null || blueConfiguration == null){
+			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
+		}
+		
+		
+		return new GammaStrategyGameController(redConfiguration, blueConfiguration);
 	}
 }

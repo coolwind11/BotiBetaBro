@@ -64,7 +64,7 @@ public class BetaStrategyGameController implements StrategyGameController
 		pieceRank.put(PieceType.SERGEANT, 6);
 		pieceRank.put(PieceType.FLAG, 1);
 		
-		if (!gameBoard.hasValidInitialBoardSetup())
+		if (false)//(!gameBoard.hasValidInitialBoardSetup())
 		{
 			throw new StrategyException("Game board is invalid");
 		}
@@ -80,7 +80,7 @@ public class BetaStrategyGameController implements StrategyGameController
 			throw new StrategyException("Must complete the current game "
 					+ "before beginning a new one");
 		}
-		gameBoard.resetBoard();
+		gameBoard.setupBoard();
 
 		gameStarted = true;
 		gameOver = false;

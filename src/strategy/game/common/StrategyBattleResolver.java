@@ -11,12 +11,18 @@
 package strategy.game.common;
 
 /**
- * This enumeration defines the possible versions of Strategy that might
- * be chosen for a game.
- * @author gpollice
- * @version Aug 31, 2013
+ * This interface handles Strategy battles that occur when a piece moves to an occupied location
+ * @author drob, cbotaish
+ *
  */
-public enum GameVersion
-{
-	ALPHA, BETA, GAMMA;
+public interface StrategyBattleResolver {
+	
+	/**
+	 * Resolve a battle between a piece and the piece that occupies the location in question.
+	 * @param battleInitiator the piece moving into
+	 * @param battleLocation the location where the battle will occur
+	 * @param gameBoard the game board for reference
+	 * @return the move result
+	 */
+	MoveResult resolveBattle(StrategyBoard gameBoard, Piece battleInitiator, Location battleLocation);
 }

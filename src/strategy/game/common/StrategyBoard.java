@@ -30,21 +30,12 @@ public interface StrategyBoard
 	 */
 	void movePiece(Location from, Location to);
 	
+	void setupBoard();
 	/**
 	 * Removes the piece at the given location.
 	 * @param fromLocation the location to remove the piece from.
 	 */
 	void removePiece(Location fromLocation);
-	
-	/**
-	 * Resets the board to its initial state.
-	 */
-	void resetBoard();
-	
-	/**
-	 * @return whether or not the initial state of the board is valid.
-	 */
-	boolean hasValidInitialBoardSetup();
 	
 	
 }

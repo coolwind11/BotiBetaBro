@@ -63,7 +63,7 @@ public class BetaStrategyBoard implements StrategyBoard
 		validPieceSetup.put(PieceType.LIEUTENANT, 3);
 		validPieceSetup.put(PieceType.SERGEANT, 3);
 		
-		resetBoard();
+		setupBoard();
 	}
 	
 	/**
@@ -96,8 +96,7 @@ public class BetaStrategyBoard implements StrategyBoard
 	/**
 	 * @see strategy.game.common.StrategyBoard#resetBoard()
 	 */
-	@Override
-	public void resetBoard() 
+	public void setupBoard() 
 	{
 		boardRepresentationMap.clear();
 		for (PieceLocationDescriptor pieceLocation : initialPieceLocations) {
@@ -105,101 +104,101 @@ public class BetaStrategyBoard implements StrategyBoard
 		}
 	}
 
-	/**
-	 * @see strategy.game.common.StrategyBoard#hasValidInitialBoardSetup()
-	 */
-	@Override
-	public boolean hasValidInitialBoardSetup()
-	{
-		boolean isValid = true;
-		//Check for right number of pieces.
-		if(initialPieceLocations.size() > MAX_PIECE_COUNT)
-		{
-			isValid = false;
-		}
-		
-		//Maps to hold the count of pieces on the board.
-		final Map<PieceType, Integer> redPieceCountMap = new HashMap<PieceType, Integer>();
-		final Map<PieceType, Integer> bluePieceCountMap = new HashMap<PieceType, Integer>();
-
-		//Check if any of the pieces are invalid.
-		for(PieceLocationDescriptor pieceOnBoard : initialPieceLocations) 
-		{
-			//Check for valid piece type
-			if(!validPieceSetup.containsKey(pieceOnBoard.getPiece().getType()))
-			{
-				isValid = false;
-			}
-			
-			//Check for offsides pieces or overlapping placements.
-			for(PieceLocationDescriptor otherPiece : initialPieceLocations)
-			{
-				if(pieceOnBoard.equals(otherPiece))
-				{
-					continue;
-				}
-				
-				if(pieceOnBoard.getLocation().equals(otherPiece.getLocation()))
-				{
-					isValid = false;
-				}
-			}
-			
-			//Check for offsides 
-			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
-				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
-						> MAX_RED_POS) {
-					isValid = false;
-				}
-			} else {
-				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
-						< MIN_BLUE_POS) {
-					isValid = false;
-				}
-			}
-			
-			//Check for valid column
-			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) < MIN_X 
-					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) > MAX_X)
-			{
-				isValid = false;
-			}
-			//Check for valid row
-			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < MIN_Y 
-					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > MAX_Y)
-			{
-				isValid = false;
-			}
-			
-			//Record how many of each piece there is.
-			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner()
-					== PlayerColor.RED ? redPieceCountMap : bluePieceCountMap;
-			int currentCountForPiece = 0;
-			if(pieceCountMap.containsKey(pieceOnBoard.getPiece().getType()))
-			{
-				currentCountForPiece = pieceCountMap.get(pieceOnBoard.getPiece().getType());
-			}
-
-			//Record the number of each piece.
-			pieceCountMap.put(pieceOnBoard.getPiece().getType(), currentCountForPiece + 1);
-		}
-		
-		//Check that there are the right numbers of every piece.
-		for(Entry<PieceType, Integer> pieceCount : validPieceSetup.entrySet())
-		{
-			if(redPieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
-			{
-				isValid = false;
-			}
-			
-			if(bluePieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
-			{
-				isValid = false;
-			}
-		}
-		
-		return isValid;
-	}
-	
+//	/**
+//	 * @see strategy.game.common.StrategyBoard#hasValidInitialBoardSetup()
+//	 */
+//	@Override
+//	public boolean hasValidInitialBoardSetup()
+//	{
+//		boolean isValid = true;
+//		//Check for right number of pieces.
+//		if(initialPieceLocations.size() > MAX_PIECE_COUNT)
+//		{
+//			isValid = false;
+//		}
+//		
+//		//Maps to hold the count of pieces on the board.
+//		final Map<PieceType, Integer> redPieceCountMap = new HashMap<PieceType, Integer>();
+//		final Map<PieceType, Integer> bluePieceCountMap = new HashMap<PieceType, Integer>();
+//
+//		//Check if any of the pieces are invalid.
+//		for(PieceLocationDescriptor pieceOnBoard : initialPieceLocations) 
+//		{
+//			//Check for valid piece type
+//			if(!validPieceSetup.containsKey(pieceOnBoard.getPiece().getType()))
+//			{
+//				isValid = false;
+//			}
+//			
+//			//Check for offsides pieces or overlapping placements.
+//			for(PieceLocationDescriptor otherPiece : initialPieceLocations)
+//			{
+//				if(pieceOnBoard.equals(otherPiece))
+//				{
+//					continue;
+//				}
+//				
+//				if(pieceOnBoard.getLocation().equals(otherPiece.getLocation()))
+//				{
+//					isValid = false;
+//				}
+//			}
+//			
+//			//Check for offsides 
+//			if(pieceOnBoard.getPiece().getOwner() == PlayerColor.RED) {
+//				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
+//						> MAX_RED_POS) {
+//					isValid = false;
+//				}
+//			} else {
+//				if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) 
+//						< MIN_BLUE_POS) {
+//					isValid = false;
+//				}
+//			}
+//			
+//			//Check for valid column
+//			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) < MIN_X 
+//					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.X_COORDINATE) > MAX_X)
+//			{
+//				isValid = false;
+//			}
+//			//Check for valid row
+//			if(pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) < MIN_Y 
+//					|| pieceOnBoard.getLocation().getCoordinate(Coordinate.Y_COORDINATE) > MAX_Y)
+//			{
+//				isValid = false;
+//			}
+//			
+//			//Record how many of each piece there is.
+//			Map<PieceType, Integer> pieceCountMap = pieceOnBoard.getPiece().getOwner()
+//					== PlayerColor.RED ? redPieceCountMap : bluePieceCountMap;
+//			int currentCountForPiece = 0;
+//			if(pieceCountMap.containsKey(pieceOnBoard.getPiece().getType()))
+//			{
+//				currentCountForPiece = pieceCountMap.get(pieceOnBoard.getPiece().getType());
+//			}
+//
+//			//Record the number of each piece.
+//			pieceCountMap.put(pieceOnBoard.getPiece().getType(), currentCountForPiece + 1);
+//		}
+//		
+//		//Check that there are the right numbers of every piece.
+//		for(Entry<PieceType, Integer> pieceCount : validPieceSetup.entrySet())
+//		{
+//			if(redPieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
+//			{
+//				isValid = false;
+//			}
+//			
+//			if(bluePieceCountMap.get(pieceCount.getKey()) != pieceCount.getValue())
+//			{
+//				isValid = false;
+//			}
+//		}
+//		
+//		return isValid;
+//	}
+//	
 	
 }

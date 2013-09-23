@@ -10,6 +10,8 @@
 
 package strategy.game.common;
 
+import strategy.common.StrategyRuntimeException;
+
 
 /**
  * Description
@@ -38,15 +40,16 @@ public class Location2D implements Location
 				: yCoordinate;
 	}
 
-	@Override
 	public int distanceTo(Location otherLocation)
 	{
-		final int differenceY = Math.abs(yCoordinate - 
-				otherLocation.getCoordinate(Coordinate.Y_COORDINATE));
-		final int differenceX = Math.abs(xCoordinate - 
-				otherLocation.getCoordinate(Coordinate.X_COORDINATE));
-		
-		return differenceX + differenceY;
+		final int otherX = otherLocation.getCoordinate(Coordinate.X_COORDINATE);
+		final int otherY = otherLocation.getCoordinate(Coordinate.Y_COORDINATE);
+		if (xCoordinate != otherX && yCoordinate != otherY) {
+			throw new StrategyRuntimeException("Coordinates are not on same row or column");
+		}
+		return xCoordinate == otherX ? 
+				Math.abs(yCoordinate - otherY) 
+				: Math.abs(xCoordinate - otherX);
 	}
 	
 	@Override

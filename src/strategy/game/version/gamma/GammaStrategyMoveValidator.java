@@ -8,15 +8,24 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package strategy.game.common;
+package strategy.game.version.gamma;
+
+import strategy.game.common.Location;
+import strategy.game.common.Piece;
+import strategy.game.common.StrategyBoard;
+import strategy.game.common.StrategyMoveValidator;
 
 /**
- * This enumeration defines the possible versions of Strategy that might
- * be chosen for a game.
- * @author gpollice
- * @version Aug 31, 2013
+ * This class handles all the validation logic for Strategy game moves
+ * @author drob,cbotaish
+ *
  */
-public enum GameVersion
-{
-	ALPHA, BETA, GAMMA;
+public class GammaStrategyMoveValidator implements StrategyMoveValidator {
+
+	@Override
+	public boolean isValidMove(StrategyBoard gameBoard, Piece movePiece, Location moveLocation) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -11,12 +11,18 @@
 package strategy.game.common;
 
 /**
- * This enumeration defines the possible versions of Strategy that might
- * be chosen for a game.
- * @author gpollice
- * @version Aug 31, 2013
+ * This interface handles all the validation logic for Strategy game moves
+ * @author drob,cbotaish
+ *
  */
-public enum GameVersion
-{
-	ALPHA, BETA, GAMMA;
+public interface StrategyMoveValidator {
+
+	/**
+	 * Validates a StrategyGame move
+	 * @param movePiece the piece to be moved
+	 * @param moveLocation the location to move to
+	 * @param gameBoard checked against by isValidMove
+	 * @return
+	 */
+	boolean isValidMove(StrategyBoard gameBoard, Piece movePiece, Location moveLocation);
 }
