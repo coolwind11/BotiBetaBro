@@ -22,6 +22,8 @@ import static strategy.game.common.PieceType.FLAG;
 import static strategy.game.common.PieceType.LIEUTENANT;
 import static strategy.game.common.PieceType.MARSHAL;
 import static strategy.game.common.PieceType.SERGEANT;
+import static strategy.game.common.PieceType.CHOKE_POINT;
+
 
 import java.util.ArrayList;
 
@@ -517,6 +519,16 @@ public class GammaStrategyTest {
 		assertEquals(null, result.getBattleWinner());
 	}
 	
+	@Test
+	(expected=StrategyException.class)
+	public void moveChokePoint() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(CHOKE_POINT, new Location2D(3,2), new Location2D(3,1));
+	}
+		
 	@Test
 	public void moveRememberatorRemembersPastThreeMoves() {
 		StrategyMoveRememberator pastMoves = new StrategyMoveRememberator(3);
