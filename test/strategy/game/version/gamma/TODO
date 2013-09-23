@@ -7,10 +7,16 @@ X Initialize a game
 X Make a valid move
 X Make an invalid move to a location off the board
 X Make an invalid move onto your self
-- Make an invalid move onto a choke point
-- Make an invalid move too far
-- Make an invalid move onto your own team
-- Make an invalid move due to move repetition
-- Win a battle
-- Lose a battle
-- Draw a battle (non artistically)
+X Make an invalid move onto a choke point
+X Make an invalid move too far
+x Make invalid move diagonally
+x Make an invalid move onto your own team
+- Make an invalid move due to move repetition (check more)
+x Win a battle
+x Lose a battle
+x Draw a battle (non artistically)
+x Red Win a game
+x Red Lose a game
+- Draw a game
+x Start game only can be called once
+- Comment code

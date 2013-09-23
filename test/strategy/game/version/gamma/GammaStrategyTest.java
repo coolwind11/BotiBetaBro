@@ -10,6 +10,7 @@
 
 package strategy.game.version.gamma;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -32,6 +33,8 @@ import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.Location2D;
+import strategy.game.common.MoveResult;
+import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceMoveEntry;
@@ -166,22 +169,139 @@ public class GammaStrategyTest {
 	}
 	
 	@Test
+	(expected=StrategyException.class)
+	public void initializeGameTwice() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		game.startGame();
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeValidMoveBeforeGameStarts() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeValidMoveAfterGameEnds() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		
+		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
+		
+		game.move(SERGEANT, new Location2D(0,4), new Location2D(0,3));
+		
+		game.move(SERGEANT, new Location2D(5,2), new Location2D(5,3)); //red
+		game.move(SERGEANT, new Location2D(0,3), new Location2D(0,2)); //blue
+		MoveResult result = game.move(SERGEANT, new Location2D(5,3), new Location2D(5,4)); //red
+		
+		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
+		
+		game.move(SERGEANT, new Location2D(5,3), new Location2D(5,4));
+	}
+	
+	@Test
+	public void getPieceAtTest() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		assertEquals(new Piece(SERGEANT, RED), game.getPieceAt(new Location2D(5,1)));
+	}
+	
+	
+	@Test
 	public void makeValidMove() throws StrategyException
 	{
 		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
 		game.startGame();
 		
-		game.move(SERGEANT, new Location2D(3,1), new Location2D(3,2));
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
 	}
 	
 	@Test
 	(expected=StrategyException.class)
-	public void makeInvalidMoveOffBoard() throws StrategyException
+	public void makeInvalidMoveFromOffBoardNegativeY() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,-1), new Location2D(0,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveFromOffBoardNegativeX() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(-1,0), new Location2D(0,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveFromOffBoardOverX() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(10,0), new Location2D(0,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveFromOffBoardOverY() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,10), new Location2D(0,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveToOffBoardNegativeY() throws StrategyException
 	{
 		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,-1));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveToOffBoardNegativeX() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,0), new Location2D(-1,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveToOffBoardOverX() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,0), new Location2D(10,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveToOffBoardOverY() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,10));
 	}
 	
 	@Test
@@ -204,6 +324,197 @@ public class GammaStrategyTest {
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(3,1), new Location2D(3,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveMoveTooFar() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,3));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveMoveDiagonally() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(3,1), new Location2D(4,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveOntoOwnTeam() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(3,1), new Location2D(4,1));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveDueToMoveRepitition() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
+		game.move(SERGEANT, new Location2D(4,2), new Location2D(4,1));
+		game.move(SERGEANT, new Location2D(4,3), new Location2D(4,4));
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveMoveFlag() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(FLAG, new Location2D(0,1), new Location2D(0,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveOutOfTurn() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveWrongPieceType() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(FLAG, new Location2D(4,1), new Location2D(4,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveNoPiece() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(FLAG, new Location2D(4,3), new Location2D(4,4));
+	}
+		
+		
+	@Test
+	public void makeValidMoveAlmostRepitition() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
+		game.move(SERGEANT, new Location2D(4,2), new Location2D(4,1));
+		game.move(SERGEANT, new Location2D(4,3), new Location2D(4,4));
+		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
+		game.move(LIEUTENANT, new Location2D(1,4), new Location2D(1,3));
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+
+	}
+	
+	@Test
+	public void redWinABattle() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
+		game.move(SERGEANT, new Location2D(0,4), new Location2D(0,3));
+		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2));
+		game.move(SERGEANT, new Location2D(0,3), new Location2D(0,2));
+		MoveResult result = game.move(LIEUTENANT, new Location2D(1,2), new Location2D(0,2));
+
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+		assertEquals(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED), new Location2D(0,2)), result.getBattleWinner());
+	}
+	
+	@Test
+	public void redLoseABattle() throws StrategyException
+	{		
+		blueConfiguration.remove(11);
+		blueConfiguration.add(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(0,4)));
+		blueConfiguration.remove(4);
+		blueConfiguration.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(3,5)));
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2));
+		game.move(CAPTAIN, new Location2D(0,4), new Location2D(0,3));
+		game.move(LIEUTENANT, new Location2D(1,2), new Location2D(1,3));
+		MoveResult result = game.move(CAPTAIN, new Location2D(0,3), new Location2D(1,3));
+		
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+		assertEquals(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(1,3)), result.getBattleWinner());
+	}
+	
+	@Test
+	public void blueWinAGame() throws StrategyException
+	{		
+		redConfiguration.remove(11);
+		redConfiguration.remove(0);
+		redConfiguration.add(new PieceLocationDescriptor(new Piece(FLAG, RED), new Location2D(5,1)));
+		redConfiguration.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), new Location2D(0,1)));
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(0,1), new Location2D(0,2));
+		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
+		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2)); //red
+		game.move(SERGEANT, new Location2D(4,3), new Location2D(4,2)); //blue
+		game.move(LIEUTENANT, new Location2D(1,2), new Location2D(1,1)); //red
+		game.move(SERGEANT, new Location2D(4,2), new Location2D(5,2));
+		game.move(SERGEANT, new Location2D(0,2), new Location2D(0,1));
+
+		MoveResult result = game.move(SERGEANT, new Location2D(5,2), new Location2D(5,1));
+
+		assertEquals(MoveResultStatus.BLUE_WINS, result.getStatus());
+	}
+	
+	@Test
+	public void redWinAGame() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		
+		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
+		
+		game.move(SERGEANT, new Location2D(0,4), new Location2D(0,3));
+		
+		game.move(SERGEANT, new Location2D(5,2), new Location2D(5,3)); //red
+		game.move(SERGEANT, new Location2D(0,3), new Location2D(0,2)); //blue
+		MoveResult result = game.move(SERGEANT, new Location2D(5,3), new Location2D(5,4)); //red
+		
+		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
+	}
+	
+	@Test
+	public void drawABattle() throws StrategyException
+	{		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
+		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
+		MoveResult result = game.move(SERGEANT, new Location2D(4,2), new Location2D(4,3));
+		
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+		assertEquals(null, result.getBattleWinner());
 	}
 	
 	@Test

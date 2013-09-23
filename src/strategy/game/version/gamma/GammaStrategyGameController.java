@@ -28,7 +28,6 @@ import strategy.game.common.StrategyMoveResolver;
 import strategy.game.common.StrategyMoveValidator;
 import strategy.game.version.beta.BetaStrategyBoardValidator;
 import strategy.game.version.beta.BetaStrategyMoveResolver;
-import strategy.game.version.beta.BetaStrategyMoveValidator;
 
 /**
  * An implementation of the game controller for the Gamma Strategy version.
@@ -47,6 +46,7 @@ public class GammaStrategyGameController implements StrategyGameController
 
 	private final StrategyBoard gameBoard;
 	
+	
 	private boolean gameStarted = false;
 	private boolean gameOver = false;
 
@@ -63,9 +63,9 @@ public class GammaStrategyGameController implements StrategyGameController
 			Collection<PieceLocationDescriptor> bluePieces) throws StrategyException
 	{
 		boardValidator = new BetaStrategyBoardValidator();
-		moveValidator = new BetaStrategyMoveValidator();
+		moveValidator = new GammaStrategyMoveValidator();
 		moveResolver = new BetaStrategyMoveResolver();
-
+		
 		if(!boardValidator.isValidInitialSetup(redPieces, bluePieces))
 		{
 			throw new StrategyException("Game board is invalid!");
@@ -120,7 +120,7 @@ public class GammaStrategyGameController implements StrategyGameController
 		if (gameOver)
 		{
 			throw new StrategyException("The game is already over");
-		}
+		}		
 		
 		moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
 		
@@ -131,7 +131,7 @@ public class GammaStrategyGameController implements StrategyGameController
 		
 		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
 				: PlayerColor.BLUE; // change the player turn
-		
+				
 		return result;
 	}
 

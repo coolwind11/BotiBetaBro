@@ -4,19 +4,23 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
+import strategy.game.common.PieceMoveEntry;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyBoard;
+import strategy.game.common.StrategyMoveRememberator;
 import strategy.game.common.StrategyMoveValidator;
 
 public class GammaStrategyMoveValidator implements StrategyMoveValidator
 {
-
 	private final int BOARD_HEIGHT = 6;
 	private final int BOARD_WIDTH = 6;
 	private final int MAX_MOVE_DISTANCE = 2;
 	
+	private final StrategyMoveRememberator moveRememberator;
+
 	public GammaStrategyMoveValidator()
 	{
+		moveRememberator = new StrategyMoveRememberator(4);
 	}
 
 	@Override
@@ -40,7 +44,20 @@ public class GammaStrategyMoveValidator implements StrategyMoveValidator
 		{
 			throw new StrategyException("To coordinate out of board bounds");
 		}
-
+		
+		//if you move onto your own piece, your gonna have a bad time
+		if (gameBoard.getPieceAt(moveToLocation) != null && gameBoard.getPieceAt(moveToLocation).getOwner() == currentTurn)
+		{
+			throw new StrategyException("Cant attack own piece");
+		}
+		
+		//Check for choke points
+		if(gameBoard.getPieceAt(moveToLocation) != null && 
+				gameBoard.getPieceAt(moveToLocation).getType() == PieceType.CHOKE_POINT)
+		{
+			throw new StrategyException("Cannot move onto a chokepoint!");
+		}
+		
 		//if there is no piece at the supplied location, the move is invalid
 		if (gameBoard.getPieceAt(moveFromLocation) == null)
 		{
@@ -65,12 +82,6 @@ public class GammaStrategyMoveValidator implements StrategyMoveValidator
 			throw new StrategyException("Cannot move the flag");
 		}
 
-		//if you move onto your own piece, your gonna have a bad time
-		if (gameBoard.getPieceAt(moveToLocation) != null && gameBoard.getPieceAt(moveToLocation).getOwner() == currentTurn)
-		{
-			throw new StrategyException("Cant attack own piece");
-		}
-
 		//if you try to move diagonally, the move is invalid
 		boolean inSameRow = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 		boolean inSameCol = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) == moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
@@ -85,6 +96,16 @@ public class GammaStrategyMoveValidator implements StrategyMoveValidator
 		{
 			throw new StrategyException("Moved too far");
 		}		
+		
+		PieceMoveEntry entry = new PieceMoveEntry(gameBoard.getPieceAt(moveFromLocation), moveFromLocation, moveToLocation);
+		
+		if(moveRememberator.moveInList(entry))
+		{
+			throw new StrategyException("Broke move repitition rule");
+		}
+		
+		moveRememberator.addMove(entry);
+
 	}
 
 }
