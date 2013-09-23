@@ -22,10 +22,10 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyBoardValidator;
-import strategy.game.common.StrategyMoveResolver;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyBoardValidator;
+import strategy.game.version.StrategyMoveResolver;
+import strategy.game.version.StrategyMoveValidator;
 
 /**
  * An implementation of the game controller for the Beta Strategy version.
@@ -68,7 +68,8 @@ public class BetaStrategyGameController implements StrategyGameController
 			throw new StrategyException("Game board is invalid!");
 		}
 		
-		Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
+		final Collection<PieceLocationDescriptor> allPieces = 
+				new LinkedList<PieceLocationDescriptor>();
 		allPieces.addAll(redPieces);
 		allPieces.addAll(bluePieces);
 		
@@ -114,10 +115,12 @@ public class BetaStrategyGameController implements StrategyGameController
 		
 		moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
 		
-		MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
+		final MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
 	
 		if(result.getStatus() != MoveResultStatus.OK)
+		{
 			gameOver = true;
+		}
 		
 		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
 				: PlayerColor.BLUE; // change the player turn

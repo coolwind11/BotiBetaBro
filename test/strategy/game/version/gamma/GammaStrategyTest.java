@@ -37,9 +37,9 @@ import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
-import strategy.game.common.PieceMoveEntry;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyMoveRememberator;
+import strategy.game.version.PieceMoveEntry;
+import strategy.game.version.StrategyMoveRememberator;
 
 
 public class GammaStrategyTest {
@@ -523,7 +523,7 @@ public class GammaStrategyTest {
 		
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1)));
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
-		assertTrue(pastMoves.moveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1))));
+		assertTrue(pastMoves.isMoveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1))));
 	}
 	
 	@Test
@@ -532,7 +532,7 @@ public class GammaStrategyTest {
 		
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1)));
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
-		assertTrue(!pastMoves.moveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(1,0))));
+		assertTrue(!pastMoves.isMoveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(1,0))));
 	}
 	
 	// Helper methods

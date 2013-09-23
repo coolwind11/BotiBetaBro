@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package strategy.game.version.beta;
 
 import strategy.common.PlayerColor;
@@ -5,22 +14,28 @@ import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyMoveValidator;
 
+/**
+ * Provides a move validator strategy for the BetaStrategy implementation
+ * @author cbotaish, drob
+ * @version Sept 23, 2013
+ */
 public class BetaStrategyMoveValidator implements StrategyMoveValidator
 {
 	private final int BOARD_HEIGHT = 6;
 	private final int BOARD_WIDTH = 6;
 	private final int MAX_MOVE_DISTANCE = 2;
-	
-	public BetaStrategyMoveValidator()
-	{
-	}
 
+	/**
+	 * @see StrategyMoveValidator#checkMoveValidity(StrategyBoard, 
+	 * PlayerColor, PieceType, Location, Location)
+	 */
 	@Override
-	public void checkMoveValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
-			Location moveFromLocation, Location moveToLocation) throws StrategyException
+	public void checkMoveValidity(StrategyBoard gameBoard, 
+			PlayerColor currentTurn, PieceType movePiece, Location moveFromLocation, 
+			Location moveToLocation) throws StrategyException
 	{
 		//if the from coordinate is out of bounds, the move is invalid
 		if (moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_WIDTH
@@ -71,8 +86,8 @@ public class BetaStrategyMoveValidator implements StrategyMoveValidator
 		}
 
 		//if you try to move diagonally, the move is invalid
-		boolean inSameRow = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-		boolean inSameCol = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) == moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
+		final boolean inSameRow = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+		final boolean inSameCol = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) == moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
 		
 		if(!(inSameRow || inSameCol))
 		{
@@ -83,7 +98,7 @@ public class BetaStrategyMoveValidator implements StrategyMoveValidator
 		if(moveFromLocation.distanceTo(moveToLocation) >= MAX_MOVE_DISTANCE)
 		{
 			throw new StrategyException("Moved too far");
-		}		
+		}
 	}
 
 }

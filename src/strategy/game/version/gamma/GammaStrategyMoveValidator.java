@@ -1,15 +1,29 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package strategy.game.version.gamma;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
-import strategy.game.common.PieceMoveEntry;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyMoveRememberator;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.PieceMoveEntry;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyMoveRememberator;
+import strategy.game.version.StrategyMoveValidator;
 
+/**
+ * Provides a move validator strategy for the GammaStrategy implementation of Strategy
+ * @author cbotaish, drob
+ * @version Sept 22, 2013
+ */
 public class GammaStrategyMoveValidator implements StrategyMoveValidator
 {
 	private final int BOARD_HEIGHT = 6;
@@ -83,8 +97,8 @@ public class GammaStrategyMoveValidator implements StrategyMoveValidator
 		}
 
 		//if you try to move diagonally, the move is invalid
-		boolean inSameRow = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-		boolean inSameCol = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) == moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
+		final boolean inSameRow = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+		final boolean inSameCol = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) == moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
 		
 		if(!(inSameRow || inSameCol))
 		{
@@ -95,11 +109,11 @@ public class GammaStrategyMoveValidator implements StrategyMoveValidator
 		if(moveFromLocation.distanceTo(moveToLocation) >= MAX_MOVE_DISTANCE)
 		{
 			throw new StrategyException("Moved too far");
-		}		
+		}
 		
-		PieceMoveEntry entry = new PieceMoveEntry(gameBoard.getPieceAt(moveFromLocation), moveFromLocation, moveToLocation);
+		final PieceMoveEntry entry = new PieceMoveEntry(gameBoard.getPieceAt(moveFromLocation), moveFromLocation, moveToLocation);
 		
-		if(moveRememberator.moveInList(entry))
+		if(moveRememberator.isMoveInList(entry))
 		{
 			throw new StrategyException("Broke move repitition rule");
 		}

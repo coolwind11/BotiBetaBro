@@ -84,9 +84,12 @@ public class StrategyGameFactory
 	 * Factorify a gamma strategy game instance
 	 * @param redConfiguration pieces provided by the red player(s)
 	 * @param blueConfiguration pieces provided by the blue player(s)
+	 * @return a gamma strategy game
+	 * @throws StrategyException if there is an issue with either of the configurations
 	 */
-	public StrategyGameController makeGammaStrategyGame(Collection<PieceLocationDescriptor> redConfiguration, Collection<PieceLocationDescriptor> blueConfiguration)
-		throws StrategyException
+	public StrategyGameController makeGammaStrategyGame(
+			Collection<PieceLocationDescriptor> redConfiguration, 
+			Collection<PieceLocationDescriptor> blueConfiguration) throws StrategyException
 	{
 		if(redConfiguration == null || blueConfiguration == null){
 			throw new StrategyException("Cannot initialize game with no piece configuration(s)");

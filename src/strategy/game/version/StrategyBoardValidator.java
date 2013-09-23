@@ -7,15 +7,16 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-
-package strategy.game.common;
+package strategy.game.version;
 
 import java.util.Collection;
+
+import strategy.game.common.PieceLocationDescriptor;
 
 /**
  * This interface provides validations for the initial board setups.
  * @author drob, cbotaish
- *
+ * @version Sept 22, 2013
  */
 public interface StrategyBoardValidator {
 	

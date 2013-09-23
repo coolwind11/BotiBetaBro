@@ -22,10 +22,10 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyBoardValidator;
-import strategy.game.common.StrategyMoveResolver;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyBoardValidator;
+import strategy.game.version.StrategyMoveResolver;
+import strategy.game.version.StrategyMoveValidator;
 import strategy.game.version.beta.BetaStrategyBoardValidator;
 import strategy.game.version.beta.BetaStrategyMoveResolver;
 
@@ -71,15 +71,15 @@ public class GammaStrategyGameController implements StrategyGameController
 			throw new StrategyException("Game board is invalid!");
 		}
 		
-		Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
+		final Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
 		allPieces.addAll(redPieces);
 		allPieces.addAll(bluePieces);
 		
 		//Add the chokepoints before creating the board
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2,2)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3,2)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2,3)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3,3)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
 
 		
 		gameBoard = new StrategyBoard(allPieces);
@@ -120,14 +120,16 @@ public class GammaStrategyGameController implements StrategyGameController
 		if (gameOver)
 		{
 			throw new StrategyException("The game is already over");
-		}		
+		}
 		
 		moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
 		
-		MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
+		final MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
 	
 		if(result.getStatus() != MoveResultStatus.OK)
+		{
 			gameOver = true;
+		}
 		
 		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
 				: PlayerColor.BLUE; // change the player turn

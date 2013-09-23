@@ -20,12 +20,12 @@ import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoardValidator;
+import strategy.game.version.StrategyBoardValidator;
 
 /**
  * This class provides validations for the initial board setups.
  * @author drob, cbotaish
- *
+ * @version Sept 22, 2013
  */
 public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 
@@ -38,7 +38,7 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 	private final int MIN_BLUE_STARTING_Y = 4;
 	private final int MAX_RED_STARTING_Y = 1;
 	
-	private final Map<PieceType,Integer> validPieceCount;	
+	private final Map<PieceType,Integer> validPieceCount;
 	
 	/**
 	 * Creates a Gamma Strategy board validator
@@ -54,7 +54,7 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 	}
 	
 	/**
-	 * @see strategy.game.common.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
+	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
 	 */
 	@Override
 	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
@@ -94,7 +94,8 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 			
 			if(redPieceCount.containsKey(redPiece.getPiece().getType()))
 			{
-				redPieceCount.put(redPiece.getPiece().getType(), redPieceCount.get(redPiece.getPiece().getType()) + 1);
+				redPieceCount.put(redPiece.getPiece().getType(), 
+						redPieceCount.get(redPiece.getPiece().getType()) + 1);
 			}
 			else
 			{
@@ -122,7 +123,8 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 			
 			if(bluePieceCount.containsKey(bluePiece.getPiece().getType()))
 			{
-				bluePieceCount.put(bluePiece.getPiece().getType(), redPieceCount.get(bluePiece.getPiece().getType()) + 1);
+				bluePieceCount.put(bluePiece.getPiece().getType(), 
+						redPieceCount.get(bluePiece.getPiece().getType()) + 1);
 			}
 			else
 			{

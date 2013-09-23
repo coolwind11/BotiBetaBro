@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package strategy.game.version.beta;
 
 import java.util.HashMap;
@@ -10,9 +19,14 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyMoveResolver;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyMoveResolver;
 
+/**
+ * Provides a move resolver strategy for the BetaStrategy implementation
+ * @author cbotaish, drob
+ * @version Sept 22, 2013
+ */
 public class BetaStrategyMoveResolver implements StrategyMoveResolver
 {
 	private final int MAX_TURNS = 12;
@@ -45,7 +59,7 @@ public class BetaStrategyMoveResolver implements StrategyMoveResolver
 		if (opponentPiece != null)
 		{
 			if (opponentPiece.getType() == PieceType.FLAG)
-			{ 				
+			{ 
 				battleWinner = new PieceLocationDescriptor(movePiece, toLocation);
 				moveResult = currentTurn == PlayerColor.BLUE ? MoveResultStatus.BLUE_WINS
 						: MoveResultStatus.RED_WINS;

@@ -7,11 +7,15 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package strategy.game.common;
+package strategy.game.version;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import strategy.game.common.Location;
+import strategy.game.common.Piece;
+import strategy.game.common.PieceLocationDescriptor;
 
 /**
  * Provides an interface to a strategy board.
@@ -19,7 +23,7 @@ import java.util.Map;
  * @version Sep 9, 2013
  */
 public class StrategyBoard
-{	
+{
 	private final Map<Location, Piece> boardRepresentationMap = new HashMap<Location, Piece>();
 	
 	/**
@@ -27,21 +31,21 @@ public class StrategyBoard
 	 * @param initialPieces the initial location of the pieces on the board.
 	 */
 	public StrategyBoard(Collection<PieceLocationDescriptor> initialPieces)
-	{	
+	{
 		for (PieceLocationDescriptor pieceLocation : initialPieces) {
 			boardRepresentationMap.put(pieceLocation.getLocation(), pieceLocation.getPiece());
 		}
 	}
 	
 	/**
-	 * @see strategy.game.common.StrategyBoard#getPieceAt(Location)
+	 * @see strategy.game.version.StrategyBoard#getPieceAt(Location)
 	 */
 	public Piece getPieceAt(Location location) {
 		return boardRepresentationMap.get(location);
 	}
 	
 	/**
-	 * @see strategy.game.common.StrategyBoard#movePiece(Location, Location)
+	 * @see strategy.game.version.StrategyBoard#movePiece(Location, Location)
 	 */
 	public void movePiece(Location from, Location to) 
 	{
@@ -50,7 +54,7 @@ public class StrategyBoard
 	}
 	
 	/**
-	 * @see strategy.game.common.StrategyBoard#removePiece(Location)
+	 * @see strategy.game.version.StrategyBoard#removePiece(Location)
 	 */
 	public void removePiece(Location fromLocation)
 	{

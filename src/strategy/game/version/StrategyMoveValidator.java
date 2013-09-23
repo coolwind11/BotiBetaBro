@@ -7,16 +7,17 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-
-package strategy.game.common;
+package strategy.game.version;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
+import strategy.game.common.Location;
+import strategy.game.common.PieceType;
 
 /**
  * This interface handles all the validation logic for Strategy game moves
  * @author drob,cbotaish
- *
+ * @version Sept 22, 2013
  */
 public interface StrategyMoveValidator {
 
