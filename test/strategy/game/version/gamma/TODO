@@ -11,13 +11,11 @@ X Make an invalid move onto a choke point
 X Make an invalid move too far
 x Make invalid move diagonally
 x Make an invalid move onto your own team
-- Make an invalid move due to move repetition (check more)
+x Make an invalid move due to move repetition
 x Win a battle
 x Lose a battle
 x Draw a battle (non artistically)
 x Red Win a game
 x Red Lose a game
-- Draw a game
+x Draw a game
 x Start game only can be called once
-- Comment code
--

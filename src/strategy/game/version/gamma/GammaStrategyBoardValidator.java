@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package strategy.game.version.gamma;
 
 import java.util.Collection;
@@ -15,13 +24,6 @@ import strategy.game.version.BaseStrategyBoardValidator;
  * @version 9/23/13
  */
 public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
-
-	/**
-	 * Creates a new GammaStrategyBoardValidator
-	 */
-	public GammaStrategyBoardValidator() {
-		super();
-	}
 	
 	/**
 	 * setup the paramaters for board validation specific to gamma version, such as
@@ -55,7 +57,7 @@ public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	@Override
 	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
 			Collection<PieceLocationDescriptor> blueConfig) {
-		boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
+		final boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
 		
 		//Add the chokepoints before creating the board
 		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));

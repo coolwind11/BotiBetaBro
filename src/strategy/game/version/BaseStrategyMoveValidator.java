@@ -30,7 +30,7 @@ public abstract class BaseStrategyMoveValidator implements
 	/**
 	 * Creates a new base strategy move validator
 	 */
-	public BaseStrategyMoveValidator()
+	protected BaseStrategyMoveValidator()
 	{
 		setupMoveConstraints();
 	}

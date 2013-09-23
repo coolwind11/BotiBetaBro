@@ -7,7 +7,6 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-
 package strategy.game.version;
 
 import java.util.Collection;
@@ -31,7 +30,6 @@ import strategy.game.common.PieceType;
  */
 public class BaseStrategyGameController implements StrategyGameController
 {
-	
 	private final StrategyBoardValidator boardValidator;
 	
 	private final StrategyMoveValidator moveValidator;
