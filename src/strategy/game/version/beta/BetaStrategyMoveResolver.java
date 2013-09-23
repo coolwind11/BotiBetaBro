@@ -10,8 +10,8 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyMoveResolver;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyMoveResolver;
 
 public class BetaStrategyMoveResolver implements StrategyMoveResolver
 {

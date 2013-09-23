@@ -4,11 +4,11 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
-import strategy.game.common.PieceMoveEntry;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyMoveRememberator;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.PieceMoveEntry;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyMoveRememberator;
+import strategy.game.version.StrategyMoveValidator;
 
 public class GammaStrategyMoveValidator implements StrategyMoveValidator
 {

@@ -22,10 +22,10 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoard;
-import strategy.game.common.StrategyBoardValidator;
-import strategy.game.common.StrategyMoveResolver;
-import strategy.game.common.StrategyMoveValidator;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.StrategyBoardValidator;
+import strategy.game.version.StrategyMoveResolver;
+import strategy.game.version.StrategyMoveValidator;
 
 /**
  * An implementation of the game controller for the Beta Strategy version.

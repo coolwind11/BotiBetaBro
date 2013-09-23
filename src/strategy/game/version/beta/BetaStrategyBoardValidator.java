@@ -20,7 +20,7 @@ import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyBoardValidator;
+import strategy.game.version.StrategyBoardValidator;
 
 /**
  * This class provides validations for the initial board setups.
@@ -54,7 +54,7 @@ public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 	}
 	
 	/**
-	 * @see strategy.game.common.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
+	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
 	 */
 	@Override
 	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,

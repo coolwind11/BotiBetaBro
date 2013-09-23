@@ -37,9 +37,9 @@ import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
-import strategy.game.common.PieceMoveEntry;
 import strategy.game.common.PieceType;
-import strategy.game.common.StrategyMoveRememberator;
+import strategy.game.version.PieceMoveEntry;
+import strategy.game.version.StrategyMoveRememberator;
 
 
 public class GammaStrategyTest {
