@@ -9,34 +9,54 @@
  *******************************************************************************/
 package strategy.game.common;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Provides an interface to a strategy board.
  * @author Chris Botaish, Dan Robertson
  * @version Sep 9, 2013
  */
-public interface StrategyBoard
-{
-	/**
-	 * Returns the piece at the given location
-	 * @param location the location to check for a piece
-	 * @return the piece at the given location, or null if there is no piece at that location.
-	 */
-	Piece getPieceAt(Location location);
+public class StrategyBoard
+{	
+	private final Map<Location, Piece> boardRepresentationMap = new HashMap<Location, Piece>();
 	
 	/**
-	 * Moves the piece at location from to the location to.
-	 * @param from the location to move the piece from
-	 * @param to the location to move the piece to.
+	 * Creates an empty board with the given dimensions
+	 * @param initialPieces the initial location of the pieces on the board.
 	 */
-	void movePiece(Location from, Location to);
+	public StrategyBoard(Collection<PieceLocationDescriptor> initialPieces)
+	{	
+		for (PieceLocationDescriptor pieceLocation : initialPieces) {
+			boardRepresentationMap.put(pieceLocation.getLocation(), pieceLocation.getPiece());
+		}
+	}
 	
-	void setupBoard();
 	/**
-	 * Removes the piece at the given location.
-	 * @param fromLocation the location to remove the piece from.
+	 * @see strategy.game.common.StrategyBoard#getPieceAt(Location)
 	 */
-	void removePiece(Location fromLocation);
+	public Piece getPieceAt(Location location) {
+		return boardRepresentationMap.get(location);
+	}
 	
+	/**
+	 * @see strategy.game.common.StrategyBoard#movePiece(Location, Location)
+	 */
+	public void movePiece(Location from, Location to) 
+	{
+		boardRepresentationMap.put(to, boardRepresentationMap.get(from));
+		boardRepresentationMap.remove(from);
+	}
 	
+	/**
+	 * @see strategy.game.common.StrategyBoard#removePiece(Location)
+	 */
+	public void removePiece(Location fromLocation)
+	{
+		boardRepresentationMap.remove(fromLocation);
+	}
 }
+
+
 

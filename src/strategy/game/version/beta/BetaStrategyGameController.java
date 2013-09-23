@@ -10,19 +10,22 @@
 
 package strategy.game.version.beta;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
-import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.common.StrategyBoard;
+import strategy.game.common.StrategyBoardValidator;
+import strategy.game.common.StrategyMoveResolver;
+import strategy.game.common.StrategyMoveValidator;
 
 /**
  * An implementation of the game controller for the Beta Strategy version.
@@ -32,42 +35,44 @@ import strategy.game.common.PieceType;
  */
 public class BetaStrategyGameController implements StrategyGameController
 {
+	
+	private final StrategyBoardValidator boardValidator;
+	
+	private final StrategyMoveValidator moveValidator;
+	
+	private final StrategyMoveResolver moveResolver;
 
-	private final int BOARD_HEIGHT = 6;
-	private final int BOARD_WIDTH = 6;
-	private final int MAX_MOVE_DISTANCE = 2;
-	private final int MAX_TURNS = 12;
-
-	private final BetaStrategyBoard gameBoard;
-	private final Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
-
+	private final StrategyBoard gameBoard;
+	
 	private boolean gameStarted = false;
 	private boolean gameOver = false;
-
-	private int turnsPlayed;
 
 	private PlayerColor playerTurn = PlayerColor.RED;
 
 	/**
-	 * Creates a BetaStrategyGameController with the given game board
+	 * Creates a BetaStrategyGameController with the given initial configs
 	 * 
-	 * @param gameBoard the game board to use for this BetaStrategyGameController
+	 * @param redPieces the locations of the red pieces at the start
+	 * @param bluePieces the locations of the blue pieces at the start
 	 * @throws StrategyException if the initial game board is invalid.
 	 */
-	public BetaStrategyGameController(BetaStrategyBoard gameBoard) throws StrategyException
+	public BetaStrategyGameController(Collection<PieceLocationDescriptor> redPieces, 
+			Collection<PieceLocationDescriptor> bluePieces) throws StrategyException
 	{
-		this.gameBoard = gameBoard;
-		pieceRank.put(PieceType.MARSHAL, 12);
-		pieceRank.put(PieceType.CAPTAIN, 8);
-		pieceRank.put(PieceType.COLONEL, 10);
-		pieceRank.put(PieceType.LIEUTENANT, 7);
-		pieceRank.put(PieceType.SERGEANT, 6);
-		pieceRank.put(PieceType.FLAG, 1);
-		
-		if (false)//(!gameBoard.hasValidInitialBoardSetup())
+		boardValidator = new BetaStrategyBoardValidator();
+		moveValidator = new BetaStrategyMoveValidator();
+		moveResolver = new BetaStrategyMoveResolver();
+
+		if(!boardValidator.isValidInitialSetup(redPieces, bluePieces))
 		{
-			throw new StrategyException("Game board is invalid");
+			throw new StrategyException("Game board is invalid!");
 		}
+		
+		Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
+		allPieces.addAll(redPieces);
+		allPieces.addAll(bluePieces);
+		
+		gameBoard = new StrategyBoard(allPieces);
 	}
 
 	/**
@@ -76,15 +81,14 @@ public class BetaStrategyGameController implements StrategyGameController
 	@Override
 	public void startGame() throws StrategyException
 	{
-		if(gameStarted && !gameOver) {
+		if(gameStarted) {
 			throw new StrategyException("Must complete the current game "
 					+ "before beginning a new one");
 		}
-		gameBoard.setupBoard();
-
+		
 		gameStarted = true;
 		gameOver = false;
-		turnsPlayed = 0;
+		
 		playerTurn = PlayerColor.RED;
 	}
 
@@ -94,83 +98,6 @@ public class BetaStrategyGameController implements StrategyGameController
 	 */
 	@Override
 	public MoveResult move(PieceType piece, Location from, Location to)
-			throws StrategyException
-	{
-		verifyMove(piece, from, to); // check that we can make this move.
-
-		final Piece movePiece = getPieceAt(from);
-		final Piece opponentPiece = getPieceAt(to);
-
-		PieceLocationDescriptor battleWinner = null;
-		MoveResultStatus moveResult = MoveResultStatus.OK;
-
-		// If theres a battle.
-		if (opponentPiece != null)
-		{
-			if (opponentPiece.getType() == PieceType.FLAG)
-			{ // game over
-				gameOver = true;
-				
-				battleWinner = new PieceLocationDescriptor(movePiece, to);
-				moveResult = playerTurn == PlayerColor.BLUE ? MoveResultStatus.BLUE_WINS
-						: MoveResultStatus.RED_WINS;
-			}
-			else if (getPieceRank(movePiece) > getPieceRank(opponentPiece))
-			{ // moving player wins
-				battleWinner = new PieceLocationDescriptor(movePiece, to);
-				gameBoard.movePiece(from, to);
-			}
-			else if (getPieceRank(movePiece) == getPieceRank(opponentPiece))
-			{ // draw
-				// Both pieces get removed in a draw.
-				gameBoard.removePiece(to);
-				gameBoard.removePiece(from);
-			}
-			else
-			{ // opponent wins
-				battleWinner = new PieceLocationDescriptor(opponentPiece, to);
-				gameBoard.movePiece(to, from);
-			}
-		}
-		else
-		{
-			gameBoard.movePiece(from, to);
-		}
-
-		// end the game after 6 turns if nobody has won.
-		if (turnsPlayed == MAX_TURNS - 1 && moveResult == MoveResultStatus.OK)
-		{
-			moveResult = MoveResultStatus.DRAW;
-			gameOver = true;
-		}
-
-		turnsPlayed++;
-		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
-				: PlayerColor.BLUE; // change the player turn
-		return new MoveResult(moveResult, battleWinner);
-	}
-
-	/**
-	 * @see strategy.game.StrategyGameController#getPieceAt(Location)
-	 */
-	@Override
-	public Piece getPieceAt(Location location)
-	{
-		return gameBoard.getPieceAt(location);
-	}
-
-	/**
-	 * Check to see if a move is valid, throws exception if not.
-	 * 
-	 * @param piece
-	 *            the piece supplied
-	 * @param from
-	 *            location under scrutiny
-	 * @param to
-	 *            location under scrutiny
-	 * @throws StrategyException
-	 */
-	private void verifyMove(PieceType piece, Location from, Location to)
 			throws StrategyException
 	{
 		//if the game hasn't started, the move is invalid
@@ -184,66 +111,26 @@ public class BetaStrategyGameController implements StrategyGameController
 		{
 			throw new StrategyException("The game is already over");
 		}
-
-		//if the from coordinate is out of bounds, the move is invalid
-		if (from.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_WIDTH
-				|| from.getCoordinate(Coordinate.X_COORDINATE) < 0
-				|| from.getCoordinate(Coordinate.Y_COORDINATE) >= BOARD_HEIGHT
-				|| from.getCoordinate(Coordinate.Y_COORDINATE) < 0)
-		{
-			throw new StrategyException("From coordinate out of board bounds");
-		}
-
-		//if the to coordinate is out of bounds...the move; is invalid
-		if (to.getCoordinate(Coordinate.X_COORDINATE) >= BOARD_WIDTH
-				|| to.getCoordinate(Coordinate.X_COORDINATE) < 0
-				|| to.getCoordinate(Coordinate.Y_COORDINATE) >= BOARD_HEIGHT
-				|| to.getCoordinate(Coordinate.Y_COORDINATE) < 0)
-		{
-			throw new StrategyException("To coordinate out of board bounds");
-		}
-
-		//if there is no piece at the supplied location, the move is invalid
-		if (getPieceAt(from) == null)
-		{
-			throw new StrategyException("No piece to move at location");
-		}
-
-		//if you try to move your opponents piece, the move is invalid
-		if (getPieceAt(from).getOwner() != playerTurn)
-		{
-			throw new StrategyException("Not correct player turn");
-		}
-
-		//if the piece is the flag, ya can't move that.
-		if (getPieceAt(from).getType() == PieceType.FLAG)
-		{
-			throw new StrategyException("Cannot move the flag");
-		}
-
-		//if you move onto your own piece, your gonna have a bad time
-		if (getPieceAt(to) != null && getPieceAt(to).getOwner() == playerTurn)
-		{
-			throw new StrategyException("Cant attack own piece");
-		}
-
-		//if you try to move too far, THE MOVE IS INVALID
-		if (from.distanceTo(to) >= MAX_MOVE_DISTANCE)
-		{
-			throw new StrategyException("Moved too far");
-		}
+		
+		moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
+		
+		MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
+	
+		if(result.getStatus() != MoveResultStatus.OK)
+			gameOver = true;
+		
+		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
+				: PlayerColor.BLUE; // change the player turn
+		
+		return result;
 	}
 
 	/**
-	 * Gets the piece rank for the given piece, which is used to determine the
-	 * outcome of battles
-	 * 
-	 * @param piece
-	 *            the piece to get the rank for
-	 * @return the piece's rank
+	 * @see strategy.game.StrategyGameController#getPieceAt(Location)
 	 */
-	private int getPieceRank(Piece piece)
+	@Override
+	public Piece getPieceAt(Location location)
 	{
-		return pieceRank.get(piece.getType());
+		return gameBoard.getPieceAt(location);
 	}
 }

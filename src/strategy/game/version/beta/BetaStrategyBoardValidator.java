@@ -8,7 +8,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package strategy.game.version.gamma;
+package strategy.game.version.beta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ import strategy.game.common.StrategyBoardValidator;
  * @author drob, cbotaish
  *
  */
-public class GammaStrategyBoardValidator implements StrategyBoardValidator {
+public class BetaStrategyBoardValidator implements StrategyBoardValidator {
 
 	private final int MAX_PIECES = 24;
 	private final int MAX_X = 5;
@@ -43,7 +43,7 @@ public class GammaStrategyBoardValidator implements StrategyBoardValidator {
 	/**
 	 * Creates a Gamma Strategy board validator
 	 */
-	public GammaStrategyBoardValidator() {
+	public BetaStrategyBoardValidator() {
 		validPieceCount = new HashMap<PieceType, Integer>();
 		validPieceCount.put(PieceType.FLAG, 1);
 		validPieceCount.put(PieceType.MARSHAL, 1);

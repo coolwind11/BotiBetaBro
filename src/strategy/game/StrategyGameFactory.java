@@ -10,14 +10,11 @@
 
 package strategy.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.version.alpha.AlphaStrategyGameController;
-import strategy.game.version.beta.BetaStrategyBoard;
 import strategy.game.version.beta.BetaStrategyGameController;
 import strategy.game.version.gamma.GammaStrategyGameController;
 
@@ -79,16 +76,8 @@ public class StrategyGameFactory
 		{
 			throw new StrategyException("Cannot have null red or blue configuration.");
 		}
-		
-		final List<PieceLocationDescriptor> pieceLocations = 
-				new ArrayList<PieceLocationDescriptor>();
-		
-		pieceLocations.addAll(redConfiguration);
-		pieceLocations.addAll(blueConfiguration);
-		
-		final BetaStrategyBoard gameBoard = new BetaStrategyBoard(pieceLocations);
-		
-		return new BetaStrategyGameController(gameBoard);
+				
+		return new BetaStrategyGameController(redConfiguration, blueConfiguration);
 	}
 	
 	/**
@@ -99,12 +88,10 @@ public class StrategyGameFactory
 	public StrategyGameController makeGammaStrategyGame(Collection<PieceLocationDescriptor> redConfiguration, Collection<PieceLocationDescriptor> blueConfiguration)
 		throws StrategyException
 	{
-		// TODO Auto-generated method stub
 		if(redConfiguration == null || blueConfiguration == null){
 			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
 		}
-		
-		
+			
 		return new GammaStrategyGameController(redConfiguration, blueConfiguration);
 	}
 }
