@@ -21,11 +21,6 @@ import strategy.game.version.BaseStrategyBoardValidator;
  * @version Sept 22, 2013
  */
 public class BetaStrategyBoardValidator extends BaseStrategyBoardValidator {
-
-	public BetaStrategyBoardValidator()
-	{
-		super();
-	}
 	
 	/**
 	 * setup the paramaters for board validation specific to gamma version, such as

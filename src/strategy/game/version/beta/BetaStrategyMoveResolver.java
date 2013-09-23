@@ -9,19 +9,13 @@
  *******************************************************************************/
 package strategy.game.version.beta;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import strategy.common.PlayerColor;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
-import strategy.game.common.Piece;
-import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveResolver;
 import strategy.game.version.StrategyBoard;
-import strategy.game.version.StrategyMoveResolver;
 
 /**
  * Provides a move resolver strategy for the BetaStrategy implementation
@@ -32,17 +26,12 @@ public class BetaStrategyMoveResolver extends BaseStrategyMoveResolver
 {
 	protected final int MAX_TURNS = 12;
 	protected int turnsPlayed = 0;
-	
-	public BetaStrategyMoveResolver()
-	{
-		super();
-	}
 
 	@Override
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{
-		MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
+		final MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		
 		MoveResultStatus resultStatus = firstResult.getStatus();
 		// end the game after 6 turns if nobody has won.
@@ -60,7 +49,6 @@ public class BetaStrategyMoveResolver extends BaseStrategyMoveResolver
 
 	@Override
 	protected void setupResolverConfiguration() {
-		// TODO Auto-generated method stub
 		pieceRank.put(PieceType.MARSHAL, 12);
 		pieceRank.put(PieceType.CAPTAIN, 8);
 		pieceRank.put(PieceType.COLONEL, 10);
