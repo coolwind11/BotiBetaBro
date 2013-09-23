@@ -13,9 +13,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import strategy.common.PlayerColor;
 import strategy.game.common.Location;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.PieceType;
 
 /**
  * Provides an interface to a strategy board.
@@ -26,6 +28,7 @@ public class StrategyBoard
 {
 	private final Map<Location, Piece> boardRepresentationMap = new HashMap<Location, Piece>();
 	
+	private int redPieceCount,bluePieceCount;
 	/**
 	 * Creates an empty board with the given dimensions
 	 * @param initialPieces the initial location of the pieces on the board.
@@ -49,6 +52,9 @@ public class StrategyBoard
 	 */
 	public void movePiece(Location from, Location to) 
 	{
+		if (boardRepresentationMap.containsKey(to)){
+			removePiece(to);
+		}
 		boardRepresentationMap.put(to, boardRepresentationMap.get(from));
 		boardRepresentationMap.remove(from);
 	}
@@ -59,6 +65,10 @@ public class StrategyBoard
 	public void removePiece(Location fromLocation)
 	{
 		boardRepresentationMap.remove(fromLocation);
+	}
+	
+	public int getRemainingPieceCount(PlayerColor forColor) {
+		return forColor == PlayerColor.BLUE ? bluePieceCount : redPieceCount;
 	}
 }
 
