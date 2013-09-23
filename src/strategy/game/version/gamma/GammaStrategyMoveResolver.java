@@ -37,7 +37,7 @@ public class GammaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{
-		MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
+		final MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {

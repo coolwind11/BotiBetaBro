@@ -20,6 +20,7 @@ import strategy.game.version.beta.BetaStrategyBoardValidator;
 import strategy.game.version.beta.BetaStrategyMoveResolver;
 import strategy.game.version.beta.BetaStrategyMoveValidator;
 import strategy.game.version.gamma.GammaStrategyBoardValidator;
+import strategy.game.version.gamma.GammaStrategyMoveResolver;
 import strategy.game.version.gamma.GammaStrategyMoveValidator;
 
 /**
@@ -101,6 +102,6 @@ public class StrategyGameFactory
 		}
 			
 		return new BaseStrategyGameController(new GammaStrategyBoardValidator(), new GammaStrategyMoveValidator(),
-				new BetaStrategyMoveResolver(), redConfiguration, blueConfiguration);
+				new GammaStrategyMoveResolver(), redConfiguration, blueConfiguration);
 	}
 }

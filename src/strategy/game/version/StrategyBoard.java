@@ -17,7 +17,6 @@ import strategy.common.PlayerColor;
 import strategy.game.common.Location;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
-import strategy.game.common.PieceType;
 
 /**
  * Provides an interface to a strategy board.
@@ -35,8 +34,15 @@ public class StrategyBoard
 	 */
 	public StrategyBoard(Collection<PieceLocationDescriptor> initialPieces)
 	{
+		redPieceCount = 0;
+		bluePieceCount = 0;
 		for (PieceLocationDescriptor pieceLocation : initialPieces) {
 			boardRepresentationMap.put(pieceLocation.getLocation(), pieceLocation.getPiece());
+			if (pieceLocation.getPiece().getOwner() == PlayerColor.BLUE){
+				bluePieceCount++;
+			} else if (pieceLocation.getPiece().getOwner() == PlayerColor.RED){
+				redPieceCount++;
+			}
 		}
 	}
 	
@@ -64,9 +70,19 @@ public class StrategyBoard
 	 */
 	public void removePiece(Location fromLocation)
 	{
+		if (getPieceAt(fromLocation).getOwner() == PlayerColor.BLUE){
+			bluePieceCount--;
+		} else {
+			redPieceCount--;
+		}
 		boardRepresentationMap.remove(fromLocation);
 	}
 	
+	/**
+	 * return the remaining number of pieces for the supplied player
+	 * @param forColor the player to check piece count for
+	 * @return the remaining piece count for that player
+	 */
 	public int getRemainingPieceCount(PlayerColor forColor) {
 		return forColor == PlayerColor.BLUE ? bluePieceCount : redPieceCount;
 	}
