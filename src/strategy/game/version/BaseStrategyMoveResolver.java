@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package strategy.game.version;
 
 import java.util.HashMap;
@@ -11,16 +20,31 @@ import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 
+/**
+ * Provides an abstract class for the strategy move resolver that can be
+ * extended to implement new strategies of the move resolver.
+ * @author cbotaish, drob
+ * @version 9/23/13
+ */
 public abstract class BaseStrategyMoveResolver implements StrategyMoveResolver {
 	
 	protected final Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
 	
-	
-	public BaseStrategyMoveResolver() {
+	/**
+	 * Creates a new base strategy move resolver
+	 */
+	protected BaseStrategyMoveResolver() {
 		setupResolverConfiguration();
 	}
+	
+	/**
+	 * Sets up the configuration of the base resolver.
+	 */
 	protected abstract void setupResolverConfiguration();
 	
+	/**
+	 * @see StrategyMoveResolver#resolveMove(StrategyBoard, PlayerColor, PieceType, Location, Location)
+	 */
 	@Override
 	public MoveResult resolveMove(StrategyBoard gameBoard,
 			PlayerColor currentTurn, PieceType pieceMoving,
