@@ -43,7 +43,11 @@ import strategy.game.common.PieceType;
 import strategy.game.version.PieceMoveEntry;
 import strategy.game.version.StrategyMoveRememberator;
 
-
+/**
+ * Test file for GammaStrategy
+ * @author cbotaish, drob
+ * @version 9/23/13
+ */
 public class GammaStrategyTest {
 
 	private ArrayList<PieceLocationDescriptor> redConfiguration;
