@@ -7,7 +7,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package strategy.game.version.gamma;
+
+package strategy.game.version;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,26 +17,19 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.common.Location;
-import strategy.game.common.Location2D;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.StrategyBoard;
-import strategy.game.version.StrategyBoardValidator;
-import strategy.game.version.StrategyMoveResolver;
-import strategy.game.version.StrategyMoveValidator;
-import strategy.game.version.beta.BetaStrategyBoardValidator;
-import strategy.game.version.beta.BetaStrategyMoveResolver;
 
 /**
- * An implementation of the game controller for the Gamma Strategy version.
+ * An implementation of the game controller for the Beta Strategy version.
  * 
  * @author Dan Robertson, Chris Botaish
  * @version Sep 9, 2013
  */
-public class GammaStrategyGameController implements StrategyGameController
+public class BaseStrategyGameController implements StrategyGameController
 {
 	
 	private final StrategyBoardValidator boardValidator;
@@ -46,41 +40,38 @@ public class GammaStrategyGameController implements StrategyGameController
 
 	private final StrategyBoard gameBoard;
 	
-	
 	private boolean gameStarted = false;
 	private boolean gameOver = false;
 
 	private PlayerColor playerTurn = PlayerColor.RED;
 
 	/**
-	 * Creates a GammaStrategyGameController with the given initial configs
-	 * 
+	 * Creates a BaseStrategyGameController with the given initial configs and strategies
+	 * to use for validation and move resolution
+	 * @param boardValidator the validator to use to validate the board's state.
+	 * @param moveValidator the validator used to validate the moves
+	 * @param moveResolver the resolver used to resolve movements and battles.
 	 * @param redPieces the locations of the red pieces at the start
 	 * @param bluePieces the locations of the blue pieces at the start
 	 * @throws StrategyException if the initial game board is invalid.
 	 */
-	public GammaStrategyGameController(Collection<PieceLocationDescriptor> redPieces, 
+	public BaseStrategyGameController(StrategyBoardValidator boardValidator, StrategyMoveValidator moveValidator,
+			StrategyMoveResolver moveResolver, Collection<PieceLocationDescriptor> redPieces, 
 			Collection<PieceLocationDescriptor> bluePieces) throws StrategyException
 	{
-		boardValidator = new GammaStrategyBoardValidator();
-		moveValidator = new GammaStrategyMoveValidator();
-		moveResolver = new BetaStrategyMoveResolver();
-		
-		if(!boardValidator.isValidInitialSetup(redPieces, bluePieces))
+		this.boardValidator = boardValidator;
+		this.moveResolver = moveResolver;
+		this.moveValidator = moveValidator;
+
+		if(!this.boardValidator.isValidInitialSetup(redPieces, bluePieces))
 		{
 			throw new StrategyException("Game board is invalid!");
 		}
 		
-		final Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
+		final Collection<PieceLocationDescriptor> allPieces = 
+				new LinkedList<PieceLocationDescriptor>();
 		allPieces.addAll(redPieces);
 		allPieces.addAll(bluePieces);
-		
-		//Add the chokepoints before creating the board
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
-		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
-
 		
 		gameBoard = new StrategyBoard(allPieces);
 	}
@@ -95,7 +86,7 @@ public class GammaStrategyGameController implements StrategyGameController
 			throw new StrategyException("Must complete the current game "
 					+ "before beginning a new one");
 		}
-	
+		
 		gameStarted = true;
 		gameOver = false;
 		
@@ -133,7 +124,7 @@ public class GammaStrategyGameController implements StrategyGameController
 		
 		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
 				: PlayerColor.BLUE; // change the player turn
-				
+		
 		return result;
 	}
 

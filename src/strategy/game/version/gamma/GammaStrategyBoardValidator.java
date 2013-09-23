@@ -1,7 +1,11 @@
 package strategy.game.version.gamma;
 
+import java.util.Collection;
 import java.util.HashMap;
 
+import strategy.game.common.Location2D;
+import strategy.game.common.Piece;
+import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyBoardValidator;
 
@@ -12,10 +16,13 @@ import strategy.game.version.BaseStrategyBoardValidator;
  */
 public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 
-	
+	/**
+	 * Creates a new GammaStrategyBoardValidator
+	 */
 	public GammaStrategyBoardValidator() {
 		super();
 	}
+	
 	/**
 	 * setup the paramaters for board validation specific to gamma version, such as
 	 * piece type and max count,
@@ -42,6 +49,20 @@ public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		MAX_RED_STARTING_Y = 1;		
 	}
 	
-	
-
+	/**
+	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
+	 */
+	@Override
+	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
+			Collection<PieceLocationDescriptor> blueConfig) {
+		boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
+		
+		//Add the chokepoints before creating the board
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
+		
+		return isValidBoardConfig;
+	}
 }
