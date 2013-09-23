@@ -41,8 +41,7 @@ public class BetaStrategyMoveValidator extends BaseStrategyMoveValidator
 	{
 		super.boardHeight = 6;
 		super.boardWidth = 6;
-		super.maxMoveDistance = 2;
-		
+		super.maxMoveDistance = 2;	
 	}
 
 }
