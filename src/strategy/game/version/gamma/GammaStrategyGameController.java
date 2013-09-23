@@ -64,7 +64,7 @@ public class GammaStrategyGameController implements StrategyGameController
 	{
 		boardValidator = new GammaStrategyBoardValidator();
 		moveValidator = new GammaStrategyMoveValidator();
-		moveResolver = new BetaStrategyMoveResolver();
+		moveResolver = new GammaStrategyMoveResolver();
 		
 		if(!boardValidator.isValidInitialSetup(redPieces, bluePieces))
 		{

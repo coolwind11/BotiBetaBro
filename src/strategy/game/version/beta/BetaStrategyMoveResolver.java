@@ -19,6 +19,7 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.version.BaseStrategyMoveResolver;
 import strategy.game.version.StrategyBoard;
 import strategy.game.version.StrategyMoveResolver;
 
@@ -27,74 +28,45 @@ import strategy.game.version.StrategyMoveResolver;
  * @author cbotaish, drob
  * @version Sept 22, 2013
  */
-public class BetaStrategyMoveResolver implements StrategyMoveResolver
+public class BetaStrategyMoveResolver extends BaseStrategyMoveResolver
 {
-	private final int MAX_TURNS = 12;
-	
-	private final Map<PieceType, Integer> pieceRank = new HashMap<PieceType, Integer>();
-
-	private int turnsPlayed = 0;
+	protected final int MAX_TURNS = 12;
+	protected int turnsPlayed = 0;
 	
 	public BetaStrategyMoveResolver()
 	{
-		pieceRank.put(PieceType.MARSHAL, 12);
-		pieceRank.put(PieceType.CAPTAIN, 8);
-		pieceRank.put(PieceType.COLONEL, 10);
-		pieceRank.put(PieceType.LIEUTENANT, 7);
-		pieceRank.put(PieceType.SERGEANT, 6);
-		pieceRank.put(PieceType.FLAG, 1);
+		super();
 	}
 
 	@Override
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{
-		final Piece movePiece = gameBoard.getPieceAt(fromLocation);
-		final Piece opponentPiece = gameBoard.getPieceAt(toLocation);
-
-		PieceLocationDescriptor battleWinner = null;
-		MoveResultStatus moveResult = MoveResultStatus.OK;
+		MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		
-		// If theres a battle.
-		if (opponentPiece != null)
-		{
-			if (opponentPiece.getType() == PieceType.FLAG)
-			{ 
-				battleWinner = new PieceLocationDescriptor(movePiece, toLocation);
-				moveResult = currentTurn == PlayerColor.BLUE ? MoveResultStatus.BLUE_WINS
-						: MoveResultStatus.RED_WINS;
-			}
-			else if (pieceRank.get(movePiece.getType()) > pieceRank.get(opponentPiece.getType()))
-			{ // moving player wins
-				battleWinner = new PieceLocationDescriptor(movePiece, toLocation);
-				gameBoard.movePiece(fromLocation, toLocation);
-			}
-			else if (pieceRank.get(movePiece.getType()) == pieceRank.get(opponentPiece.getType()))
-			{ // draw
-				// Both pieces get removed in a draw.
-				gameBoard.removePiece(toLocation);
-				gameBoard.removePiece(fromLocation);
-			}
-			else
-			{ // opponent wins
-				battleWinner = new PieceLocationDescriptor(opponentPiece, fromLocation);
-				gameBoard.movePiece(toLocation, fromLocation);
-			}
-		}
-		else
-		{
-			gameBoard.movePiece(fromLocation, toLocation);
-		}
-
+		MoveResultStatus resultStatus = firstResult.getStatus();
 		// end the game after 6 turns if nobody has won.
-		if (turnsPlayed == MAX_TURNS - 1 && moveResult == MoveResultStatus.OK)
+		
+		if (turnsPlayed == MAX_TURNS - 1 && resultStatus == MoveResultStatus.OK)
 		{
-			moveResult = MoveResultStatus.DRAW;
+			resultStatus = MoveResultStatus.DRAW;
 		}
-
+		
 		turnsPlayed++;
 		
-		return new MoveResult(moveResult, battleWinner);
+		return new MoveResult(resultStatus, firstResult.getBattleWinner());
+
+	}
+
+	@Override
+	protected void setupResolverConfiguration() {
+		// TODO Auto-generated method stub
+		pieceRank.put(PieceType.MARSHAL, 12);
+		pieceRank.put(PieceType.CAPTAIN, 8);
+		pieceRank.put(PieceType.COLONEL, 10);
+		pieceRank.put(PieceType.LIEUTENANT, 7);
+		pieceRank.put(PieceType.SERGEANT, 6);
+		pieceRank.put(PieceType.FLAG, 1);
 	}
 
 }
