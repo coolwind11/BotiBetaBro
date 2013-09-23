@@ -10,17 +10,33 @@
 
 package strategy.game.version.gamma;
 
-import static org.junit.Assert.*;
-import static strategy.common.PlayerColor.*;
-import static strategy.game.common.PieceType.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static strategy.common.PlayerColor.BLUE;
+import static strategy.common.PlayerColor.RED;
+import static strategy.game.common.PieceType.CAPTAIN;
+import static strategy.game.common.PieceType.COLONEL;
+import static strategy.game.common.PieceType.FLAG;
+import static strategy.game.common.PieceType.LIEUTENANT;
+import static strategy.game.common.PieceType.MARSHAL;
+import static strategy.game.common.PieceType.SERGEANT;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import strategy.common.*;
+import strategy.common.PlayerColor;
+import strategy.common.StrategyException;
+import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
-import strategy.game.common.*;
+import strategy.game.common.Location2D;
+import strategy.game.common.Piece;
+import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.PieceMoveEntry;
+import strategy.game.common.PieceType;
+import strategy.game.common.StrategyMoveRememberator;
 
 
 public class GammaStrategyTest {
@@ -143,6 +159,54 @@ public class GammaStrategyTest {
 	}
 	
 	@Test
+	public void initializeGame() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+	}
+	
+	@Test
+	public void makeValidMove() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(3,1), new Location2D(3,2));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveOffBoard() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,-1));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveOnSelf() throws StrategyException
+	{
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,0));
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void makeInvalidMoveOnChokepoint() throws StrategyException
+	{
+		//Chokepoints at: (2,2) (2,3) (3,2) (3,3)
+		
+		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game.startGame();
+		
+		game.move(SERGEANT, new Location2D(3,1), new Location2D(3,2));
+	}
+	
+	@Test
 	public void moveRememberatorRemembersPastThreeMoves() {
 		StrategyMoveRememberator pastMoves = new StrategyMoveRememberator(3);
 		
@@ -159,6 +223,7 @@ public class GammaStrategyTest {
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
 		assertTrue(!pastMoves.moveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(1,0))));
 	}
+	
 	// Helper methods
 	private void addToConfiguration(PieceType type, PlayerColor color, int x, int y)
 	{

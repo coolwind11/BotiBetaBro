@@ -16,6 +16,7 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.common.Location;
+import strategy.game.common.Location2D;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
@@ -73,6 +74,13 @@ public class GammaStrategyGameController implements StrategyGameController
 		Collection<PieceLocationDescriptor> allPieces = new LinkedList<PieceLocationDescriptor>();
 		allPieces.addAll(redPieces);
 		allPieces.addAll(bluePieces);
+		
+		//Add the chokepoints before creating the board
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2,2)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3,2)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2,3)));
+		allPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3,3)));
+
 		
 		gameBoard = new StrategyBoard(allPieces);
 	}

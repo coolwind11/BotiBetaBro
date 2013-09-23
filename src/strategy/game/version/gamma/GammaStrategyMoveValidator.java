@@ -1,4 +1,4 @@
-package strategy.game.version.beta;
+package strategy.game.version.gamma;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
@@ -8,13 +8,14 @@ import strategy.game.common.PieceType;
 import strategy.game.common.StrategyBoard;
 import strategy.game.common.StrategyMoveValidator;
 
-public class BetaStrategyMoveValidator implements StrategyMoveValidator
+public class GammaStrategyMoveValidator implements StrategyMoveValidator
 {
+
 	private final int BOARD_HEIGHT = 6;
 	private final int BOARD_WIDTH = 6;
 	private final int MAX_MOVE_DISTANCE = 2;
 	
-	public BetaStrategyMoveValidator()
+	public GammaStrategyMoveValidator()
 	{
 	}
 

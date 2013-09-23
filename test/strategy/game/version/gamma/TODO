@@ -3,10 +3,10 @@ X Reject a configuration with pieces on the wrong side of the board
 X Reject a configuration with overlapping pieces
 X Reject a configuration with wrong number of piece
 X Accept a valid configuration
-- Initialize a game
-- Make a valid move
-- Make an invalid move to a location off the board
-- Make an invalid move onto your self
+X Initialize a game
+X Make a valid move
+X Make an invalid move to a location off the board
+X Make an invalid move onto your self
 - Make an invalid move onto a choke point
 - Make an invalid move too far
 - Make an invalid move onto your own team
