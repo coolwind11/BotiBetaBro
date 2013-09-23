@@ -535,6 +535,7 @@ public class BetaStrategyGameTest {
 	}
 	
 	@Test
+	(expected=StrategyException.class)
 	public void startGameAfterGameOver() throws StrategyException {
 		game.startGame();
 		game.move(PieceType.MARSHAL, new Location2D(1,1), new Location2D(1,2));

@@ -10,19 +10,24 @@
 
 package strategy.game.common;
 
+import strategy.common.PlayerColor;
+
 /**
- * This interface handles Strategy battles that occur when a piece moves to an occupied location
+ * This interface handles Strategy moves and the battles that can occur from them
  * @author drob, cbotaish
  *
  */
-public interface StrategyBattleResolver {
+public interface StrategyMoveResolver {
 	
 	/**
-	 * Resolve a battle between a piece and the piece that occupies the location in question.
-	 * @param battleInitiator the piece moving into
-	 * @param battleLocation the location where the battle will occur
+	 * Resolve a move between a piece and the piece that occupies the location in question.
+	 * @param pieceMoving the piece that is moving
+	 * @param currentTurn the player whose turn it currently is.
+	 * @param fromLocation the location where the piece is moving from
+	 * @param toLocation the location where the piece is moving to
 	 * @param gameBoard the game board for reference
 	 * @return the move result
 	 */
-	MoveResult resolveBattle(StrategyBoard gameBoard, Piece battleInitiator, Location battleLocation);
+	MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
+			PieceType pieceMoving, Location fromLocation, Location toLocation);
 }
