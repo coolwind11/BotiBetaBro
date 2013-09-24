@@ -50,40 +50,40 @@ import strategy.game.version.StrategyMoveRememberator;
  */
 public class GammaStrategyTest {
 
-	private ArrayList<PieceLocationDescriptor> redConfiguration;
-	private ArrayList<PieceLocationDescriptor> blueConfiguration;
+	private ArrayList<PieceLocationDescriptor> redPieces;
+	private ArrayList<PieceLocationDescriptor> bluePieces;
 	private final static StrategyGameFactory factory = StrategyGameFactory.getInstance();
 	
 	@Before
 	public void setup()
 	{
-		redConfiguration = new ArrayList<PieceLocationDescriptor>();
-		blueConfiguration = new ArrayList<PieceLocationDescriptor>();
-		addToConfiguration(FLAG, RED, 0, 1);
-		addToConfiguration(MARSHAL, RED, 0, 0);
-		addToConfiguration(COLONEL, RED, 1, 0);
-		addToConfiguration(COLONEL, RED, 2, 0);
-		addToConfiguration(CAPTAIN, RED, 3, 0);
-		addToConfiguration(CAPTAIN, RED, 4, 0);
-		addToConfiguration(LIEUTENANT, RED, 5, 0);
-		addToConfiguration(LIEUTENANT, RED, 1, 1);
-		addToConfiguration(LIEUTENANT, RED, 2, 1);
-		addToConfiguration(SERGEANT, RED, 3, 1);
-		addToConfiguration(SERGEANT, RED, 4, 1);
-		addToConfiguration(SERGEANT, RED, 5, 1);
+		redPieces = new ArrayList<PieceLocationDescriptor>();
+		bluePieces = new ArrayList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, RED),new Location2D(0, 1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, RED),new Location2D(0, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(COLONEL, RED),new Location2D(1, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(COLONEL, RED),new Location2D(2, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(CAPTAIN, RED),new Location2D(3, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(CAPTAIN, RED),new Location2D(4, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED),new Location2D(5, 0)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED),new Location2D(1, 1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED),new Location2D(2, 1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED),new Location2D(3, 1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED),new Location2D(4, 1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED),new Location2D(5, 1)));
 		
-		addToConfiguration(FLAG, BLUE, 5, 4);
-		addToConfiguration(MARSHAL, BLUE, 0, 5);
-		addToConfiguration(COLONEL, BLUE, 1, 5);
-		addToConfiguration(COLONEL, BLUE, 2, 5);
-		addToConfiguration(CAPTAIN, BLUE, 3, 5);
-		addToConfiguration(CAPTAIN, BLUE, 4, 5);
-		addToConfiguration(LIEUTENANT, BLUE, 5, 5);
-		addToConfiguration(LIEUTENANT, BLUE, 1, 4);
-		addToConfiguration(LIEUTENANT, BLUE, 2, 4);
-		addToConfiguration(SERGEANT, BLUE, 3, 4);
-		addToConfiguration(SERGEANT, BLUE, 4, 4);
-		addToConfiguration(SERGEANT, BLUE, 0, 4);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, BLUE), new Location2D(5, 4)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, BLUE), new Location2D(0, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(COLONEL, BLUE), new Location2D(1, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(COLONEL, BLUE), new Location2D(2, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(3, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(4, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, BLUE), new Location2D(5, 5)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, BLUE), new Location2D(1, 4)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(LIEUTENANT, BLUE), new Location2D(2, 4)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(3, 4)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(4, 4)));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(0, 4)));
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -93,84 +93,84 @@ public class GammaStrategyTest {
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void redConfigurationHasTooFewItem() throws StrategyException
+	public void notEnoughStartingRedPieces() throws StrategyException
 	{
-		redConfiguration.remove(0);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.remove(5);
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void blueConfigurationHasTooManyItems() throws StrategyException
+	public void toManyBluePieces() throws StrategyException
 	{
-		addToConfiguration(SERGEANT, BLUE, 0, 3);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(0, 3)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
 	public void bluePieceOnRedSide() throws StrategyException{
-		redConfiguration.remove(1);
-		addToConfiguration(MARSHAL,BLUE,0,0);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.remove(1);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MARSHAL,BLUE),new Location2D(0,0)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test
 	public void createGammaStrategyController() throws StrategyException
 	{
-		assertNotNull(factory.makeGammaStrategyGame(redConfiguration, blueConfiguration));
+		assertNotNull(factory.makeGammaStrategyGame(redPieces, bluePieces));
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void placeRedPieceOnInvalidRow() throws StrategyException
+	public void placeRedPieceInvalidYCoordinate() throws StrategyException
 	{
-		redConfiguration.remove(1);	// Marshall @ (0, 0)
-		addToConfiguration(MARSHAL, RED, 0, 3);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.remove(1);
+		redPieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, RED), new Location2D(0, 3)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void placeRedPieceOnInvalidColumn() throws StrategyException
+	public void placeRedPieceInvalidXCoordinate() throws StrategyException
 	{
-		redConfiguration.remove(1);	// Marshall @ (0, 0)
-		addToConfiguration(MARSHAL, RED, -1, 0);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.remove(1);
+		redPieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, RED), new Location2D(-1, 0)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void placeBluePieceOnInvalidRow() throws StrategyException
+	public void placeBluePieceInvalidStartCoordinate() throws StrategyException
 	{
-		blueConfiguration.remove(11);	// Sergeant @ (0, 4)
-		addToConfiguration(SERGEANT, BLUE, 0, 2);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		bluePieces.remove(11);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(0, 2)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void placeBluePieceOnInvalidColumn() throws StrategyException
+	public void placeBluePieceOtherInvalidStartCoordinate() throws StrategyException
 	{
-		blueConfiguration.remove(11);	// Sergeant @ (0, 4)
-		addToConfiguration(SERGEANT, BLUE, 6, 4);
-		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		bluePieces.remove(11);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(6, 4)));
+		factory.makeGammaStrategyGame(redPieces, bluePieces);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void invalidConfigWithOverlappingPiece() throws StrategyException{
-		blueConfiguration.remove(0);
- 		addToConfiguration(SERGEANT, BLUE, 0, 4);
- 		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+	public void badConfigurationWithOverlappingPiece() throws StrategyException{
+		bluePieces.remove(0);
+ 		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(0, 4)));
+ 		factory.makeGammaStrategyGame(redPieces, bluePieces);
 		fail();
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void invalidConfigWrongNumberOfPieces() throws StrategyException{
-		blueConfiguration.remove(0);
-		addToConfiguration(SERGEANT, BLUE, 0, 4);
- 		factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+	public void invalidConfigNotEnoughOfPieceType() throws StrategyException{
+		bluePieces.remove(0);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(0, 4)));
+ 		factory.makeGammaStrategyGame(redPieces, bluePieces);
 		fail();
 	}
 	
 	@Test
 	public void initializeGame() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 	}
 	
@@ -178,7 +178,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void initializeGameTwice() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		game.startGame();
 	}
@@ -187,7 +187,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeValidMoveBeforeGameStarts() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
 	}
@@ -196,7 +196,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeValidMoveAfterGameEnds() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		
@@ -216,7 +216,7 @@ public class GammaStrategyTest {
 	@Test
 	public void getPieceAtTest() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		assertEquals(new Piece(SERGEANT, RED), game.getPieceAt(new Location2D(5,1)));
 	}
 	
@@ -224,7 +224,7 @@ public class GammaStrategyTest {
 	@Test
 	public void makeValidMove() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
@@ -234,7 +234,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveFromOffBoardNegativeY() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,-1), new Location2D(0,0));
@@ -244,7 +244,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveFromOffBoardNegativeX() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(-1,0), new Location2D(0,0));
@@ -254,7 +254,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveFromOffBoardOverX() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(10,0), new Location2D(0,0));
@@ -264,7 +264,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveFromOffBoardOverY() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,10), new Location2D(0,0));
@@ -274,7 +274,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveToOffBoardNegativeY() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,-1));
@@ -284,7 +284,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveToOffBoardNegativeX() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(-1,0));
@@ -294,7 +294,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveToOffBoardOverX() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(10,0));
@@ -304,7 +304,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveToOffBoardOverY() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,10));
@@ -314,7 +314,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveOnSelf() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(MARSHAL, new Location2D(0,0), new Location2D(0,0));
@@ -326,7 +326,7 @@ public class GammaStrategyTest {
 	{
 		//Chokepoints at: (2,2) (2,3) (3,2) (3,3)
 		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(3,1), new Location2D(3,2));
@@ -336,7 +336,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveMoveTooFar() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,3));
@@ -346,7 +346,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveMoveDiagonally() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(3,1), new Location2D(4,2));
@@ -356,7 +356,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveOntoOwnTeam() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(3,1), new Location2D(4,1));
@@ -366,7 +366,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveDueToMoveRepitition() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
@@ -380,7 +380,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveMoveFlag() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(FLAG, new Location2D(0,1), new Location2D(0,2));
@@ -390,7 +390,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveOutOfTurn() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
@@ -400,7 +400,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveWrongPieceType() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(FLAG, new Location2D(4,1), new Location2D(4,2));
@@ -410,7 +410,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void makeInvalidMoveNoPiece() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(FLAG, new Location2D(4,3), new Location2D(4,4));
@@ -420,7 +420,7 @@ public class GammaStrategyTest {
 	@Test
 	public void makeValidMoveAlmostRepitition() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
@@ -436,7 +436,7 @@ public class GammaStrategyTest {
 	@Test
 	public void redWinABattle() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
@@ -452,11 +452,11 @@ public class GammaStrategyTest {
 	@Test
 	public void redLoseABattle() throws StrategyException
 	{		
-		blueConfiguration.remove(11);
-		blueConfiguration.add(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(0,4)));
-		blueConfiguration.remove(4);
-		blueConfiguration.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(3,5)));
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		bluePieces.remove(11);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(0,4)));
+		bluePieces.remove(4);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), new Location2D(3,5)));
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2));
@@ -471,11 +471,11 @@ public class GammaStrategyTest {
 	@Test
 	public void blueWinAGame() throws StrategyException
 	{		
-		redConfiguration.remove(11);
-		redConfiguration.remove(0);
-		redConfiguration.add(new PieceLocationDescriptor(new Piece(FLAG, RED), new Location2D(5,1)));
-		redConfiguration.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), new Location2D(0,1)));
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redPieces.remove(11);
+		redPieces.remove(0);
+		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, RED), new Location2D(5,1)));
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), new Location2D(0,1)));
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(0,1), new Location2D(0,2));
@@ -494,7 +494,7 @@ public class GammaStrategyTest {
 	@Test
 	public void redWinAGame() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		
@@ -512,7 +512,7 @@ public class GammaStrategyTest {
 	@Test
 	public void drawABattle() throws StrategyException
 	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
@@ -527,7 +527,7 @@ public class GammaStrategyTest {
 	(expected=StrategyException.class)
 	public void moveChokePoint() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
 		game.move(CHOKE_POINT, new Location2D(3,2), new Location2D(3,1));
@@ -561,19 +561,6 @@ public class GammaStrategyTest {
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,1)));
 		pastMoves.addMove(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(0,0)));
 		assertTrue(!pastMoves.isMoveInList(new PieceMoveEntry(new Piece(SERGEANT,BLUE), new Location2D(0,0), new Location2D(1,0))));
-	}
-	
-	// Helper methods
-	private void addToConfiguration(PieceType type, PlayerColor color, int x, int y)
-	{
-		final PieceLocationDescriptor confItem = new PieceLocationDescriptor(
-				new Piece(type, color),
-				new Location2D(x, y));
-		if (color == PlayerColor.RED) {
-			redConfiguration.add(confItem);
-		} else {
-			blueConfiguration.add(confItem);
-		}
 	}
 
 }
