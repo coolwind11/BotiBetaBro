@@ -34,21 +34,26 @@ public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	@Override
 	protected void setupValidBoardConfiguration() {
 		validPieceCount = new HashMap<PieceType, Integer>();
-		validPieceCount.put(PieceType.FLAG, 1);
 		validPieceCount.put(PieceType.MARSHAL, 1);
+		validPieceCount.put(PieceType.GENERAL, 1);
 		validPieceCount.put(PieceType.COLONEL, 2);
-		validPieceCount.put(PieceType.CAPTAIN, 2);
-		validPieceCount.put(PieceType.LIEUTENANT, 3);
-		validPieceCount.put(PieceType.SERGEANT, 3);
+		validPieceCount.put(PieceType.MAJOR, 3);
+		validPieceCount.put(PieceType.CAPTAIN, 4);
+		validPieceCount.put(PieceType.LIEUTENANT, 4);
+		validPieceCount.put(PieceType.SERGEANT, 4);
+		validPieceCount.put(PieceType.MINER, 5);
+		validPieceCount.put(PieceType.SCOUT, 8);
+		validPieceCount.put(PieceType.BOMB, 6);
+		validPieceCount.put(PieceType.SPY, 1);
 		
-		MAX_PIECES = 24;
-		MAX_X = 5;
-		MAX_Y = 5;
+		MAX_PIECES = 80;
+		MAX_X = 9;
+		MAX_Y = 9;
 		MIN_X = 0;
 		MIN_Y = 0;
 		
-		MIN_BLUE_STARTING_Y = 4;
-		MAX_RED_STARTING_Y = 1;		
+		MIN_BLUE_STARTING_Y = 6;
+		MAX_RED_STARTING_Y = 3;		
 	}
 	
 	/**
@@ -60,10 +65,15 @@ public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		final boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
 		
 		//Add the chokepoints before creating the board
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 2)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 3)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
+		
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 6)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 7)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 6)));
+		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 7)));
 		
 		return isValidBoardConfig;
 	}

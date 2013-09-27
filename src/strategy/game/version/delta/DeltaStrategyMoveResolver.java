@@ -27,10 +27,16 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
-		pieceRank.put(PieceType.CAPTAIN, 8);
+		pieceRank.put(PieceType.GENERAL, 11);
 		pieceRank.put(PieceType.COLONEL, 10);
+		pieceRank.put(PieceType.MAJOR, 9);
+		pieceRank.put(PieceType.CAPTAIN, 8);
 		pieceRank.put(PieceType.LIEUTENANT, 7);
 		pieceRank.put(PieceType.SERGEANT, 6);
+		pieceRank.put(PieceType.MINER, 5);
+		pieceRank.put(PieceType.SCOUT, 4);
+		pieceRank.put(PieceType.SPY, 3);
+		pieceRank.put(PieceType.BOMB, 2);
 		pieceRank.put(PieceType.FLAG, 1);
 	}
 	

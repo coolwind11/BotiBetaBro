@@ -19,6 +19,9 @@ import strategy.game.version.alpha.AlphaStrategyGameController;
 import strategy.game.version.beta.BetaStrategyBoardValidator;
 import strategy.game.version.beta.BetaStrategyMoveResolver;
 import strategy.game.version.beta.BetaStrategyMoveValidator;
+import strategy.game.version.delta.DeltaStrategyBoardValidator;
+import strategy.game.version.delta.DeltaStrategyMoveResolver;
+import strategy.game.version.delta.DeltaStrategyMoveValidator;
 import strategy.game.version.gamma.GammaStrategyBoardValidator;
 import strategy.game.version.gamma.GammaStrategyMoveResolver;
 import strategy.game.version.gamma.GammaStrategyMoveValidator;
@@ -103,5 +106,24 @@ public class StrategyGameFactory
 			
 		return new BaseStrategyGameController(new GammaStrategyBoardValidator(), new GammaStrategyMoveValidator(),
 				new GammaStrategyMoveResolver(), redConfiguration, blueConfiguration);
+	}
+	
+	/**
+	 * Creates a new delta implementation of the strategy game.
+	 * @param redConfiguration pieces provided by the red player(s)
+	 * @param blueConfiguration pieces provided by the blue player(s)
+	 * @return a delta strategy game
+	 * @throws StrategyException if there is an issue with either of the configurations
+	 */
+	public StrategyGameController makeDeltaStrategyGame(
+			Collection<PieceLocationDescriptor> redConfiguration, 
+			Collection<PieceLocationDescriptor> blueConfiguration) throws StrategyException
+	{
+		if(redConfiguration == null || blueConfiguration == null){
+			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
+		}
+			
+		return new BaseStrategyGameController(new DeltaStrategyBoardValidator(), new DeltaStrategyMoveValidator(),
+				new DeltaStrategyMoveResolver(), redConfiguration, blueConfiguration);
 	}
 }

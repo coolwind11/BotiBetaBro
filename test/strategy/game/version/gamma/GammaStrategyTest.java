@@ -17,20 +17,18 @@ import static org.junit.Assert.fail;
 import static strategy.common.PlayerColor.BLUE;
 import static strategy.common.PlayerColor.RED;
 import static strategy.game.common.PieceType.CAPTAIN;
+import static strategy.game.common.PieceType.CHOKE_POINT;
 import static strategy.game.common.PieceType.COLONEL;
 import static strategy.game.common.PieceType.FLAG;
 import static strategy.game.common.PieceType.LIEUTENANT;
 import static strategy.game.common.PieceType.MARSHAL;
 import static strategy.game.common.PieceType.SERGEANT;
-import static strategy.game.common.PieceType.CHOKE_POINT;
-
 
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
@@ -39,7 +37,6 @@ import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
-import strategy.game.common.PieceType;
 import strategy.game.version.PieceMoveEntry;
 import strategy.game.version.StrategyMoveRememberator;
 
