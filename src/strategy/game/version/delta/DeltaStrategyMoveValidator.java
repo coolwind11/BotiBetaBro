@@ -11,6 +11,7 @@ package strategy.game.version.delta;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
+import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveValidator;
@@ -37,7 +38,19 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 	{
 		boardHeight = 6;
 		boardWidth = 6;
-		maxMoveDistance = 2;
+		validMoveDistances.put(PieceType.BOMB, 0);
+		validMoveDistances.put(PieceType.CAPTAIN, 1);
+		validMoveDistances.put(PieceType.COLONEL, 1);
+		validMoveDistances.put(PieceType.FLAG, 0);
+		validMoveDistances.put(PieceType.GENERAL, 1);
+		validMoveDistances.put(PieceType.CHOKE_POINT, 0);
+		validMoveDistances.put(PieceType.LIEUTENANT, 1);
+		validMoveDistances.put(PieceType.MAJOR, 1);
+		validMoveDistances.put(PieceType.MARSHAL, 1);
+		validMoveDistances.put(PieceType.MINER, 1);
+		validMoveDistances.put(PieceType.SCOUT, -1);
+		validMoveDistances.put(PieceType.SERGEANT, 1);
+		validMoveDistances.put(PieceType.SPY, 1);
 	}
 
 	@Override
@@ -51,6 +64,11 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 			throw new StrategyException("Cannot move onto a chokepoint!");
 		}
 		
+		if(movePiece == PieceType.BOMB)
+		{
+			throw new StrategyException("Cannot move a bomb");
+		}
+		
 		//Check the base functionality.
 		super.checkMoveValidity(gameBoard, currentTurn, movePiece, moveFromLocation, moveToLocation);
 		
@@ -60,6 +78,27 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 		if(moveRememberator.isMoveInList(entry))
 		{
 			throw new StrategyException("Broke move repitition rule");
+		}
+		
+		if(movePiece == PieceType.SCOUT)
+		{
+			int distance = moveFromLocation.distanceTo(moveToLocation);
+			
+			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			
+			
+			//Check every spot to the to location.
+			for(int i = 1; i <= distance; i++)
+			{
+				if(verticalMove)
+				{
+					
+				}
+				else
+				{
+					
+				}
+			}
 		}
 		
 		moveRememberator.addMove(entry);

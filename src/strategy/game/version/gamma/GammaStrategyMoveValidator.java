@@ -37,7 +37,13 @@ public class GammaStrategyMoveValidator extends BaseStrategyMoveValidator
 	{
 		boardHeight = 6;
 		boardWidth = 6;
-		maxMoveDistance = 2;
+		validMoveDistances.put(PieceType.CAPTAIN, 1);
+		validMoveDistances.put(PieceType.COLONEL, 1);
+		validMoveDistances.put(PieceType.FLAG, 0);
+		validMoveDistances.put(PieceType.CHOKE_POINT, 0);
+		validMoveDistances.put(PieceType.LIEUTENANT, 1);
+		validMoveDistances.put(PieceType.MARSHAL, 1);
+		validMoveDistances.put(PieceType.SERGEANT, 1);
 	}
 
 	@Override

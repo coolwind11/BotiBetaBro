@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.version.beta;
 
+import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveValidator;
 
 /**
@@ -23,6 +24,12 @@ public class BetaStrategyMoveValidator extends BaseStrategyMoveValidator
 	{
 		super.boardHeight = 6;
 		super.boardWidth = 6;
-		super.maxMoveDistance = 2;	
+		validMoveDistances.put(PieceType.CAPTAIN, 1);
+		validMoveDistances.put(PieceType.COLONEL, 1);
+		validMoveDistances.put(PieceType.FLAG, 0);
+		validMoveDistances.put(PieceType.CHOKE_POINT, 0);
+		validMoveDistances.put(PieceType.LIEUTENANT, 1);
+		validMoveDistances.put(PieceType.MARSHAL, 1);
+		validMoveDistances.put(PieceType.SERGEANT, 1);	
 	}
 }

@@ -20,7 +20,7 @@
 - Red Lose a game
 - Draw a game
 - Start game only can be called once
-- Cannot move bomb
+x Cannot move bomb
 - Cannot move flag
 - Scout can move any number of open spaces in one direction
 - Scout cannot move and strike on same turn

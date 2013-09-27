@@ -9,6 +9,9 @@
  *******************************************************************************/
 package strategy.game.version;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
@@ -23,9 +26,10 @@ import strategy.game.common.PieceType;
 public abstract class BaseStrategyMoveValidator implements
 		StrategyMoveValidator
 {
+	protected Map<PieceType, Integer> validMoveDistances = new HashMap<PieceType, Integer>();
+	
 	protected int boardHeight = 0;
 	protected int boardWidth = 0;
-	protected int maxMoveDistance = 0;
 	
 	/**
 	 * Creates a new base strategy move validator
@@ -109,7 +113,8 @@ public abstract class BaseStrategyMoveValidator implements
 				}
 				
 				//if you try to move too far, THE MOVE IS INVALID
-				if(moveFromLocation.distanceTo(moveToLocation) >= maxMoveDistance)
+				int validMoveDistance = validMoveDistances.get(movePiece);
+				if(moveFromLocation.distanceTo(moveToLocation) >= validMoveDistance && validMoveDistance >= 0)
 				{
 					throw new StrategyException("Moved too far");
 				}
