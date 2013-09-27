@@ -10,25 +10,20 @@
 
 package strategy.game.version.delta;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static strategy.common.PlayerColor.BLUE;
 import static strategy.common.PlayerColor.RED;
+import static strategy.game.common.PieceType.BOMB;
 import static strategy.game.common.PieceType.CAPTAIN;
 import static strategy.game.common.PieceType.COLONEL;
 import static strategy.game.common.PieceType.FLAG;
-import static strategy.game.common.PieceType.LIEUTENANT;
-import static strategy.game.common.PieceType.MARSHAL;
-import static strategy.game.common.PieceType.SERGEANT;
-import static strategy.game.common.PieceType.MINER;
-import static strategy.game.common.PieceType.MAJOR;
-import static strategy.game.common.PieceType.BOMB;
 import static strategy.game.common.PieceType.GENERAL;
-import static strategy.game.common.PieceType.SPY;
+import static strategy.game.common.PieceType.LIEUTENANT;
+import static strategy.game.common.PieceType.MAJOR;
+import static strategy.game.common.PieceType.MARSHAL;
+import static strategy.game.common.PieceType.MINER;
 import static strategy.game.common.PieceType.SCOUT;
-import static strategy.game.common.PieceType.CHOKE_POINT;
+import static strategy.game.common.PieceType.SERGEANT;
+import static strategy.game.common.PieceType.SPY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,30 +33,25 @@ import org.junit.Test;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
-import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.Location2D;
-import strategy.game.common.MoveResult;
-import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.PieceMoveEntry;
-import strategy.game.version.StrategyMoveRememberator;
 
 /**
  * Test file for GammaStrategy
  * @author cbotaish, drob
  * @version 9/26/13
  */
-
 public class DeltaStrategyTest {
 	
 	private List<PieceLocationDescriptor> redPieces;
 	private List<PieceLocationDescriptor> bluePieces;
 	private final static StrategyGameFactory factory = StrategyGameFactory.getInstance();
 
-	private void setup(){
+	@Before
+	public void setup(){
 		redPieces = new ArrayList<PieceLocationDescriptor>();
 		bluePieces = new ArrayList<PieceLocationDescriptor>();
 
@@ -98,27 +88,16 @@ public class DeltaStrategyTest {
 		addToConfig(LIEUTENANT,RED,8,2);
 		addToConfig(LIEUTENANT,RED,9,2);	
 
-		addToConfig(CAPTAIN,RED,0,3);
-		addToConfig(CAPTAIN,RED,1,3);
-		addToConfig(MINER,RED,2,3);
-		addToConfig(BOMB,RED,3,3);
-		addToConfig(SCOUT,RED,4,3);
-		addToConfig(SCOUT,RED,5,3);
-		addToConfig(BOMB,RED,6,3);
-		addToConfig(MINER,RED,7,3);
-		addToConfig(CAPTAIN,RED,8,3);
-		addToConfig(CAPTAIN,RED,9,3);	
-
-		addToConfig(FLAG,RED,0,4);
-		addToConfig(SERGEANT,RED,1,4);
-		addToConfig(SCOUT,RED,2,4);
-		addToConfig(SERGEANT,RED,3,4);
-		addToConfig(MARSHAL,RED,4,4);
-		addToConfig(SPY,RED,5,4);
-		addToConfig(SERGEANT,RED,6,4);
-		addToConfig(SCOUT,RED,7,4);
-		addToConfig(SCOUT,RED,8,4);
-		addToConfig(SCOUT,RED,9,4);	
+		addToConfig(FLAG,RED,0,3);
+		addToConfig(SERGEANT,RED,1,3);
+		addToConfig(SCOUT,RED,2,3);
+		addToConfig(SERGEANT,RED,3,3);
+		addToConfig(MARSHAL,RED,4,3);
+		addToConfig(SPY,RED,5,3);
+		addToConfig(SERGEANT,RED,6,3);
+		addToConfig(SCOUT,RED,7,3);
+		addToConfig(SCOUT,RED,8,3);
+		addToConfig(SCOUT,RED,9,3);	
 
 		addToConfig(MINER,BLUE,0,9);
 		addToConfig(MAJOR,BLUE,1,9);
@@ -165,6 +144,18 @@ public class DeltaStrategyTest {
 		addToConfig(SCOUT,BLUE,9,6);	
 	}
 	
+	@Test
+	(expected=StrategyException.class)
+	public void nullConfigTest() throws StrategyException
+	{
+		factory.makeDeltaStrategyGame(null,null);
+	}
+	
+	@Test
+	public void validConfigTest() throws StrategyException
+	{
+		factory.makeDeltaStrategyGame(redPieces,bluePieces);
+	}
 
 
 	private void addToConfig(PieceType piece, PlayerColor color, int x, int y) {

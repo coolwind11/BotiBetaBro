@@ -1,0 +1,34 @@
+- Reject a configuration with incorrect number of pieces
+- Reject a configuration with pieces on the wrong side of the board
+- Reject a configuration with overlapping pieces
+- Reject a configuration with wrong number of piece
+- Reject a null configuration.
+- Accept a valid configuration
+- Initialize a game
+- Make a valid move
+- Make an invalid move to a location off the board
+- Make an invalid move onto your self
+- Make an invalid move onto a choke point
+- Make an invalid move too far
+- Make invalid move diagonally
+- Make an invalid move onto your own team
+- Make an invalid move due to move repetition
+- Win a battle
+- Lose a battle
+- Draw a battle (non artistically)
+- Red Win a game
+- Red Lose a game
+- Draw a game
+- Start game only can be called once
+- Cannot move bomb
+- Cannot move flag
+- Scout can move any number of open spaces in one direction
+- Scout cannot move and strike on same turn
+- Scout cannot move over pieces
+- Miner defeats a bomb
+- Spy defeats a Marshall when Spy attacks
+- Marshall defeats spy when Marshall attacks
+- Bomb defeats everything but miner
+- When a bomb defeats a piece it does not move to the empty square
+- Bomb only destroyed when miner strikes it
+- Bomb cannot strike
