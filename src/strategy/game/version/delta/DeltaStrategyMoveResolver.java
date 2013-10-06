@@ -9,10 +9,14 @@
  *******************************************************************************/
 package strategy.game.version.delta;
 
+import java.util.ArrayList;
+
 import strategy.common.PlayerColor;
+import strategy.common.StrategyException;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
+import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveResolver;
 import strategy.game.version.StrategyBoard;
@@ -24,6 +28,7 @@ import strategy.game.version.StrategyBoard;
  */
 public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 
+	
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -43,7 +48,15 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{
-		final MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
+		
+		final MoveResult firstResult;
+		
+		if (gameBoard.getPieceAt(toLocation).getType() == PieceType.BOMB) {
+			firstResult = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+		} else {
+			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
+		}
+		
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
@@ -60,5 +73,22 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 			}
 			return new MoveResult(resultStatus, firstResult.getBattleWinner());
 		}
+	}
+	
+	private MoveResult dealWithBomb(StrategyBoard gameBoard, PlayerColor currentTurn, 
+			PieceType pieceMoving, Location fromLocation, Location toLocation) {
+		
+		PieceLocationDescriptor battleWinner;
+		if (pieceMoving == PieceType.MINER){
+			//remove the bomb and put the miner in its place
+			gameBoard.removePiece(toLocation);
+			gameBoard.movePiece(fromLocation,toLocation);
+			
+		} else {
+			gameBoard.removePiece(fromLocation); //kill the piece that stepped on the bomb
+		}
+		
+		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation);
+		return new MoveResult(MoveResultStatus.OK, battleWinner);
 	}
 }

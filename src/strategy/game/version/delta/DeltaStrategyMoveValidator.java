@@ -13,6 +13,7 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
+import strategy.game.common.Location2D;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveValidator;
 import strategy.game.version.PieceMoveEntry;
@@ -86,17 +87,26 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 			
 			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			
-			
+			boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) < moveToLocation.getCoordinate(Coordinate.Y_COORDINATE)
+					: moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			//Check every spot to the to location.
+			
+			Location2D nextCoordinate;
+			int startX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			int startY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
 			for(int i = 1; i <= distance; i++)
 			{
-				if(verticalMove)
-				{
-					
+				if (!forward) {
+					nextCoordinate = verticalMove ? new Location2D(startX, startY - i)
+					: new Location2D(startX - i, startY);
+				} else {
+					nextCoordinate = verticalMove ? new Location2D(startX, startY + i)
+					: new Location2D(i + startX, startY);
 				}
-				else
-				{
-					
+
+				
+				if (gameBoard.getPieceAt(nextCoordinate) != null) {
+					throw new StrategyException("Cannot move scout through another piece");
 				}
 			}
 		}

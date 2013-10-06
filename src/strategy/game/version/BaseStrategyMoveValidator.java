@@ -96,6 +96,7 @@ public abstract class BaseStrategyMoveValidator implements
 				{
 					throw new StrategyException("Cannot move the flag");
 				}
+				
 
 				//if you move onto your own piece, your gonna have a bad time
 				if (gameBoard.getPieceAt(moveToLocation) != null && gameBoard.getPieceAt(moveToLocation).getOwner() == currentTurn)
