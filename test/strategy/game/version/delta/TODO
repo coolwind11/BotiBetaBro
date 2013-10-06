@@ -1,15 +1,16 @@
-- Reject a configuration with incorrect number of pieces
-- Reject a configuration with pieces on the wrong side of the board
-- Reject a configuration with overlapping pieces
-- Reject a configuration with wrong number of piece
-- Reject a null configuration.
-- Accept a valid configuration
-- Initialize a game
-- Make a valid move
-- Make an invalid move to a location off the board
-- Make an invalid move onto your self
-- Make an invalid move onto a choke point
-- Make an invalid move too far
+x Reject a configuration with incorrect number of pieces
+x Reject a configuration with pieces on the wrong side of the board
+x Reject a configuration with overlapping pieces
+x Reject a configuration with wrong number of piece
+x Reject a null configuration.
+x Accept a valid configuration
+x Initialize a game
+x Make a valid move
+x Make an invalid move before game starts
+x Make an invalid move to a location off the board
+x Make an invalid move onto your self
+x Make an invalid move onto a choke point
+x Make an invalid move too far
 - Make invalid move diagonally
 - Make an invalid move onto your own team
 - Make an invalid move due to move repetition
@@ -19,10 +20,14 @@
 - Red Win a game
 - Red Lose a game
 - Draw a game
-- Start game only can be called once
+x Start game only can be called once
 x Cannot move bomb
 x Cannot move flag
+<<<<<<< HEAD
+- Scout can move any number of open spaces in one direction
+=======
 x Scout can move any number of open spaces in one direction
+>>>>>>> 5846078a7a9625dea7ce121c7ce0667f7914fffd
 - Scout cannot move and strike on same turn
 x Scout cannot move over pieces
 - Miner defeats a bomb
