@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.version.gamma;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -24,6 +25,20 @@ import strategy.game.version.BaseStrategyBoardValidator;
  * @version 9/23/13
  */
 public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
+	
+	private Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
+	
+	/**
+	 * Creates a new gamma strategy board validator
+	 */
+	public GammaStrategyBoardValidator()
+	{
+		//Add the chokepoints before creating the board
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
+	}
 	
 	/**
 	 * setup the paramaters for board validation specific to gamma version, such as
@@ -52,19 +67,11 @@ public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	}
 	
 	/**
-	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
+	 * @see strategy.game.version.StrategyBoardValidator#getGameSpecificPieces()
 	 */
 	@Override
-	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
-			Collection<PieceLocationDescriptor> blueConfig) {
-		final boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
-		
-		//Add the chokepoints before creating the board
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 2)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 2)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(2, 3)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(3, 3)));
-		
-		return isValidBoardConfig;
+	public Collection<PieceLocationDescriptor> getGameSpecificPieces()
+	{
+		return otherPieces;
 	}
 }

@@ -10,8 +10,11 @@
 
 package strategy.game.version.beta;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
+import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyBoardValidator;
 
@@ -46,5 +49,14 @@ public class BetaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		
 		MIN_BLUE_STARTING_Y = 4;
 		MAX_RED_STARTING_Y = 1;
+	}
+
+	/**
+	 * @see strategy.game.version.StrategyBoardValidator#getGameSpecificPieces()
+	 */
+	@Override
+	public Collection<PieceLocationDescriptor> getGameSpecificPieces()
+	{
+		return new ArrayList<PieceLocationDescriptor>();
 	}
 }

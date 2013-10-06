@@ -70,6 +70,7 @@ public class BaseStrategyGameController implements StrategyGameController
 				new LinkedList<PieceLocationDescriptor>();
 		allPieces.addAll(redPieces);
 		allPieces.addAll(bluePieces);
+		allPieces.addAll(boardValidator.getGameSpecificPieces());
 		
 		gameBoard = new StrategyBoard(allPieces);
 	}

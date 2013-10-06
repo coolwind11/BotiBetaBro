@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.version.delta;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -24,6 +25,25 @@ import strategy.game.version.BaseStrategyBoardValidator;
  * @version 9/23/13
  */
 public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
+	
+	private Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
+	
+	/**
+	 * Creates a new delta strategy board validator
+	 */
+	public DeltaStrategyBoardValidator()
+	{
+		//Add the chokepoints before creating the board
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 2)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 3)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
+		
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 6)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 7)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 6)));
+		otherPieces.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 7)));
+	}
 	
 	/**
 	 * setup the paramaters for board validation specific to delta version, such as
@@ -57,24 +77,11 @@ public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	}
 	
 	/**
-	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)
+	 * @see strategy.game.version.StrategyBoardValidator#getGameSpecificPieces()
 	 */
 	@Override
-	public boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
-			Collection<PieceLocationDescriptor> blueConfig) {
-		final boolean isValidBoardConfig = super.isValidInitialSetup(redConfig, blueConfig);
-		
-		//Add the chokepoints before creating the board
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 2)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 3)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 3)));
-		
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 6)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(4, 7)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 6)));
-		redConfig.add(new PieceLocationDescriptor(new Piece(PieceType.CHOKE_POINT, null), new Location2D(5, 7)));
-		
-		return isValidBoardConfig;
+	public Collection<PieceLocationDescriptor> getGameSpecificPieces()
+	{
+		return otherPieces;
 	}
 }

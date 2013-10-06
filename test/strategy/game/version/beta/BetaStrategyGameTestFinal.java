@@ -8,34 +8,51 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package strategy.game.version.gamma;
+package strategy.game.version.beta;
 
 import static org.junit.Assert.*;
 import static strategy.common.PlayerColor.*;
-import static strategy.game.common.MoveResultStatus.*;
 import static strategy.game.common.PieceType.*;
-import static strategy.game.testutil.TestLocations.*;
+import static strategy.game.common.MoveResultStatus.*;
 import java.util.ArrayList;
 import org.junit.*;
 import strategy.common.*;
 import strategy.game.*;
 import strategy.game.common.*;
-import strategy.game.testutil.TestConfigurationFactory;
 
 /**
- * Description
+ * Test suite for BetaStrategyMaster.
  * @author gpollice
- * @version Sep 21, 2013
+ * @version Sep 12, 2013
  */
-public class GammaStrategyMasterTest
+public class BetaStrategyGameTestFinal
 {
 	private ArrayList<PieceLocationDescriptor> redConfiguration;
 	private ArrayList<PieceLocationDescriptor> blueConfiguration;
-	private final static StrategyGameFactory gameFactory = 
-			StrategyGameFactory.getInstance();
-	private final static TestConfigurationFactory configurationFactory = 
-			TestConfigurationFactory.getInstance();
+	private final static StrategyGameFactory factory = StrategyGameFactory.getInstance();
 	private StrategyGameController game;	// used for many tests
+	
+	// Locations used in the test
+	private Location
+		loc01 = new Location2D(0, 1),
+		loc02 = new Location2D(0, 2),
+		loc03 = new Location2D(0, 3),
+		loc04 = new Location2D(0, 4),
+		loc11 = new Location2D(1, 1),
+		loc12 = new Location2D(1, 2),
+		loc13 = new Location2D(1, 3),
+		loc14 = new Location2D(1, 4),
+		loc21 = new Location2D(2, 1),
+		loc22 = new Location2D(2, 2),
+		loc23 = new Location2D(2, 3),
+		loc24 = new Location2D(2, 4),
+		loc31 = new Location2D(3, 1),
+		loc51 = new Location2D(5, 1),
+		loc52 = new Location2D(5, 2),
+		loc53 = new Location2D(5, 3),
+		loc54 = new Location2D(5, 4),
+		badLoc = new Location2D(-1, 6)
+		;
 	
 	/*
 	 * The board with the initial configuration looks like this:
@@ -58,30 +75,60 @@ public class GammaStrategyMasterTest
 	@Before
 	public void setup() throws StrategyException
 	{
-		redConfiguration = configurationFactory.getRedGammaConfiguration();
-		blueConfiguration = configurationFactory.getBlueGammaConfiguration();
-		game = gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		redConfiguration = new ArrayList<PieceLocationDescriptor>();
+		blueConfiguration = new ArrayList<PieceLocationDescriptor>();
+		addToConfiguration(FLAG, RED, 0, 1);
+		addToConfiguration(MARSHAL, RED, 0, 0);
+		addToConfiguration(COLONEL, RED, 1, 0);
+		addToConfiguration(COLONEL, RED, 2, 0);
+		addToConfiguration(CAPTAIN, RED, 3, 0);
+		addToConfiguration(CAPTAIN, RED, 4, 0);
+		addToConfiguration(LIEUTENANT, RED, 5, 0);
+		addToConfiguration(LIEUTENANT, RED, 1, 1);
+		addToConfiguration(LIEUTENANT, RED, 2, 1);
+		addToConfiguration(SERGEANT, RED, 3, 1);
+		addToConfiguration(SERGEANT, RED, 4, 1);
+		addToConfiguration(SERGEANT, RED, 5, 1);
+		addToConfiguration(FLAG, BLUE, 5, 4);
+		addToConfiguration(MARSHAL, BLUE, 0, 5);
+		addToConfiguration(COLONEL, BLUE, 1, 5);
+		addToConfiguration(COLONEL, BLUE, 2, 5);
+		addToConfiguration(CAPTAIN, BLUE, 3, 5);
+		addToConfiguration(CAPTAIN, BLUE, 4, 5);
+		addToConfiguration(LIEUTENANT, BLUE, 5, 5);
+		addToConfiguration(LIEUTENANT, BLUE, 0, 4);
+		addToConfiguration(LIEUTENANT, BLUE, 1, 4);
+		addToConfiguration(SERGEANT, BLUE, 2, 4);
+		addToConfiguration(SERGEANT, BLUE, 3, 4);
+		addToConfiguration(SERGEANT, BLUE, 4, 4);
+		game = factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 		game.startGame();
 	}
 	
-	@Test
-	public void createStrategyController() throws StrategyException
+	@Test(expected=StrategyException.class)
+	public void cannotCreateBetaStrategyWithNullConfigurations() throws StrategyException
 	{
-		assertNotNull(gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration));
+		factory.makeBetaStrategyGame(null, null);
+	}
+	
+	@Test
+	public void createBetaStrategyController() throws StrategyException
+	{
+		assertNotNull(factory.makeBetaStrategyGame(redConfiguration, blueConfiguration));
 	}
 	
 	@Test(expected=StrategyException.class)
 	public void redConfigurationHasTooFewItem() throws StrategyException
 	{
 		redConfiguration.remove(0);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
 	public void blueConfigurationHasTooManyItems() throws StrategyException
 	{
 		addToConfiguration(SERGEANT, BLUE, 0, 3);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -89,7 +136,7 @@ public class GammaStrategyMasterTest
 	{
 		redConfiguration.remove(1);	// Marshall @ (0, 0)
 		addToConfiguration(MARSHAL, RED, 0, 3);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -97,7 +144,7 @@ public class GammaStrategyMasterTest
 	{
 		redConfiguration.remove(1);	// Marshall @ (0, 0)
 		addToConfiguration(MARSHAL, RED, -1, 0);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -105,7 +152,7 @@ public class GammaStrategyMasterTest
 	{
 		blueConfiguration.remove(11);	// Sergeant @ (0, 4)
 		addToConfiguration(SERGEANT, BLUE, 0, 2);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -113,7 +160,7 @@ public class GammaStrategyMasterTest
 	{
 		blueConfiguration.remove(11);	// Sergeant @ (0, 4)
 		addToConfiguration(SERGEANT, BLUE, 6, 4);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -121,7 +168,7 @@ public class GammaStrategyMasterTest
 	{
 		redConfiguration.remove(1);	// Marshall @ (0, 0)
 		addToConfiguration(MARSHAL, RED, 0, 1); // Same place as RED Flag
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -129,21 +176,21 @@ public class GammaStrategyMasterTest
 	{
 		redConfiguration.remove(1); // Marshall @ (0, 0)
 		addToConfiguration(BOMB, RED, 0, 0);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
-	public void redHasOneColonelAndFourSergeants() throws StrategyException
+	public void redHasOneColonelAndTwoSergeants() throws StrategyException
 	{
 		redConfiguration.remove(2); // Colonel @ (1, 0)
 		addToConfiguration(SERGEANT, RED, 1, 0);
-		gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 	}
 	
 	@Test(expected=StrategyException.class)
 	public void makeMoveBeforeCallingStartGame() throws StrategyException
 	{
-		game = gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
+		game = factory.makeBetaStrategyGame(redConfiguration, blueConfiguration);
 		game.move(LIEUTENANT, loc11, loc12);
 	}
 	
@@ -171,7 +218,7 @@ public class GammaStrategyMasterTest
 	@Test(expected=StrategyException.class)
 	public void redMovesPieceNotOnFromLocation() throws StrategyException
 	{
-		game.move(LIEUTENANT, loc31, loc32);
+		game.move(LIEUTENANT, loc31, loc12);
 	}
 	
 	@Test
@@ -201,15 +248,40 @@ public class GammaStrategyMasterTest
 		game.move(SERGEANT, loc24, badLoc);
 	}
 	
+	@Test
+	public void drawAtTheEndOfSixTurns() throws StrategyException
+	{
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		final MoveResult result = game.move(SERGEANT, loc23, loc24);
+		assertEquals(DRAW, result.getStatus());
+	}
+	
 	@Test(expected=StrategyException.class)
 	public void attemptToMoveAfterGameIsOver() throws StrategyException
 	{
-		game.move(SERGEANT, loc51, loc52);
-		game.move(LIEUTENANT, loc14, loc13);
-		game.move(SERGEANT, loc52, loc53);
-		game.move(LIEUTENANT, loc13, loc14);
-		game.move(SERGEANT, loc53, loc54);
-		game.move(LIEUTENANT, loc14, loc13);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -244,46 +316,36 @@ public class GammaStrategyMasterTest
 	@Test
 	public void attackerWinsStrike() throws StrategyException
 	{
-		redConfiguration.remove(10);	// SGT @ (4, 1)
-		redConfiguration.remove(5);		// CPT @ (4, 0)
-		addToConfiguration(SERGEANT, RED, 4, 0);
-		addToConfiguration(CAPTAIN, RED, 4, 1);
-		game = gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
-		game.startGame();
-		game.move(CAPTAIN, loc41, loc42);
-		game.move(SERGEANT, loc44, loc43);
-		final MoveResult moveResult = game.move(CAPTAIN, loc42, loc43);
+		game.move(LIEUTENANT, loc21, loc22);
+		game.move(SERGEANT, loc24, loc23);
+		final MoveResult moveResult = game.move(LIEUTENANT, loc22, loc23);
 		assertEquals(OK, moveResult.getStatus());
 		assertEquals(
-				new PieceLocationDescriptor(new Piece(CAPTAIN, RED), loc43),
+				new PieceLocationDescriptor(new Piece(LIEUTENANT, RED), loc23),
 				moveResult.getBattleWinner());
-		assertNull(game.getPieceAt(loc42));
-		assertEquals(new Piece(CAPTAIN, RED), game.getPieceAt(loc43));
+		assertNull(game.getPieceAt(loc22));
+		assertEquals(new Piece(LIEUTENANT, RED), game.getPieceAt(loc23));
 	}
 	
 	@Test
 	public void defenderWinsStrike() throws StrategyException
 	{
-		redConfiguration.remove(10);	// SGT @ (4, 1)
-		redConfiguration.remove(5);		// CPT @ (4, 0)
-		addToConfiguration(SERGEANT, RED, 4, 0);
-		addToConfiguration(CAPTAIN, RED, 4, 1);
-		game = gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
-		game.startGame();
-		game.move(CAPTAIN, loc41, loc42);
-		game.move(SERGEANT, loc44, loc43);
 		game.move(LIEUTENANT, loc11, loc12);
-		final MoveResult moveResult = game.move(SERGEANT, loc43, loc42);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc22);
+		game.move(LIEUTENANT, loc11, loc12);
+		final MoveResult moveResult = game.move(SERGEANT, loc22, loc21);
 		assertEquals(OK, moveResult.getStatus());
 		assertEquals(
-				new PieceLocationDescriptor(new Piece(CAPTAIN, RED), loc43),
+				new PieceLocationDescriptor(new Piece(LIEUTENANT, RED), loc22),
 				moveResult.getBattleWinner());
-		assertNull(game.getPieceAt(loc42));
-		assertEquals(new Piece(CAPTAIN, RED), game.getPieceAt(loc43));
+		assertNull(game.getPieceAt(loc21));
+		assertEquals(new Piece(LIEUTENANT, RED), game.getPieceAt(loc22));
 	}
 	
 	@Test
-	public void strikeResultsInTie() throws StrategyException
+	public void strikeResultsInDraw() throws StrategyException
 	{
 		game.move(LIEUTENANT, loc11, loc12);
 		game.move(LIEUTENANT, loc14, loc13);
@@ -300,36 +362,40 @@ public class GammaStrategyMasterTest
 		game.move(LIEUTENANT, loc11, loc21);
 	}
 	
-	@Test
+	@Test(expected=StrategyException.class)
 	public void attemptToMoveDiagonally() throws StrategyException
 	{
-		try {
-			game.move(LIEUTENANT, loc11, loc22);
-			fail("Exception expected");
-		} catch (StrategyException e) {
-			assertTrue(true);
-		} catch (StrategyRuntimeException e) {
-			assertTrue(true);
-		}
+		game.move(LIEUTENANT, loc11, loc22);
 	}
 	
-	@Test
+	@Test(expected=StrategyException.class)
 	public void attemptToMoveFurtherThanOneLocation() throws StrategyException
 	{
-		try {
-			game.move(LIEUTENANT, loc11, loc13);
-			fail("Exception expected");
-		} catch (StrategyException e) {
-			assertTrue(true);
-		} catch (StrategyRuntimeException e) {
-			assertTrue(true);
-		}
+		game.move(LIEUTENANT, loc11, loc13);
 	}
 	
 	@Test(expected=StrategyException.class)
 	public void attemptToMoveFlag() throws StrategyException
 	{
 		game.move(FLAG, loc01, loc02);
+	}
+	
+	@Test
+	public void blueWinsOnLastMove() throws StrategyException
+	{
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(SERGEANT, loc23, loc24);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(SERGEANT, loc24, loc23);
+		game.move(LIEUTENANT, loc12, loc11);
+		game.move(LIEUTENANT, loc04, loc03);
+		game.move(LIEUTENANT, loc11, loc12);
+		game.move(LIEUTENANT, loc03, loc02);
+		game.move(LIEUTENANT, loc12, loc11);
+		final MoveResult result = game.move(LIEUTENANT, loc02, loc01);
+		assertEquals(BLUE_WINS, result.getStatus());
 	}
 	
 	@Test(expected=StrategyException.class)
@@ -350,109 +416,6 @@ public class GammaStrategyMasterTest
 		game.startGame();
 	}
 	
-	// Gamma specific methods
-	@Test
-	public void initialConfigurationHasFourChokePoints() throws StrategyException
-	{
-		assertEquals(CHOKE_POINT, game.getPieceAt(loc22).getType());
-		assertEquals(CHOKE_POINT, game.getPieceAt(loc23).getType());
-		assertEquals(CHOKE_POINT, game.getPieceAt(loc32).getType());
-		assertEquals(CHOKE_POINT, game.getPieceAt(loc33).getType());
-	}
-	
-	@Test(expected=StrategyException.class)
-	public void attemptToMoveAChokePoint() throws StrategyException
-	{
-		game.move(CHOKE_POINT, loc22, loc21);
-	}
-	
-	@Test(expected=StrategyException.class)
-	public void attemptToMoveToChokePoint() throws StrategyException
-	{
-		game.move(LIEUTENANT, loc21, loc22);
-	}
-	
-	@Test
-	public void redLosesByMoveRepetition() throws StrategyException
-	{
-		game.move(LIEUTENANT, loc11, loc12);
-		game.move(SERGEANT, loc44, loc43);
-		game.move(LIEUTENANT, loc12, loc11);
-		game.move(SERGEANT, loc43, loc42);
-		try {
-			MoveResult mr = game.move(LIEUTENANT, loc11, loc12);
-			assertEquals(BLUE_WINS, mr.getStatus());
-		} catch (StrategyException e) {
-			assertTrue(true);
-		}
-	}
-	
-	@Test
-	public void blueLosesByMoveRepetition() throws StrategyException
-	{
-		game.move(LIEUTENANT, loc11, loc12);
-		game.move(SERGEANT, loc44, loc43);
-		game.move(LIEUTENANT, loc12, loc13);
-		game.move(SERGEANT, loc43, loc44);
-		game.move(LIEUTENANT, loc13, loc12);
-		try {
-			MoveResult mr = game.move(SERGEANT, loc44, loc43);
-			assertEquals(RED_WINS, mr.getStatus());
-		} catch (StrategyException e) {
-			assertTrue(true);
-		}
-	}
-	
-	@Test
-	public void drawWhenNoMorePieces() throws StrategyException
-	{
-		redConfiguration.remove(1);		// MARSHAL @ (0, 0)
-		redConfiguration.remove(0);		// FLAG @(0, 1)
-		addToConfiguration(FLAG, RED, 0, 0);
-		addToConfiguration(MARSHAL, RED, 0, 1);
-		blueConfiguration.remove(1);	// MARSHAL @ (0, 5)
-		blueConfiguration.remove(0);	// FLAG @ (5, 4)
-		addToConfiguration(FLAG, BLUE, 0, 5);
-		addToConfiguration(MARSHAL, BLUE, 5, 4);
-		game = gameFactory.makeGammaStrategyGame(redConfiguration, blueConfiguration);
-		game.startGame();
-		game.move(MARSHAL, loc01, loc02);
-		game.move(MARSHAL, loc54, loc53);
-		game.move(MARSHAL, loc02, loc03);
-		game.move(MARSHAL, loc53, loc52);
-		game.move(MARSHAL, loc03, loc04);
-		game.move(MARSHAL, loc52, loc51);
-		game.move(MARSHAL, loc04, loc14);
-		game.move(MARSHAL, loc51, loc50);
-		game.move(MARSHAL, loc14, loc15);
-		game.move(MARSHAL, loc50, loc40);
-		game.move(MARSHAL, loc15, loc25);
-		game.move(MARSHAL, loc40, loc41);
-		game.move(MARSHAL, loc25, loc24);
-		game.move(MARSHAL, loc41, loc31);
-		game.move(MARSHAL, loc24, loc34);
-		game.move(MARSHAL, loc31, loc30);
-		game.move(MARSHAL, loc34, loc35);
-		game.move(MARSHAL, loc30, loc20);
-		game.move(MARSHAL, loc35, loc45);
-		game.move(MARSHAL, loc20, loc21);
-		game.move(MARSHAL, loc45, loc44);
-		game.move(MARSHAL, loc21, loc11);
-		game.move(MARSHAL, loc44, loc54);
-		game.move(MARSHAL, loc11, loc10);
-		game.move(MARSHAL, loc54, loc55);
-		game.move(MARSHAL, loc10, loc11);
-		game.move(MARSHAL, loc55, loc54);
-		game.move(MARSHAL, loc11, loc21);
-		game.move(MARSHAL, loc54, loc53);
-		game.move(MARSHAL, loc21, loc31);
-		game.move(MARSHAL, loc53, loc52);
-		game.move(MARSHAL, loc31, loc41);
-		game.move(MARSHAL, loc52, loc51);
-		MoveResult mr = game.move(MARSHAL, loc41, loc51);
-		assertEquals(MoveResultStatus.DRAW, mr.getStatus());
-	}
-	
 	// Helper methods
 	private void addToConfiguration(PieceType type, PlayerColor color, int x, int y)
 	{
@@ -463,26 +426,6 @@ public class GammaStrategyMasterTest
 			redConfiguration.add(confItem);
 		} else {
 			blueConfiguration.add(confItem);
-		}
-	}
-	
-	private void showConfiguration(ArrayList<PieceLocationDescriptor> configuration)
-	{
-		for (PieceLocationDescriptor pld : configuration) {
-			System.out.println(pld.getLocation() + ": " + pld.getPiece().getType());
-		}
-	}
-	
-	private void showBoard()
-	{
-		for (int y = 0; y < 6; y++) {
-			for (int x = 0; x < 6; x++) {
-				Location2D loc = new Location2D(x, y);
-				Piece p = game.getPieceAt(loc);
-				if (p != null) {
-					System.out.println(loc + ": " + p.getType());
-				}
-			}
 		}
 	}
 }

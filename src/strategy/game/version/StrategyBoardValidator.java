@@ -28,4 +28,10 @@ public interface StrategyBoardValidator {
 	 */
 	boolean isValidInitialSetup(Collection<PieceLocationDescriptor> redConfig,
 								Collection<PieceLocationDescriptor> blueConfig);
+	
+	/**
+	 * Returns the pieces specific to the game that are not the property of one of the players.
+	 * @return the pieces that are neutral in the game.
+	 */
+	Collection<PieceLocationDescriptor> getGameSpecificPieces();
 }

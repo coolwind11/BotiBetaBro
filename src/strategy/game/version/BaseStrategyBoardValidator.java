@@ -53,6 +53,11 @@ public abstract class BaseStrategyBoardValidator implements
 	 * 		
 	 */
 	protected abstract void setupValidBoardConfiguration();
+	
+	/**
+	 * @see StrategyBoardValidator#getGameSpecificPieces()
+	 */
+	public abstract Collection<PieceLocationDescriptor> getGameSpecificPieces();
 
 	/**
 	 * @see strategy.game.version.StrategyBoardValidator#isValidInitialSetup(Collection, Collection)

@@ -9,9 +9,12 @@
  *******************************************************************************/
 package strategy.game.version;
 
+import java.util.Collection;
+
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Location;
+import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 
 /**
