@@ -114,7 +114,8 @@ public abstract class BaseStrategyMoveValidator implements
 				
 				//if you try to move too far, THE MOVE IS INVALID
 				int validMoveDistance = validMoveDistances.get(movePiece);
-				if(moveFromLocation.distanceTo(moveToLocation) >= validMoveDistance && validMoveDistance >= 0)
+				int distanceTo = moveFromLocation.distanceTo(moveToLocation);
+				if(moveFromLocation.distanceTo(moveToLocation) > validMoveDistance && validMoveDistance >= 0)
 				{
 					throw new StrategyException("Moved too far");
 				}
