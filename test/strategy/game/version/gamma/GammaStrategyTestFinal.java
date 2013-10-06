@@ -14,13 +14,16 @@ import static org.junit.Assert.*;
 import static strategy.common.PlayerColor.*;
 import static strategy.game.common.MoveResultStatus.*;
 import static strategy.game.common.PieceType.*;
-import static strategy.game.testutil.TestLocations.*;
+import static strategy.game.version.gamma.testutil.TestLocations.*;
+
 import java.util.ArrayList;
+
 import org.junit.*;
+
 import strategy.common.*;
 import strategy.game.*;
 import strategy.game.common.*;
-import strategy.game.testutil.TestConfigurationFactory;
+import strategy.game.version.gamma.testutil.TestConfigurationFactory;
 
 /**
  * Description
