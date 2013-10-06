@@ -94,14 +94,18 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 			Location2D nextCoordinate;
 			int startX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			int startY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
-			for(int i = 1; i <= distance; i++)
+			
+			int step = forward ? 1 : -1;
+			int coordinate = verticalMove ? startY + step : startX + step; //start at the next spot
+			int stop = verticalMove ? startY + step*distance : startX + step*distance;
+			while( coordinate != stop )
 			{
 				if (!forward) {
-					nextCoordinate = verticalMove ? new Location2D(startX, startY - i)
-					: new Location2D(startX - i, startY);
+					nextCoordinate = verticalMove ? new Location2D(startX, coordinate)
+					: new Location2D(coordinate, startY);
 				} else {
-					nextCoordinate = verticalMove ? new Location2D(startX, startY + i)
-					: new Location2D(i + startX, startY);
+					nextCoordinate = verticalMove ? new Location2D(startX, coordinate)
+					: new Location2D(coordinate, startY);
 				}
 
 				
