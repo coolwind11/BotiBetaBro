@@ -87,14 +87,23 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 			
 			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			
-			
+			boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) < moveToLocation.getCoordinate(Coordinate.Y_COORDINATE)
+					: moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			//Check every spot to the to location.
 			
 			Location2D nextCoordinate;
+			int startX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			int startY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
 			for(int i = 1; i <= distance; i++)
 			{
-				nextCoordinate = verticalMove ? new Location2D(moveToLocation.getCoordinate(Coordinate.X_COORDINATE), i)
-						: new Location2D(i,moveToLocation.getCoordinate(Coordinate.Y_COORDINATE));
+				if (!forward) {
+					nextCoordinate = verticalMove ? new Location2D(startX, startY - i)
+					: new Location2D(startX - i, startY);
+				} else {
+					nextCoordinate = verticalMove ? new Location2D(startX, startY + i)
+					: new Location2D(i + startX, startY);
+				}
+
 				
 				if (gameBoard.getPieceAt(nextCoordinate) != null) {
 					throw new StrategyException("Cannot move scout through another piece");
