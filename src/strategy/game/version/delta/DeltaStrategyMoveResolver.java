@@ -9,7 +9,10 @@
  *******************************************************************************/
 package strategy.game.version.delta;
 
+import java.util.ArrayList;
+
 import strategy.common.PlayerColor;
+import strategy.common.StrategyException;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
@@ -24,6 +27,7 @@ import strategy.game.version.StrategyBoard;
  */
 public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 
+	
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -43,6 +47,7 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{
+		
 		final MoveResult firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;

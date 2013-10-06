@@ -13,6 +13,7 @@ import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
+import strategy.game.common.Location2D;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveValidator;
 import strategy.game.version.PieceMoveEntry;
@@ -88,15 +89,15 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 			
 			
 			//Check every spot to the to location.
+			
+			Location2D nextCoordinate;
 			for(int i = 1; i <= distance; i++)
 			{
-				if(verticalMove)
-				{
-					
-				}
-				else
-				{
-					
+				nextCoordinate = verticalMove ? new Location2D(moveToLocation.getCoordinate(Coordinate.X_COORDINATE), i)
+						: new Location2D(i,moveToLocation.getCoordinate(Coordinate.Y_COORDINATE));
+				
+				if (gameBoard.getPieceAt(nextCoordinate) != null) {
+					throw new StrategyException("Cannot move scout through another piece");
 				}
 			}
 		}
