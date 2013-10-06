@@ -157,7 +157,6 @@ public class DeltaStrategyTest {
 		factory.makeDeltaStrategyGame(redPieces,bluePieces);
 	}
 
-
 	private void addToConfig(PieceType piece, PlayerColor color, int x, int y) {
 		final PieceLocationDescriptor toAdd = new PieceLocationDescriptor(
 			new Piece(piece,color), new Location2D(x,y));
