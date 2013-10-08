@@ -74,70 +74,14 @@ public abstract class BaseStrategyBoardValidator implements
 			return false;
 		}
 		
-		final List<Location> seenLocations = new ArrayList<Location>();
-		final Map<PieceType, Integer> bluePieceCount = new HashMap<PieceType, Integer>();
-		final Map<PieceType, Integer> redPieceCount = new HashMap<PieceType, Integer>();
 
-		//check indivisual pieces
-		//Check for red out of bounds/offsides
-		for (PieceLocationDescriptor redPiece : redConfig) {
-			int x = redPiece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
-			int y = redPiece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
-			
-			if (x > MAX_X || x < MIN_X || y > MAX_Y || y < MIN_Y) {
-				return false;
-			}
-			
-			if (y > MAX_RED_STARTING_Y) {
-				return false;
-			}
-			
-			if(seenLocations.contains(redPiece.getLocation())) {
-				return false;
-			}
-			
-			seenLocations.add(redPiece.getLocation());
-			
-			if(redPieceCount.containsKey(redPiece.getPiece().getType()))
-			{
-				redPieceCount.put(redPiece.getPiece().getType(), 
-						redPieceCount.get(redPiece.getPiece().getType()) + 1);
-			}
-			else
-			{
-				redPieceCount.put(redPiece.getPiece().getType(), 1);
-			}
+		
+		if (!hasValidPieceLocations(redConfig,blueConfig)){
+			return false;
 		}
 		
-		//Check for blue out of bounds/offsides
-		for (PieceLocationDescriptor bluePiece : blueConfig) {
-			int x = bluePiece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
-			int y = bluePiece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
-			
-			if (x > MAX_X || x < MIN_X || y > MAX_Y || y < MIN_Y) {
-				return false;
-			}
-			
-			if (y < MIN_BLUE_STARTING_Y) {
-				return false;
-			}
-			
-			if(seenLocations.contains(bluePiece.getLocation())) {
-				return false;
-			}
-			seenLocations.add(bluePiece.getLocation());
-			
-			if(bluePieceCount.containsKey(bluePiece.getPiece().getType()))
-			{
-				bluePieceCount.put(bluePiece.getPiece().getType(), 
-						redPieceCount.get(bluePiece.getPiece().getType()) + 1);
-			}
-			else
-			{
-				bluePieceCount.put(bluePiece.getPiece().getType(), 1);
-			}
-		}
-		
+		final Map<PieceType, Integer> redPieceCount = getPieceCounts(redConfig);
+		final Map<PieceType, Integer> bluePieceCount = getPieceCounts(blueConfig);
 		//Check for right number of pieces.
 		for(PieceType piece : validPieceCount.keySet())
 		{
@@ -160,5 +104,85 @@ public abstract class BaseStrategyBoardValidator implements
 		
 		return true;
 	}
+	
+	/**
+	 * Generate a count hashMap for all the pieces in a configuration, used to check for valid counts per piece
+	 * @param config pieces
+	 * @return
+	 */
+	private Map<PieceType,Integer> getPieceCounts(Collection<PieceLocationDescriptor> config) {
+		final Map<PieceType, Integer> pieceCount = new HashMap<PieceType, Integer>();
+		
+		for (PieceLocationDescriptor piece : config) {
+			if(pieceCount.containsKey(piece.getPiece().getType()))
+			{
+				pieceCount.put(piece.getPiece().getType(), 
+						pieceCount.get(piece.getPiece().getType()) + 1);
+			}
+			else
+			{
+				pieceCount.put(piece.getPiece().getType(), 1);
+			}
+		}
+		
+		return pieceCount;
+	}
+	
+	/**
+	 * check if any pieces are in violation of any location constraints. These include
+	 * overlapping pieces, out of bounds, and offsides
+	 * @param redConfig red pieces
+	 * @param blueConfig blue pieces
+	 * @return
+	 */
+	private boolean hasValidPieceLocations(Collection<PieceLocationDescriptor> redConfig,
+			Collection<PieceLocationDescriptor> blueConfig) {
+		final List<Location> seenLocations = new ArrayList<Location>();
+		
 
+		//check indivisual pieces
+		//Check for red out of bounds/offsides
+		for (PieceLocationDescriptor redPiece : redConfig) {
+			int x = redPiece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
+			int y = redPiece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
+			
+			if (x > MAX_X || x < MIN_X || y > MAX_Y || y < MIN_Y) {
+				return false;
+			}
+			
+			if (y > MAX_RED_STARTING_Y) {
+				return false;
+			}
+			
+			if(seenLocations.contains(redPiece.getLocation())) {
+				return false;
+			}
+			
+			seenLocations.add(redPiece.getLocation());
+		}
+		
+		//Check for blue out of bounds/offsides
+		for (PieceLocationDescriptor bluePiece : blueConfig) {
+			int x = bluePiece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
+			int y = bluePiece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
+			
+			if (x > MAX_X || x < MIN_X || y > MAX_Y || y < MIN_Y) {
+				return false;
+			}
+			
+			if (y < MIN_BLUE_STARTING_Y) {
+				return false;
+			}
+			
+			if(seenLocations.contains(bluePiece.getLocation())) {
+				return false;
+			}
+			seenLocations.add(bluePiece.getLocation());
+		}
+		
+		return true;
+	}
+	
+	
+	
 }
