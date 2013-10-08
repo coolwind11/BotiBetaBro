@@ -17,6 +17,7 @@ import static strategy.common.PlayerColor.*;
 import static strategy.game.common.PieceType.*;
 import static strategy.game.version.gamma.testutil.TestLocations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -31,6 +32,8 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.version.StrategyBoard;
+import strategy.game.version.gamma.testutil.MockDeltaStrategyController;
 import strategy.game.version.gamma.testutil.TestConfigurationFactory;
 
 /**
@@ -436,5 +439,44 @@ public class DeltaStrategyTest {
 	{
 		game.startGame();
 		game.move(SCOUT, loc83, loc86);
+	}
+	
+	@Test
+	public void BombDoesNotMoveWhenWinner() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		mockGame.startGame();
+		MoveResult result = mockGame.move(SERGEANT, loc35, loc34);
+		
+		assertEquals(result.getBattleWinner().getLocation(),loc34); //bomb doesn't move when it blows up a unit
+	}
+	
+	@Test
+	public void MarshallDoesNotBeatBomb() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		mockGame.startGame();
+		MoveResult result = mockGame.move(MARSHAL, loc44, loc34); 
+		
+		assertEquals(result.getBattleWinner().getPiece().getType(),PieceType.BOMB); //bomb is still there
+	}
+	
+	@Test
+	public void MinerDefeatsBomb() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		mockGame.startGame();
+		MoveResult result = mockGame.move(MINER, loc33, loc34); 
+		
+		assertEquals(result.getBattleWinner().getPiece().getType(),PieceType.MINER); //bomb doesn't move when it blows up a unit
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void BombCannotStrike() throws StrategyException {
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		mockGame.startGame();
+		MoveResult result = mockGame.move(BOMB, loc34, loc33); 
+		assert(false);
 	}
 }

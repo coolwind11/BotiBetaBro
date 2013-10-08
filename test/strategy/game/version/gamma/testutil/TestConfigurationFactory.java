@@ -196,6 +196,24 @@ public class TestConfigurationFactory
 		return currentConfiguration;
 	}
 	
+	public ArrayList<PieceLocationDescriptor> getBombTestConfigurationBlue(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(BOMB,BLUE,3,4);
+		
+		return currentConfiguration;
+	}
+	
+	public ArrayList<PieceLocationDescriptor> getBombTestConfigurationRed(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(MINER,RED,3,3);
+		addToConfiguration(SERGEANT,RED,3,5);
+		addToConfiguration(MARSHAL,RED,4,4);
+		
+		return currentConfiguration;
+	}
+	
 	/**
 	 * @return the instance
 	 */

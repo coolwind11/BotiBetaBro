@@ -29,7 +29,7 @@ x Scout cannot move and strike on same turn
 = Miner defeats a bomb
 = Spy defeats a Marshall when Spy attacks
 = Marshall defeats spy when Marshall attacks
-= Bomb defeats everything but miner
-= When a bomb defeats a piece it does not move to the empty square
-= Bomb only destroyed when miner strikes it
-= Bomb cannot strike
+x Bomb defeats everything but miner
+x When a bomb defeats a piece it does not move to the empty square
+x Bomb only destroyed when miner strikes it
+x Bomb cannot strike
