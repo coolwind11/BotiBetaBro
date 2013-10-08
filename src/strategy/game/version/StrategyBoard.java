@@ -27,7 +27,8 @@ public class StrategyBoard
 {
 	private final Map<Location, Piece> boardRepresentationMap = new HashMap<Location, Piece>();
 	
-	private int redPieceCount,bluePieceCount;
+	private int redPieceCount, bluePieceCount;
+	
 	/**
 	 * Creates an empty board with the given dimensions
 	 * @param initialPieces the initial location of the pieces on the board.

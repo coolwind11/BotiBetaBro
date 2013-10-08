@@ -17,7 +17,6 @@ import static strategy.common.PlayerColor.*;
 import static strategy.game.common.PieceType.*;
 import static strategy.game.version.gamma.testutil.TestLocations.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,8 +31,6 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.StrategyBoard;
-import strategy.game.version.gamma.testutil.MockDeltaStrategyController;
 import strategy.game.version.gamma.testutil.TestConfigurationFactory;
 
 /**
@@ -439,99 +436,5 @@ public class DeltaStrategyTest {
 	{
 		game.startGame();
 		game.move(SCOUT, loc83, loc86);
-	}
-	
-	@Test
-	public void BombDoesNotMoveWhenWinner() throws StrategyException
-	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
-		mockGame.startGame();
-		MoveResult result = mockGame.move(SERGEANT, loc35, loc34);
-		
-		assertEquals(result.getBattleWinner().getLocation(),loc34); //bomb doesn't move when it blows up a unit
-	}
-	
-	@Test
-	public void MarshallDoesNotBeatBomb() throws StrategyException
-	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
-		mockGame.startGame();
-		MoveResult result = mockGame.move(MARSHAL, loc44, loc34); 
-		
-		assertEquals(result.getBattleWinner().getPiece().getType(),PieceType.BOMB); //bomb is still there
-	}
-	
-	@Test
-	public void MinerDefeatsBomb() throws StrategyException
-	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
-		mockGame.startGame();
-		MoveResult result = mockGame.move(MINER, loc33, loc34); 
-		
-		assertEquals(result.getBattleWinner().getPiece().getType(),PieceType.MINER); //bomb doesn't move when it blows up a unit
-	}
-	
-	@Test
-	(expected=StrategyException.class)
-	public void BombCannotStrike() throws StrategyException {
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
-		mockGame.startGame();
-		MoveResult result = mockGame.move(BOMB, loc34, loc33); 
-		assert(false);
-	}
-	
-	@Test
-	public void spyDefeatsMarshal() throws StrategyException
-	{
-		game.startGame();
-		
-		game.move(MARSHAL, loc43, loc44);
-		game.move(SPY, loc46, loc45);
-		game.move(SPY, loc53, loc54);
-		MoveResult result = game.move(SPY, loc45, loc44);
-		
-		assertEquals(SPY, result.getBattleWinner().getPiece().getType());
-		assertEquals(BLUE, result.getBattleWinner().getPiece().getOwner());
-		assertEquals(loc44, result.getBattleWinner().getLocation());
-		assertEquals(MoveResultStatus.OK, result.getStatus());
-	}
-	
-	@Test
-	public void marshalDefeatsSpy() throws StrategyException
-	{
-		game.startGame();
-		
-		game.move(MARSHAL, loc43, loc44);
-		game.move(SPY, loc46, loc45);
-		MoveResult result = game.move(MARSHAL, loc44, loc45);
-		
-		assertEquals(MARSHAL, result.getBattleWinner().getPiece().getType());
-		assertEquals(RED, result.getBattleWinner().getPiece().getOwner());
-		assertEquals(loc45, result.getBattleWinner().getLocation());
-		assertEquals(MoveResultStatus.OK, result.getStatus());
-	}
-	
-	@Test
-	public void bombBeatsOther() throws StrategyException
-	{
-		redPieces.remove(0);
-		redPieces.remove(0);
-		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), loc22));
-		redPieces.add(new PieceLocationDescriptor(new Piece(BOMB, RED), loc13));
-		
-		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
-		game.startGame();
-		
-		game.move(SCOUT, loc83, loc84);
-		game.move(SERGEANT, loc16, loc15);
-		game.move(SCOUT,loc93, loc94);
-		game.move(SERGEANT, loc15, loc14);
-		game.move(SCOUT,loc84,loc85);
-		MoveResult result = game.move(SERGEANT, loc14, loc13);
-		
-		assertEquals(BOMB, result.getBattleWinner().getPiece().getType());
-		assertEquals(RED, result.getBattleWinner().getPiece().getOwner());
-		assertEquals(loc13, result.getBattleWinner().getLocation());
-		assertEquals(MoveResultStatus.OK, result.getStatus());
 	}
 }

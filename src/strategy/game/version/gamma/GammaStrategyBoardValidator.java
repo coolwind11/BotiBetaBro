@@ -26,7 +26,7 @@ import strategy.game.version.BaseStrategyBoardValidator;
  */
 public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	
-	private Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
+	private final Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
 	
 	/**
 	 * Creates a new gamma strategy board validator
@@ -63,7 +63,7 @@ public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		MIN_Y = 0;
 		
 		MIN_BLUE_STARTING_Y = 4;
-		MAX_RED_STARTING_Y = 1;		
+		MAX_RED_STARTING_Y = 1;
 	}
 	
 	/**

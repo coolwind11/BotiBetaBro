@@ -442,6 +442,7 @@ public class DeltaStrategyTest {
 	}
 	
 	@Test
+<<<<<<< HEAD
 	public void BombDoesNotMoveWhenWinner() throws StrategyException
 	{
 		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
@@ -478,6 +479,34 @@ public class DeltaStrategyTest {
 		mockGame.startGame();
 		MoveResult result = mockGame.move(BOMB, loc34, loc33); 
 		assert(false);
+=======
+	public void minerBeatsBomb() throws StrategyException
+	{
+		redPieces.remove(0);
+		redPieces.remove(0);
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), loc22));
+		redPieces.add(new PieceLocationDescriptor(new Piece(BOMB, RED), loc13));
+		
+		bluePieces.remove(0);
+		bluePieces.remove(0);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MINER, BLUE), loc16));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), loc09));
+		
+		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
+		game.startGame();
+		
+		game.move(SCOUT, loc83, loc84);
+		game.move(MINER, loc16, loc15);
+		game.move(SCOUT,loc93, loc94);
+		game.move(MINER, loc15, loc14);
+		game.move(SCOUT,loc84,loc85);
+		MoveResult result = game.move(MINER, loc14, loc13);
+		
+		assertEquals(MINER, result.getBattleWinner().getPiece().getType());
+		assertEquals(BLUE, result.getBattleWinner().getPiece().getOwner());
+		assertEquals(loc13, result.getBattleWinner().getLocation());
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+
 	}
 	
 	@Test
@@ -533,5 +562,6 @@ public class DeltaStrategyTest {
 		assertEquals(RED, result.getBattleWinner().getPiece().getOwner());
 		assertEquals(loc13, result.getBattleWinner().getLocation());
 		assertEquals(MoveResultStatus.OK, result.getStatus());
+>>>>>>> a095fa159bd7ae69c79716bb84b884c7818070e7
 	}
 }
