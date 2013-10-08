@@ -214,6 +214,18 @@ public class TestConfigurationFactory
 		return currentConfiguration;
 	}
 	
+	public ArrayList<PieceLocationDescriptor> getScoutTestConfigurationRed(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(SCOUT,RED,4,1);
+		
+		return currentConfiguration;
+	}
+	
+	public ArrayList<PieceLocationDescriptor> getEmptyConfiguration() {
+		return new ArrayList<PieceLocationDescriptor>();
+	}
+	
 	/**
 	 * @return the instance
 	 */
