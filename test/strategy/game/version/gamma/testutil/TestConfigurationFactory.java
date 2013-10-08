@@ -214,6 +214,24 @@ public class TestConfigurationFactory
 		return currentConfiguration;
 	}
 	
+	public ArrayList<PieceLocationDescriptor> getDrawConfigurationRed(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(SERGEANT,RED,3,3);
+		addToConfiguration(FLAG,RED,4,4);
+		
+		return currentConfiguration;
+	}
+	
+	public ArrayList<PieceLocationDescriptor> getDrawConfigurationBlue(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(SERGEANT,BLUE,3,4);
+		addToConfiguration(FLAG,BLUE,4,3);
+		
+		return currentConfiguration;
+	}
+	
 	/**
 	 * @return the instance
 	 */

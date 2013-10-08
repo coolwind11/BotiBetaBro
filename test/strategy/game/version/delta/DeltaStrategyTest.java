@@ -534,4 +534,15 @@ public class DeltaStrategyTest {
 		assertEquals(loc13, result.getBattleWinner().getLocation());
 		assertEquals(MoveResultStatus.OK, result.getStatus());
 	}
+	
+	
+	@Test
+	public void drawWhenOnlyFlagsRemain() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getDrawConfigurationRed(),TestConfigurationFactory.getInstance().getDrawConfigurationBlue());
+		mockGame.startGame();
+		MoveResult result = mockGame.move(SERGEANT, loc33, loc34);
+		
+		assertEquals(MoveResultStatus.DRAW,result.getStatus());
+	}
 }
