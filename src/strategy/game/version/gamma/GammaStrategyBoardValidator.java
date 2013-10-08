@@ -57,8 +57,8 @@ public class GammaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		validPieceCount.put(PieceType.SERGEANT, 3);
 		
 		MAX_PIECES = 24;
-		MAX_X = 5;
-		MAX_Y = 5;
+		MAX_X = 9;
+		MAX_Y = 9;
 		MIN_X = 0;
 		MIN_Y = 0;
 		

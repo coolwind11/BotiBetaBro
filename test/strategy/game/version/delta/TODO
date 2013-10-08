@@ -23,11 +23,7 @@ x Make an invalid move too far
 x Start game only can be called once
 x Cannot move bomb
 x Cannot move flag
-<<<<<<< HEAD
 - Scout can move any number of open spaces in one direction
-=======
-x Scout can move any number of open spaces in one direction
->>>>>>> 5846078a7a9625dea7ce121c7ce0667f7914fffd
 - Scout cannot move and strike on same turn
 x Scout cannot move over pieces
 - Miner defeats a bomb

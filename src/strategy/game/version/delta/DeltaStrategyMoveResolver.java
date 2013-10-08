@@ -9,10 +9,7 @@
  *******************************************************************************/
 package strategy.game.version.delta;
 
-import java.util.ArrayList;
-
 import strategy.common.PlayerColor;
-import strategy.common.StrategyException;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
@@ -51,7 +48,7 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		
 		final MoveResult firstResult;
 		
-		if (gameBoard.getPieceAt(toLocation).getType() == PieceType.BOMB) {
+		if (gameBoard.getPieceAt(toLocation) != null && gameBoard.getPieceAt(toLocation).getType() == PieceType.BOMB) {
 			firstResult = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
