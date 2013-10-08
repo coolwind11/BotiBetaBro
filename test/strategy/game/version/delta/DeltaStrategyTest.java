@@ -442,6 +442,42 @@ public class DeltaStrategyTest {
 	}
 	
 	@Test
+	public void scoutMoveHorizontal() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+ 
+		mockGame.startGame();
+		mockGame.move(SCOUT, loc41, loc81);
+	}
+	
+	@Test
+	public void scoutMoveVerticalBackwards() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+ 
+		mockGame.startGame();
+		mockGame.move(SCOUT, loc41, loc40);
+	}
+	
+	@Test
+	public void scoutMoveHorizontalBackwars() throws StrategyException
+	{
+		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+ 
+		mockGame.startGame();
+		mockGame.move(SCOUT, loc41, loc01);
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void scoutMoveOverPieces() throws StrategyException
+	{
+ 
+		game.startGame();
+		game.move(SCOUT, loc41, loc44);
+	}
+	
+	@Test
 	public void BombDoesNotMoveWhenWinner() throws StrategyException
 	{
 		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());

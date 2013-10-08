@@ -219,10 +219,17 @@ public class TestConfigurationFactory
 		
 		addToConfiguration(SERGEANT,RED,3,3);
 		addToConfiguration(FLAG,RED,4,4);
+		return currentConfiguration;
+	}
+	public ArrayList<PieceLocationDescriptor> getScoutTestConfigurationRed(){
+		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
+		
+		addToConfiguration(SCOUT,RED,4,1);
 		
 		return currentConfiguration;
 	}
 	
+
 	public ArrayList<PieceLocationDescriptor> getDrawConfigurationBlue(){
 		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
 		
@@ -230,6 +237,9 @@ public class TestConfigurationFactory
 		addToConfiguration(FLAG,BLUE,4,3);
 		
 		return currentConfiguration;
+	}
+	public ArrayList<PieceLocationDescriptor> getEmptyConfiguration() {
+		return new ArrayList<PieceLocationDescriptor>();
 	}
 	
 	/**
