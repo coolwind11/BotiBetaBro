@@ -13,11 +13,55 @@ package strategy.game.version.delta;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static strategy.common.PlayerColor.*;
-import static strategy.game.common.PieceType.*;
-import static strategy.game.version.gamma.testutil.TestLocations.*;
+import static strategy.common.PlayerColor.BLUE;
+import static strategy.common.PlayerColor.RED;
+import static strategy.game.common.PieceType.BOMB;
+import static strategy.game.common.PieceType.CHOKE_POINT;
+import static strategy.game.common.PieceType.FLAG;
+import static strategy.game.common.PieceType.LIEUTENANT;
+import static strategy.game.common.PieceType.MARSHAL;
+import static strategy.game.common.PieceType.MINER;
+import static strategy.game.common.PieceType.SCOUT;
+import static strategy.game.common.PieceType.SERGEANT;
+import static strategy.game.common.PieceType.SPY;
+import static strategy.game.version.gamma.testutil.TestLocations.badLoc;
+import static strategy.game.version.gamma.testutil.TestLocations.loc00;
+import static strategy.game.version.gamma.testutil.TestLocations.loc01;
+import static strategy.game.version.gamma.testutil.TestLocations.loc02;
+import static strategy.game.version.gamma.testutil.TestLocations.loc03;
+import static strategy.game.version.gamma.testutil.TestLocations.loc04;
+import static strategy.game.version.gamma.testutil.TestLocations.loc05;
+import static strategy.game.version.gamma.testutil.TestLocations.loc12;
+import static strategy.game.version.gamma.testutil.TestLocations.loc13;
+import static strategy.game.version.gamma.testutil.TestLocations.loc14;
+import static strategy.game.version.gamma.testutil.TestLocations.loc15;
+import static strategy.game.version.gamma.testutil.TestLocations.loc16;
+import static strategy.game.version.gamma.testutil.TestLocations.loc17;
+import static strategy.game.version.gamma.testutil.TestLocations.loc22;
+import static strategy.game.version.gamma.testutil.TestLocations.loc23;
+import static strategy.game.version.gamma.testutil.TestLocations.loc24;
+import static strategy.game.version.gamma.testutil.TestLocations.loc33;
+import static strategy.game.version.gamma.testutil.TestLocations.loc34;
+import static strategy.game.version.gamma.testutil.TestLocations.loc35;
+import static strategy.game.version.gamma.testutil.TestLocations.loc40;
+import static strategy.game.version.gamma.testutil.TestLocations.loc41;
+import static strategy.game.version.gamma.testutil.TestLocations.loc42;
+import static strategy.game.version.gamma.testutil.TestLocations.loc43;
+import static strategy.game.version.gamma.testutil.TestLocations.loc44;
+import static strategy.game.version.gamma.testutil.TestLocations.loc45;
+import static strategy.game.version.gamma.testutil.TestLocations.loc46;
+import static strategy.game.version.gamma.testutil.TestLocations.loc51;
+import static strategy.game.version.gamma.testutil.TestLocations.loc53;
+import static strategy.game.version.gamma.testutil.TestLocations.loc54;
+import static strategy.game.version.gamma.testutil.TestLocations.loc64;
+import static strategy.game.version.gamma.testutil.TestLocations.loc81;
+import static strategy.game.version.gamma.testutil.TestLocations.loc83;
+import static strategy.game.version.gamma.testutil.TestLocations.loc84;
+import static strategy.game.version.gamma.testutil.TestLocations.loc85;
+import static strategy.game.version.gamma.testutil.TestLocations.loc86;
+import static strategy.game.version.gamma.testutil.TestLocations.loc93;
+import static strategy.game.version.gamma.testutil.TestLocations.loc94;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,7 +76,6 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.StrategyBoard;
 import strategy.game.version.gamma.testutil.MockDeltaStrategyController;
 import strategy.game.version.gamma.testutil.TestConfigurationFactory;
 
@@ -512,7 +555,7 @@ public class DeltaStrategyTest {
 	public void BombCannotStrike() throws StrategyException {
 		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
 		mockGame.startGame();
-		MoveResult result = mockGame.move(BOMB, loc34, loc33); 
+		mockGame.move(BOMB, loc34, loc33); 
 		assert(false);
 	}
 	

@@ -21,28 +21,16 @@ x Cannot move bomb
 x Cannot move flag
 x Scout can move any number of open spaces in one direction
 x Scout cannot move and strike on same turn
-<<<<<<< HEAD
-= Scout cannot move over pieces
-= Miner defeats a bomb
-= Spy defeats a Marshall when Spy attacks
-= Marshall defeats spy when Marshall attacks
+x Scout cannot move over pieces
+x Miner defeats a bomb
+x Spy defeats a Marshall when Spy attacks
+x Marshall defeats spy when Marshall attacks
 x Bomb defeats everything but miner
 x When a bomb defeats a piece it does not move to the empty square
 x Bomb only destroyed when miner strikes it
 x Bomb cannot strike
-=======
-x Scout cannot move over pieces
-x Miner defeats a bomb
-
-x Spy defeats a Marshall when Spy attacks
-x Marshall defeats spy when Marshall attacks
-x Bomb defeats everything but miner
-= When a bomb defeats a piece it does not move to the empty square
-= Bomb only destroyed when miner strikes it
-= Bomb cannot strike
 
 - Draw a battle (non artistically)
 - Red Win a game
 - Red Lose a game
 - Draw a game
->>>>>>> a095fa159bd7ae69c79716bb84b884c7818070e7
