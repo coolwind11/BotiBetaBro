@@ -48,17 +48,12 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	{
 		
 		final MoveResult firstResult;
-
+		final MoveResult specialResult = dealWithSpecialCases(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
 		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
 
 
-		if (enemyPiece != null && pieceMoving == PieceType.SPY && enemyPiece.getType() == PieceType.MARSHAL){
-			gameBoard.removePiece(toLocation);
-			gameBoard.movePiece(fromLocation, toLocation);
-			firstResult = new MoveResult(MoveResultStatus.OK,
-					new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation));
-		} else if (enemyPiece != null && enemyPiece.getType() == PieceType.BOMB) {
-			firstResult = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+		if (specialResult != null){
+			firstResult = specialResult;
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		}
@@ -66,22 +61,35 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
-			MoveResultStatus resultStatus = firstResult.getStatus();
-			
-			//if player has no remaining pieces, or only a flag, they lose
-			 if (gameBoard.getRemainingPieceCount(PlayerColor.RED) == gameBoard.getRemainingPieceCount(PlayerColor.BLUE) 
-				&& gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) {
-				resultStatus = MoveResultStatus.DRAW; //both have only flag left, so draw
-			} else if (gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) { //assume 1 remaining piece must be flag
-				resultStatus = MoveResultStatus.BLUE_WINS;
-			} else if (gameBoard.getRemainingPieceCount(PlayerColor.BLUE) <= 1) {
-				resultStatus = MoveResultStatus.RED_WINS;
-			}
-			return new MoveResult(resultStatus, firstResult.getBattleWinner());
+			return handleEndGame(gameBoard,firstResult);
 		}
 	}
 	
+	
+	private MoveResult handleEndGame(StrategyBoard gameBoard,
+			MoveResult firstResult) {
+		MoveResultStatus resultStatus = firstResult.getStatus();
 		
+		//if player has no remaining pieces, or only a flag, they lose
+		 if (gameBoard.getRemainingPieceCount(PlayerColor.RED) == gameBoard.getRemainingPieceCount(PlayerColor.BLUE) 
+			&& gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) {
+			resultStatus = MoveResultStatus.DRAW; //both have only flag left, so draw
+		} else if (gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) { //assume 1 remaining piece must be flag
+			resultStatus = MoveResultStatus.BLUE_WINS;
+		} else if (gameBoard.getRemainingPieceCount(PlayerColor.BLUE) <= 1) {
+			resultStatus = MoveResultStatus.RED_WINS;
+		}
+		return new MoveResult(resultStatus, firstResult.getBattleWinner());
+	}
+
+	private MoveResult dealWithSpyMarshall(StrategyBoard gameBoard, PlayerColor currentTurn, 
+			PieceType pieceMoving, Location fromLocation, Location toLocation) {
+		gameBoard.removePiece(toLocation);
+		gameBoard.movePiece(fromLocation, toLocation);
+		return new MoveResult(MoveResultStatus.OK,
+				new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation));
+	}
+	
 	private MoveResult dealWithBomb(StrategyBoard gameBoard, PlayerColor currentTurn, 
 			PieceType pieceMoving, Location fromLocation, Location toLocation) {
 		
@@ -97,6 +105,22 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		
 		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation);
 		return new MoveResult(MoveResultStatus.OK, battleWinner);
+	}
+	
+	private MoveResult dealWithSpecialCases(StrategyBoard gameBoard, PlayerColor currentTurn, 
+			PieceType pieceMoving, Location fromLocation, Location toLocation) {
+		final MoveResult result;
+
+		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
+		if (enemyPiece != null && pieceMoving == PieceType.SPY && enemyPiece.getType() == PieceType.MARSHAL){
+			result = dealWithSpyMarshall(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+		} else if (enemyPiece != null && enemyPiece.getType() == PieceType.BOMB) {
+			result = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+		} else {
+			result = null;
+		}
+		
+		return result;
 	}
 	
 }
