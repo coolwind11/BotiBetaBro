@@ -382,83 +382,59 @@ public class DeltaStrategyTest {
 		assertEquals(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED), loc14), result.getBattleWinner());
 	}
 	
-	/*
 	@Test
 	public void redLoseABattle() throws StrategyException
 	{		
 		game.startGame();
 		
-		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2));
-		game.move(CAPTAIN, new Location2D(0,4), new Location2D(0,3));
-		game.move(LIEUTENANT, new Location2D(1,2), new Location2D(1,3));
-		MoveResult result = game.move(CAPTAIN, new Location2D(0,3), new Location2D(1,3));
+		game.move(SERGEANT, loc13, loc14);
+		game.move(SERGEANT, loc16, loc15);
+		game.move(LIEUTENANT, loc12, loc13);
+		game.move(SERGEANT, loc15, loc05);
+		game.move(SERGEANT, loc14, loc15);
+		game.move(LIEUTENANT, loc17, loc16);
+		MoveResult result = game.move(SERGEANT, loc15, loc16);
 		
 		assertEquals(MoveResultStatus.OK, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(CAPTAIN, BLUE), new Location2D(1,3)), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(LIEUTENANT, BLUE), loc15), result.getBattleWinner());
 	}
-	
-	@Test
-	public void blueWinAGame() throws StrategyException
-	{		
-		redPieces.remove(11);
-		redPieces.remove(0);
-		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, RED), new Location2D(5,1)));
-		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), new Location2D(0,1)));
-		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
-		game.startGame();
-		
-		game.move(SERGEANT, new Location2D(0,1), new Location2D(0,2));
-		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
-		game.move(LIEUTENANT, new Location2D(1,1), new Location2D(1,2)); //red
-		game.move(SERGEANT, new Location2D(4,3), new Location2D(4,2)); //blue
-		game.move(LIEUTENANT, new Location2D(1,2), new Location2D(1,1)); //red
-		game.move(SERGEANT, new Location2D(4,2), new Location2D(5,2));
-		game.move(SERGEANT, new Location2D(0,2), new Location2D(0,1));
 
-		MoveResult result = game.move(SERGEANT, new Location2D(5,2), new Location2D(5,1));
-
-		assertEquals(MoveResultStatus.BLUE_WINS, result.getStatus());
-	}
-	
-	@Test
-	public void redWinAGame() throws StrategyException
-	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
-		game.startGame();
-		
-		
-		game.move(SERGEANT, new Location2D(5,1), new Location2D(5,2));
-		
-		game.move(SERGEANT, new Location2D(0,4), new Location2D(0,3));
-		
-		game.move(SERGEANT, new Location2D(5,2), new Location2D(5,3)); //red
-		game.move(SERGEANT, new Location2D(0,3), new Location2D(0,2)); //blue
-		MoveResult result = game.move(SERGEANT, new Location2D(5,3), new Location2D(5,4)); //red
-		
-		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
-	}
-	
-	@Test
-	public void drawABattle() throws StrategyException
-	{		
-		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
-		game.startGame();
-		
-		game.move(SERGEANT, new Location2D(4,1), new Location2D(4,2));
-		game.move(SERGEANT, new Location2D(4,4), new Location2D(4,3));
-		MoveResult result = game.move(SERGEANT, new Location2D(4,2), new Location2D(4,3));
-		
-		assertEquals(MoveResultStatus.OK, result.getStatus());
-		assertEquals(null, result.getBattleWinner());
-	}
-	
 	@Test
 	(expected=StrategyException.class)
 	public void moveChokePoint() throws StrategyException
 	{
-		StrategyGameController game = factory.makeGammaStrategyGame(redPieces, bluePieces);
 		game.startGame();
 		
-		game.move(CHOKE_POINT, new Location2D(3,2), new Location2D(3,1));
-	}*/
+		game.move(CHOKE_POINT, loc24, loc14);
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void moveBomb() throws StrategyException
+	{
+		redPieces.remove(0);
+		redPieces.remove(1);
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), loc22));
+		redPieces.add(new PieceLocationDescriptor(new Piece(BOMB, RED), loc13));
+		
+		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
+		
+		game.startGame();
+		game.move(BOMB, loc13, loc14);
+	}
+	
+	@Test
+	public void moveScoutMultipleSpaces() throws StrategyException
+	{
+		game.startGame();
+		game.move(SCOUT, loc83, loc85);
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void moveScoutMultipleSpacesAndAttack() throws StrategyException
+	{
+		game.startGame();
+		game.move(SCOUT, loc83, loc86);
+	}
 }

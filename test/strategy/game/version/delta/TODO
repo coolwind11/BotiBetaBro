@@ -11,35 +11,20 @@ x Make an invalid move to a location off the board
 x Make an invalid move onto your self
 x Make an invalid move onto a choke point
 x Make an invalid move too far
-- Make invalid move diagonally
-- Make an invalid move onto your own team
-- Make an invalid move due to move repetition
-- Win a battle
-- Lose a battle
+x Make invalid move diagonally
+x Make an invalid move onto your own team
+x Make an invalid move due to move repetition
+x Win a battle
+x Lose a battle
 - Draw a battle (non artistically)
 - Red Win a game
 - Red Lose a game
 - Draw a game
-<<<<<<< HEAD
 x Start game only can be called once
 x Cannot move bomb
 x Cannot move flag
-- Scout can move any number of open spaces in one direction
-- Scout cannot move and strike on same turn
-x Scout cannot move over pieces
-- Miner defeats a bomb
-- Spy defeats a Marshall when Spy attacks
-- Marshall defeats spy when Marshall attacks
-- Bomb defeats everything but miner
-- When a bomb defeats a piece it does not move to the empty square
-- Bomb only destroyed when miner strikes it
-- Bomb cannot strike
-=======
-= Start game only can be called once
-= Cannot move bomb
-= Cannot move flag
-= Scout can move any number of open spaces in one direction
-= Scout cannot move and strike on same turn
+x Scout can move any number of open spaces in one direction
+x Scout cannot move and strike on same turn
 = Scout cannot move over pieces
 = Miner defeats a bomb
 = Spy defeats a Marshall when Spy attacks
@@ -48,4 +33,3 @@ x Scout cannot move over pieces
 = When a bomb defeats a piece it does not move to the empty square
 = Bomb only destroyed when miner strikes it
 = Bomb cannot strike
->>>>>>> 5addee12a874401a8c8471c2d844942649f27a62

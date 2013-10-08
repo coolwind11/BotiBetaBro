@@ -29,6 +29,9 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 {	
 	private final StrategyMoveRememberator moveRememberator;
 
+	/**
+	 * Creates a new DeltaStrategyMoveValidator
+	 */
 	public DeltaStrategyMoveValidator()
 	{
 		moveRememberator = new StrategyMoveRememberator(4);
@@ -54,6 +57,9 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 		validMoveDistances.put(PieceType.SPY, 1);
 	}
 
+	/**
+	 * @see strategy.game.version.StrategyMoveValidator#checkMoveValidity(StrategyBoard, PlayerColor, PieceType, Location, Location)
+	 */
 	@Override
 	public void checkMoveValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
 			Location moveFromLocation, Location moveToLocation) throws StrategyException
@@ -83,43 +89,52 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 		
 		if(movePiece == PieceType.SCOUT)
 		{
-			
-			
-			int distance = moveFromLocation.distanceTo(moveToLocation);
-			
-			if (gameBoard.getPieceAt(moveToLocation) != null && distance > 1) {
-				throw new StrategyException("Scout cannot move and strike on the same turn");
-			}
-			
-			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-			boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) < moveToLocation.getCoordinate(Coordinate.Y_COORDINATE)
-					: moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-			//Check every spot to the to location.
-			
-			Location2D nextCoordinate;
-			int startX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-			int startY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
-			
-			int step = forward ? 1 : -1;
-			int start = verticalMove ? startY : startX; //start at the next spot
-			int stop = verticalMove ? startY + step*distance : startX + step*distance;
-			for(int i = start; i != stop ; i = i + step)
-			{
-				if (!forward) {
-					nextCoordinate = verticalMove ? new Location2D(startX, i)
-					: new Location2D(i, startY);
-				} else {
-					nextCoordinate = verticalMove ? new Location2D(startX, i)
-					: new Location2D(i, startY);
-				}
-
-				
-				if (gameBoard.getPieceAt(nextCoordinate) != null) {
-					throw new StrategyException("Cannot move scout through another piece");
-				}
-			}
+			checkScoutValidity(gameBoard, currentTurn, movePiece, moveFromLocation, moveToLocation);
 		}
 		
 		moveRememberator.addMove(entry);
+	}
+	
+	/**
+	 * Checks if the move is valid for a scout piece type
+	 * @param gameBoard the current game board
+	 * @param currentTurn the player whose turn it is
+	 * @param movePiece the piece that is being moved
+	 * @param moveFromLocation the move from location
+	 * @param moveToLocation the move to location
+	 * @throws StrategyException if the move is not valid.
+	 */
+	private void checkScoutValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
+			Location moveFromLocation, Location moveToLocation) throws StrategyException
+	{
+		int distance = moveFromLocation.distanceTo(moveToLocation);
+		
+		if (gameBoard.getPieceAt(moveToLocation) != null && distance > 1) {
+			throw new StrategyException("Scout cannot move and strike on the same turn");
+		}
+		
+		boolean verticalMove = 
+				moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+		boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) 
+				< moveToLocation.getCoordinate(Coordinate.Y_COORDINATE) : 
+					moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+		
+		//Check every spot to the to location.
+		Location2D nextCoordinate;
+		int startX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
+		int startY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
+		
+		int step = forward ? 1 : -1;
+		int start = verticalMove ? startY : startX; //start at the next spot
+		int stop = verticalMove ? startY + step*(distance) : startX + step*(distance);
+		for(int i = start + step; i != stop ; i = i + step)
+		{
+			
+			nextCoordinate = verticalMove ? new Location2D(startX, i) : new Location2D(i, startY);
+				
+			if (gameBoard.getPieceAt(nextCoordinate) != null) {
+				throw new StrategyException("Cannot move scout through another piece");
+			}
+		}
 	}
 }

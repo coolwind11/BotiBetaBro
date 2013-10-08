@@ -99,23 +99,25 @@ public class TestConfigurationFactory
 	public ArrayList<PieceLocationDescriptor> getRedDeltaConfiguration()
 	{
 		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
-		addToConfiguration(MINER,RED,0,0);
+		addToConfiguration(BOMB,RED,2,2);
+		addToConfiguration(SERGEANT,RED,1,3);
+		addToConfiguration(MINER,RED,0,0); //0
 		addToConfiguration(MAJOR,RED,1,0);
 		addToConfiguration(COLONEL,RED,2,0);
 		addToConfiguration(GENERAL,RED,3,0);
 		addToConfiguration(SCOUT,RED,4,0);
-		addToConfiguration(SCOUT,RED,5,0);
+		addToConfiguration(SCOUT,RED,5,0); //5
 		addToConfiguration(COLONEL,RED,6,0);
 		addToConfiguration(MAJOR,RED,7,0);
 		addToConfiguration(MAJOR,RED,8,0);
 		addToConfiguration(SERGEANT,RED,9,0);
 
-		addToConfiguration(CAPTAIN,RED,0,1);
+		addToConfiguration(CAPTAIN,RED,0,1); //10
 		addToConfiguration(CAPTAIN,RED,1,1);
 		addToConfiguration(MINER,RED,2,1);
 		addToConfiguration(BOMB,RED,3,1);
 		addToConfiguration(SCOUT,RED,4,1);
-		addToConfiguration(SCOUT,RED,5,1);
+		addToConfiguration(SCOUT,RED,5,1); //15
 		addToConfiguration(BOMB,RED,6,1);
 		addToConfiguration(MINER,RED,7,1);
 		addToConfiguration(CAPTAIN,RED,8,1);
@@ -123,7 +125,6 @@ public class TestConfigurationFactory
 
 		addToConfiguration(LIEUTENANT,RED,0,2);
 		addToConfiguration(LIEUTENANT,RED,1,2);
-		addToConfiguration(BOMB,RED,2,2);
 		addToConfiguration(BOMB,RED,3,2);
 		addToConfiguration(MINER,RED,4,2);
 		addToConfiguration(MINER,RED,5,2);
@@ -133,7 +134,6 @@ public class TestConfigurationFactory
 		addToConfiguration(LIEUTENANT,RED,9,2);	
 
 		addToConfiguration(FLAG,RED,0,3);
-		addToConfiguration(SERGEANT,RED,1,3);
 		addToConfiguration(SCOUT,RED,2,3);
 		addToConfiguration(SERGEANT,RED,3,3);
 		addToConfiguration(MARSHAL,RED,4,3);
