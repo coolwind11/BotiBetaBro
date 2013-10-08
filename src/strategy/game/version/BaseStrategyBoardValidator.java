@@ -109,35 +109,22 @@ public abstract class BaseStrategyBoardValidator implements
 			}
 		}
 		
-		//Check for blue out of bounds/offsides
-		for (PieceLocationDescriptor bluePiece : blueConfig) {
-			int x = bluePiece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
-			int y = bluePiece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
-			
-			if (x > MAX_X || x < MIN_X || y > MAX_Y || y < MIN_Y) {
-				return false;
-			}
-			
-			if (y < MIN_BLUE_STARTING_Y) {
-				return false;
-			}
-			
-			if(seenLocations.contains(bluePiece.getLocation())) {
-				return false;
-			}
-			seenLocations.add(bluePiece.getLocation());
-			
-			if(bluePieceCount.containsKey(bluePiece.getPiece().getType()))
-			{
-				bluePieceCount.put(bluePiece.getPiece().getType(), 
-						redPieceCount.get(bluePiece.getPiece().getType()) + 1);
-			}
-			else
-			{
-				bluePieceCount.put(bluePiece.getPiece().getType(), 1);
-			}
+		if(!hasRightNumberOfPieces(redPieceCount, bluePieceCount))
+		{
+			return false;
 		}
 		
+		return true;
+	}
+	
+	/**
+	 * Checks that each side has the right piece count
+	 * @param redPieceCount the red piece count that has been tallied
+	 * @param bluePieceCount the blue piece count that has been tallied
+	 * @return whether or not both sides have the right number of pieces.
+	 */
+	private boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount)
+	{
 		//Check for right number of pieces.
 		for(PieceType piece : validPieceCount.keySet())
 		{
@@ -156,7 +143,6 @@ public abstract class BaseStrategyBoardValidator implements
 				return false;
 			}
 		}
-		
 		
 		return true;
 	}
