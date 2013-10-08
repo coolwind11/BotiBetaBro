@@ -437,4 +437,34 @@ public class DeltaStrategyTest {
 		game.startGame();
 		game.move(SCOUT, loc83, loc86);
 	}
+	
+	@Test
+	public void minerBeatsBomb() throws StrategyException
+	{
+		redPieces.remove(0);
+		redPieces.remove(0);
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), loc22));
+		redPieces.add(new PieceLocationDescriptor(new Piece(BOMB, RED), loc13));
+		
+		bluePieces.remove(0);
+		bluePieces.remove(0);
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MINER, BLUE), loc16));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, BLUE), loc09));
+		
+		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
+		game.startGame();
+		
+		game.move(SCOUT, loc83, loc84);
+		game.move(MINER, loc16, loc15);
+		game.move(SCOUT,loc93, loc94);
+		game.move(MINER, loc15, loc14);
+		game.move(SCOUT,loc84,loc85);
+		MoveResult result = game.move(MINER, loc14, loc13);
+		
+		assertEquals(MINER, result.getBattleWinner().getPiece().getType());
+		assertEquals(BLUE, result.getBattleWinner().getPiece().getOwner());
+		assertEquals(loc13, result.getBattleWinner().getLocation());
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+
+	}
 }

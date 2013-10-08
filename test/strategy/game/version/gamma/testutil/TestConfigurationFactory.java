@@ -150,6 +150,7 @@ public class TestConfigurationFactory
 	{
 		currentConfiguration = new ArrayList<PieceLocationDescriptor>();
 		addToConfiguration(MINER,BLUE,0,9);
+		addToConfiguration(SERGEANT,BLUE,1,6);
 		addToConfiguration(MAJOR,BLUE,1,9);
 		addToConfiguration(COLONEL,BLUE,2,9);
 		addToConfiguration(GENERAL,BLUE,3,9);
@@ -183,7 +184,6 @@ public class TestConfigurationFactory
 		addToConfiguration(LIEUTENANT,BLUE,9,7);
 
 		addToConfiguration(FLAG,BLUE,0,6);
-		addToConfiguration(SERGEANT,BLUE,1,6);
 		addToConfiguration(SCOUT,BLUE,2,6);
 		addToConfiguration(SERGEANT,BLUE,3,6);
 		addToConfiguration(MARSHAL,BLUE,5,6);
