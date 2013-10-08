@@ -30,6 +30,6 @@ public class BetaStrategyMoveValidator extends BaseStrategyMoveValidator
 		validMoveDistances.put(PieceType.CHOKE_POINT, 0);
 		validMoveDistances.put(PieceType.LIEUTENANT, 1);
 		validMoveDistances.put(PieceType.MARSHAL, 1);
-		validMoveDistances.put(PieceType.SERGEANT, 1);	
+		validMoveDistances.put(PieceType.SERGEANT, 1);
 	}
 }

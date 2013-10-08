@@ -26,7 +26,7 @@ import strategy.game.version.BaseStrategyBoardValidator;
  */
 public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
 	
-	private Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
+	private final Collection<PieceLocationDescriptor> otherPieces = new ArrayList<PieceLocationDescriptor>();
 	
 	/**
 	 * Creates a new delta strategy board validator
@@ -73,7 +73,7 @@ public class DeltaStrategyBoardValidator extends BaseStrategyBoardValidator {
 		MIN_Y = 0;
 		
 		MIN_BLUE_STARTING_Y = 6;
-		MAX_RED_STARTING_Y = 3;		
+		MAX_RED_STARTING_Y = 3;
 	}
 	
 	/**

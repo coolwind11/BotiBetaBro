@@ -23,7 +23,10 @@ import strategy.game.version.StrategyBoard;
  * @version 9/23/13
  */
 public class GammaStrategyMoveResolver extends BaseStrategyMoveResolver {
-
+	
+	/**
+	 * Sets up the configuration of the base resolver.
+	 */
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -34,6 +37,9 @@ public class GammaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		pieceRank.put(PieceType.FLAG, 1);
 	}
 	
+	/**
+	 * @see strategy.game.version.StrategyMoveResolver#resolveMove(StrategyBoard, PlayerColor, PieceType, Location, Location)
+	 */
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{

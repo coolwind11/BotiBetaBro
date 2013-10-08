@@ -25,8 +25,10 @@ import strategy.game.version.StrategyBoard;
  * @version 9/23/13
  */
 public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
-
 	
+	/**
+	 * Sets up the configuration of the base resolver.
+	 */
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -43,14 +45,14 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		pieceRank.put(PieceType.FLAG, 1);
 	}
 	
+	/**
+	 * @see strategy.game.version.StrategyMoveResolver#resolveMove(StrategyBoard, PlayerColor, PieceType, Location, Location)
+	 */
 	public MoveResult resolveMove(StrategyBoard gameBoard, PlayerColor currentTurn,
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
-	{
-		
+	{	
 		final MoveResult firstResult;
-		final MoveResult specialResult = dealWithSpecialCases(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
-		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
-
+		final MoveResult specialResult = dealWithSpecialCases(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 
 		if (specialResult != null){
 			firstResult = specialResult;
@@ -61,11 +63,16 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
-			return handleEndGame(gameBoard,firstResult);
+			return handleEndGame(gameBoard, firstResult);
 		}
 	}
 	
-	
+	/**
+	 * Handles the end game conditions to see if any player won.
+	 * @param gameBoard the current game board
+	 * @param firstResult the initial move result
+	 * @return the new move result if the game has been won or lost.
+	 */
 	private MoveResult handleEndGame(StrategyBoard gameBoard,
 			MoveResult firstResult) {
 		MoveResultStatus resultStatus = firstResult.getStatus();
@@ -82,40 +89,24 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		return new MoveResult(resultStatus, firstResult.getBattleWinner());
 	}
 
-	private MoveResult dealWithSpyMarshall(StrategyBoard gameBoard, PlayerColor currentTurn, 
-			PieceType pieceMoving, Location fromLocation, Location toLocation) {
-		gameBoard.removePiece(toLocation);
-		gameBoard.movePiece(fromLocation, toLocation);
-		return new MoveResult(MoveResultStatus.OK,
-				new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation));
-	}
-	
-	private MoveResult dealWithBomb(StrategyBoard gameBoard, PlayerColor currentTurn, 
-			PieceType pieceMoving, Location fromLocation, Location toLocation) {
-		
-		PieceLocationDescriptor battleWinner;
-		if (pieceMoving == PieceType.MINER){
-			//remove the bomb and put the miner in its place
-			gameBoard.removePiece(toLocation);
-			gameBoard.movePiece(fromLocation,toLocation);
-			
-		} else {
-			gameBoard.removePiece(fromLocation); //kill the piece that stepped on the bomb
-		}
-		
-		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation);
-		return new MoveResult(MoveResultStatus.OK, battleWinner);
-	}
-	
+	/**
+	 * Deals with the different special cases, such as spy/marshall relationship and bomb
+	 * @param gameBoard the current game board
+	 * @param currentTurn the player whose turn it is
+	 * @param pieceMoving the piece type that is being moved
+	 * @param fromLocation the location that is being moved from
+	 * @param toLocation the location that is being moved to
+	 * @return the result of the move
+	 */
 	private MoveResult dealWithSpecialCases(StrategyBoard gameBoard, PlayerColor currentTurn, 
 			PieceType pieceMoving, Location fromLocation, Location toLocation) {
 		final MoveResult result;
 
 		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
 		if (enemyPiece != null && pieceMoving == PieceType.SPY && enemyPiece.getType() == PieceType.MARSHAL){
-			result = dealWithSpyMarshall(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+			result = dealWithSpyMarshall(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		} else if (enemyPiece != null && enemyPiece.getType() == PieceType.BOMB) {
-			result = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
+			result = dealWithBomb(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		} else {
 			result = null;
 		}
@@ -123,4 +114,46 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		return result;
 	}
 	
+	/**
+	 * Deals with the spy and marshal relationship
+	 * @param gameBoard the current game board
+	 * @param currentTurn the current turn of the player
+	 * @param pieceMoving the piece type that is moving
+	 * @param fromLocation the location that is being moved from
+	 * @param toLocation the location that is being moved to
+	 * @return the resulting move result.
+	 */
+	private MoveResult dealWithSpyMarshall(StrategyBoard gameBoard, PlayerColor currentTurn, 
+			PieceType pieceMoving, Location fromLocation, Location toLocation) {
+		gameBoard.removePiece(toLocation);
+		gameBoard.movePiece(fromLocation, toLocation);
+		return new MoveResult(MoveResultStatus.OK,
+				new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation), toLocation));
+	}
+	
+	/**
+	 * Deals with the bomb special condition
+	 * @param gameBoard the current game board
+	 * @param currentTurn the current turn of the player
+	 * @param pieceMoving the piece type that is moving
+	 * @param fromLocation the location that is being moved from
+	 * @param toLocation the location that is being moved to
+	 * @return the resulting move result.
+	 */
+	private MoveResult dealWithBomb(StrategyBoard gameBoard, PlayerColor currentTurn, 
+			PieceType pieceMoving, Location fromLocation, Location toLocation) {
+		
+		final PieceLocationDescriptor battleWinner;
+		if (pieceMoving == PieceType.MINER){
+			//remove the bomb and put the miner in its place
+			gameBoard.removePiece(toLocation);
+			gameBoard.movePiece(fromLocation, toLocation);
+			
+		} else {
+			gameBoard.removePiece(fromLocation); //kill the piece that stepped on the bomb
+		}
+		
+		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation), toLocation);
+		return new MoveResult(MoveResultStatus.OK, battleWinner);
+	}	
 }

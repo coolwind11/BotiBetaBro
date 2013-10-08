@@ -26,7 +26,7 @@ import strategy.game.version.StrategyMoveRememberator;
  * @version Sept 22, 2013
  */
 public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
-{	
+{
 	private final StrategyMoveRememberator moveRememberator;
 
 	/**
@@ -37,6 +37,9 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 		moveRememberator = new StrategyMoveRememberator(4);
 	}
 	
+	/**
+	 * Sets up the move constraints for the game.
+	 */
 	@Override
 	protected void setupMoveConstraints()
 	{
@@ -107,27 +110,27 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 	private void checkScoutValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
 			Location moveFromLocation, Location moveToLocation) throws StrategyException
 	{
-		int distance = moveFromLocation.distanceTo(moveToLocation);
+		final int distance = moveFromLocation.distanceTo(moveToLocation);
 		
 		if (gameBoard.getPieceAt(moveToLocation) != null && distance > 1) {
 			throw new StrategyException("Scout cannot move and strike on the same turn");
 		}
 		
-		boolean verticalMove = 
+		final boolean verticalMove = 
 				moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-		boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) 
+		final boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) 
 				< moveToLocation.getCoordinate(Coordinate.Y_COORDINATE) : 
 					moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 		
 		//Check every spot to the to location.
 		Location2D nextCoordinate;
-		int startX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
-		int startY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
+		final int startX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
+		final int startY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
 		
-		int step = forward ? 1 : -1;
-		int start = verticalMove ? startY : startX; //start at the next spot
-		int stop = verticalMove ? startY + step*(distance) : startX + step*(distance);
-		for(int i = start + step; i != stop ; i = i + step)
+		final int step = forward ? 1 : -1;
+		final int start = verticalMove ? startY : startX; //start at the next spot
+		final int stop = verticalMove ? startY + step * distance : startX + step * distance;
+		for(int i = start + step; i != stop ; i += step)
 		{
 			
 			nextCoordinate = verticalMove ? new Location2D(startX, i) : new Location2D(i, startY);

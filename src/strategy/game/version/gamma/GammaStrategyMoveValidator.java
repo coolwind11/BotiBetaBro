@@ -24,14 +24,20 @@ import strategy.game.version.StrategyMoveRememberator;
  * @version Sept 22, 2013
  */
 public class GammaStrategyMoveValidator extends BaseStrategyMoveValidator
-{	
+{
 	private final StrategyMoveRememberator moveRememberator;
 
+	/**
+	 * Creates a new Gamma Strategy move validator
+	 */
 	public GammaStrategyMoveValidator()
 	{
 		moveRememberator = new StrategyMoveRememberator(4);
 	}
 	
+	/**
+	 * Sets up the move constraints for the game.
+	 */
 	@Override
 	protected void setupMoveConstraints()
 	{
@@ -46,6 +52,9 @@ public class GammaStrategyMoveValidator extends BaseStrategyMoveValidator
 		validMoveDistances.put(PieceType.SERGEANT, 1);
 	}
 
+	/**
+	 * @see strategy.game.version.StrategyMoveValidator#checkMoveValidity(StrategyBoard, PlayerColor, PieceType, Location, Location)
+	 */
 	@Override
 	public void checkMoveValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
 			Location moveFromLocation, Location moveToLocation) throws StrategyException
