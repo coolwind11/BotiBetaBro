@@ -83,10 +83,15 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 		
 		if(movePiece == PieceType.SCOUT)
 		{
+			
+			
 			int distance = moveFromLocation.distanceTo(moveToLocation);
 			
-			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			if (gameBoard.getPieceAt(moveToLocation) != null && distance > 1) {
+				throw new StrategyException("Scout cannot move and strike on the same turn");
+			}
 			
+			boolean verticalMove = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) == moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			boolean forward = verticalMove ? moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE) < moveToLocation.getCoordinate(Coordinate.Y_COORDINATE)
 					: moveFromLocation.getCoordinate(Coordinate.X_COORDINATE) < moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
 			//Check every spot to the to location.

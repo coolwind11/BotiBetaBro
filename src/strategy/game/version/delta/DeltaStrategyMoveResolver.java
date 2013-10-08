@@ -13,6 +13,7 @@ import strategy.common.PlayerColor;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
+import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveResolver;
@@ -47,8 +48,16 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 	{
 		
 		final MoveResult firstResult;
-		
-		if (gameBoard.getPieceAt(toLocation) != null && gameBoard.getPieceAt(toLocation).getType() == PieceType.BOMB) {
+
+		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
+
+
+		if (enemyPiece != null && pieceMoving == PieceType.SPY && enemyPiece.getType() == PieceType.MARSHAL){
+			gameBoard.removePiece(toLocation);
+			gameBoard.movePiece(fromLocation, toLocation);
+			firstResult = new MoveResult(MoveResultStatus.OK,
+					new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation));
+		} else if (enemyPiece != null && enemyPiece.getType() == PieceType.BOMB) {
 			firstResult = dealWithBomb(gameBoard,currentTurn,pieceMoving,fromLocation,toLocation);
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
@@ -72,6 +81,7 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		}
 	}
 	
+		
 	private MoveResult dealWithBomb(StrategyBoard gameBoard, PlayerColor currentTurn, 
 			PieceType pieceMoving, Location fromLocation, Location toLocation) {
 		
@@ -88,4 +98,5 @@ public class DeltaStrategyMoveResolver extends BaseStrategyMoveResolver {
 		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation),toLocation);
 		return new MoveResult(MoveResultStatus.OK, battleWinner);
 	}
+	
 }
