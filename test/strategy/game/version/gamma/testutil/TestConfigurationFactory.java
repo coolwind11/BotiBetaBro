@@ -186,8 +186,8 @@ public class TestConfigurationFactory
 		addToConfiguration(SERGEANT,BLUE,1,6);
 		addToConfiguration(SCOUT,BLUE,2,6);
 		addToConfiguration(SERGEANT,BLUE,3,6);
-		addToConfiguration(MARSHAL,BLUE,4,6);
-		addToConfiguration(SPY,BLUE,5,6);
+		addToConfiguration(MARSHAL,BLUE,5,6);
+		addToConfiguration(SPY,BLUE,4,6);
 		addToConfiguration(SERGEANT,BLUE,6,6);
 		addToConfiguration(SCOUT,BLUE,7,6);
 		addToConfiguration(SCOUT,BLUE,8,6);

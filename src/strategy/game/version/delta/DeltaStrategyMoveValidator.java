@@ -37,8 +37,8 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 	@Override
 	protected void setupMoveConstraints()
 	{
-		boardHeight = 6;
-		boardWidth = 6;
+		boardHeight = 10;
+		boardWidth = 10;
 		validMoveDistances.put(PieceType.BOMB, 0);
 		validMoveDistances.put(PieceType.CAPTAIN, 1);
 		validMoveDistances.put(PieceType.COLONEL, 1);
