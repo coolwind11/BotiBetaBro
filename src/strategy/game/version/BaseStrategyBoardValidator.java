@@ -83,22 +83,8 @@ public abstract class BaseStrategyBoardValidator implements
 		final Map<PieceType, Integer> redPieceCount = getPieceCounts(redConfig);
 		final Map<PieceType, Integer> bluePieceCount = getPieceCounts(blueConfig);
 		//Check for right number of pieces.
-		for(PieceType piece : validPieceCount.keySet())
-		{
-			int requiredNumber = validPieceCount.get(piece);
-			
-			Integer redCount = redPieceCount.get(piece);
-			Integer blueCount = bluePieceCount.get(piece);
-			
-			if(redCount == null || blueCount == null)
-			{
-				return false;
-			}
-			
-			if(redCount != requiredNumber || redCount != requiredNumber)
-			{
-				return false;
-			}
+		if(!hasRightNumberOfPieces(redPieceCount,bluePieceCount)){
+			return false;
 		}
 		
 		
@@ -180,9 +166,37 @@ public abstract class BaseStrategyBoardValidator implements
 			seenLocations.add(bluePiece.getLocation());
 		}
 		
+		
 		return true;
 	}
 	
-	
-	
+	/**
+	 * Checks that each side has the right piece count
+	 * @param redPieceCount the red piece count that has been tallied
+	 * @param bluePieceCount the blue piece count that has been tallied
+	 * @return whether or not both sides have the right number of pieces.
+	 */
+	private boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount)
+	{
+		//Check for right number of pieces.
+		for(PieceType piece : validPieceCount.keySet())
+		{
+			int requiredNumber = validPieceCount.get(piece);
+			
+			Integer redCount = redPieceCount.get(piece);
+			Integer blueCount = bluePieceCount.get(piece);
+			
+			if(redCount == null || blueCount == null)
+			{
+				return false;
+			}
+			
+			if(redCount != requiredNumber || redCount != requiredNumber)
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }
