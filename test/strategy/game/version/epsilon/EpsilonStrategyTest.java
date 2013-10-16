@@ -651,6 +651,22 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
+	public void firstLieutenantAttackVertical() throws StrategyException
+	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc23));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc23);
+		
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc23), result.getBattleWinner());
+	}
+	
+	@Test
 	public void firstLtLoseAttackMultipleSpaces() throws StrategyException
 	{
 		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
