@@ -46,4 +46,4 @@ x End game when both flags captured
 x Move result status is FLAG_CAPTURED when a flag is captured first
 x A move with all null parameters is a resign
 
--Game reporter stuff
+xGame reporter stuff
