@@ -176,7 +176,7 @@ public abstract class BaseStrategyBoardValidator implements
 	 * @param bluePieceCount the blue piece count that has been tallied
 	 * @return whether or not both sides have the right number of pieces.
 	 */
-	private boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount)
+	protected boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount)
 	{
 		//Check for right number of pieces.
 		for(PieceType piece : validPieceCount.keySet())

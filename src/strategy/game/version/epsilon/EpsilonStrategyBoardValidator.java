@@ -12,6 +12,7 @@ package strategy.game.version.epsilon;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import strategy.game.common.Location2D;
 import strategy.game.common.Piece;
@@ -84,5 +85,36 @@ public class EpsilonStrategyBoardValidator extends BaseStrategyBoardValidator {
 	public Collection<PieceLocationDescriptor> getGameSpecificPieces()
 	{
 		return otherPieces;
+	}
+	
+	@Override
+	protected boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount) {
+		
+		int offBy = 0;
+		
+		for(PieceType piece : validPieceCount.keySet())
+		{
+			int requiredNumber = validPieceCount.get(piece);
+			
+			Integer redCount = redPieceCount.get(piece);
+			Integer blueCount = bluePieceCount.get(piece);
+			
+			if(redCount == null || blueCount == null)
+			{
+				return false;
+			}
+			
+			if(redCount != requiredNumber || blueCount != requiredNumber)
+			{
+				int using = redCount != requiredNumber ? redCount : blueCount;
+				offBy += Math.abs(requiredNumber - using);
+			}
+		}
+		
+		if (offBy > 1){
+			return false;
+		}
+		
+		return true;
 	}
 }

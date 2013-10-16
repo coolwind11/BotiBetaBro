@@ -68,6 +68,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 			gameBoard.movePiece(toLocation, fromLocation);
 			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,fromLocation));
 		}
+		
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
