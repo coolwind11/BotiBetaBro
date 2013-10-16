@@ -67,6 +67,7 @@ public class DeltaStrategyMoveValidator extends BaseStrategyMoveValidator
 	public void checkMoveValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
 			Location moveFromLocation, Location moveToLocation) throws StrategyException
 	{
+
 		//Check for choke points
 		if(gameBoard.getPieceAt(moveToLocation) != null && 
 				gameBoard.getPieceAt(moveToLocation).getType() == PieceType.CHOKE_POINT)

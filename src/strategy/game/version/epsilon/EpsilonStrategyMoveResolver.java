@@ -111,6 +111,10 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 			PieceType pieceMoving, Location fromLocation, Location toLocation) {
 		final MoveResult result;
 
+		if(gameBoard.getPieceAt(fromLocation) == null && gameBoard.getPieceAt(toLocation) == null){
+			return new MoveResult(currentTurn == PlayerColor.BLUE ? MoveResultStatus.RED_WINS : MoveResultStatus.BLUE_WINS,
+					new PieceLocationDescriptor(null,null));
+		}
 		final Piece enemyPiece = gameBoard.getPieceAt(toLocation);
 		if (enemyPiece != null && pieceMoving == PieceType.SPY && enemyPiece.getType() == PieceType.MARSHAL){
 			result = dealWithSpyMarshall(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);

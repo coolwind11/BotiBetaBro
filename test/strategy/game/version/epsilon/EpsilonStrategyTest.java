@@ -391,15 +391,6 @@ public class EpsilonStrategyTest
 		
 		game.move(FLAG, loc13, loc14);
 	}
-	
-	@Test
-	(expected=StrategyException.class)
-	public void makeInvalidMoveNoPiece() throws StrategyException
-	{		
-		game.startGame();
-		
-		game.move(FLAG, loc04, loc05);
-	}
 			
 	@Test
 	public void makeValidMoveAlmostRepitition() throws StrategyException

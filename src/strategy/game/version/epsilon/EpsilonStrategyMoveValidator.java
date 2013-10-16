@@ -69,6 +69,9 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 	public void checkMoveValidity(StrategyBoard gameBoard, PlayerColor currentTurn, PieceType movePiece, 
 			Location moveFromLocation, Location moveToLocation) throws StrategyException
 	{
+		if(gameBoard.getPieceAt(moveFromLocation) == null && gameBoard.getPieceAt(moveToLocation) == null){
+			return; //will resign during move resolve phase
+		}
 		//Check for choke points
 		if(gameBoard.getPieceAt(moveToLocation) != null && 
 				gameBoard.getPieceAt(moveToLocation).getType() == PieceType.CHOKE_POINT)
