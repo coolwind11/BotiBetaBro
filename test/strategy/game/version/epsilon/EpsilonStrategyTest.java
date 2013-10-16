@@ -19,7 +19,6 @@ import static strategy.game.common.PieceType.BOMB;
 import static strategy.game.common.PieceType.CHOKE_POINT;
 import static strategy.game.common.PieceType.FIRST_LIEUTENANT;
 import static strategy.game.common.PieceType.FLAG;
-import static strategy.game.common.PieceType.LIEUTENANT;
 import static strategy.game.common.PieceType.MARSHAL;
 import static strategy.game.common.PieceType.MINER;
 import static strategy.game.common.PieceType.SCOUT;
@@ -32,6 +31,7 @@ import static strategy.game.version.testutil.TestLocations.loc02;
 import static strategy.game.version.testutil.TestLocations.loc03;
 import static strategy.game.version.testutil.TestLocations.loc04;
 import static strategy.game.version.testutil.TestLocations.loc05;
+import static strategy.game.version.testutil.TestLocations.loc06;
 import static strategy.game.version.testutil.TestLocations.loc12;
 import static strategy.game.version.testutil.TestLocations.loc13;
 import static strategy.game.version.testutil.TestLocations.loc14;
@@ -636,9 +636,9 @@ public class EpsilonStrategyTest
 		
 		assertEquals(MoveResultStatus.BLUE_WINS, result.getStatus());
 	}
-	/*
+	
 	@Test
-	public void firstLieutenantMoveSingleSpace throws StrategyException
+	public void firstLieutenantMoveSingleSpace() throws StrategyException
 	{
 		game.startGame();
 		game.move(FIRST_LIEUTENANT, loc12, loc13);
@@ -647,17 +647,49 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
-	public void firstLieutenantAttackMultipleWin throws StrategyException
+	public void firstLieutenantAttackMultipleWin() throws StrategyException
 	{
 		game.startGame();
-		game.move(FIRST_LIEUTENANT, loc02, loc14);
+		game.move(FIRST_LIEUTENANT, loc02, loc03);
 		game.move(SERGEANT, loc16, loc15);
-		game.move(SERGEANT, loc15, loc05);
+		game.move(FIRST_LIEUTENANT, loc03, loc04);
 		game.move(SERGEANT, loc14, loc15);
-		game.move(FIRST_LIEUTENANT, loc17, loc16);
-		MoveResult result = game.move(SERGEANT, loc15, loc16);
+		MoveResult result = game.move(FIRST_LIEUTENANT, loc04, loc06);
 		
-		assertEquals(MoveResultStatus.OK, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, BLUE), loc15), result.getBattleWinner());
-	}*/
+		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+	}
+	
+	@Test
+	(expected=StrategyException.class)
+	public void firstLieutenantAttackMultipleThroughPieces() throws StrategyException
+	{
+		game.startGame();
+		game.move(FIRST_LIEUTENANT, loc12, loc13);
+		game.move(SERGEANT, loc16, loc15);
+		game.move(FIRST_LIEUTENANT, loc14, loc04);
+		game.move(SERGEANT, loc14, loc15);
+		game.move(FIRST_LIEUTENANT, loc04, loc05);
+		game.move(SERGEANT, loc15, loc14);
+		game.move(FIRST_LIEUTENANT, loc03, loc04);
+		game.move(SERGEANT, loc15, loc16);
+
+		
+		//assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
+		//assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+	}
+	
+	@Test
+	public void firstFlagCaptured() throws StrategyException
+	{
+		game.startGame();
+		game.move(FIRST_LIEUTENANT, loc02, loc03);
+		game.move(SERGEANT, loc16, loc15);
+		game.move(FIRST_LIEUTENANT, loc03, loc04);
+		game.move(SERGEANT, loc14, loc15);
+		MoveResult result = game.move(FIRST_LIEUTENANT, loc04, loc06);
+		
+		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+	}
 }
