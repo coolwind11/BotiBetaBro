@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.StrategyGameObserver;
 import strategy.game.version.BaseStrategyGameController;
 import strategy.game.version.alpha.AlphaStrategyGameController;
 import strategy.game.version.beta.BetaStrategyBoardValidator;
@@ -22,6 +23,9 @@ import strategy.game.version.beta.BetaStrategyMoveValidator;
 import strategy.game.version.delta.DeltaStrategyBoardValidator;
 import strategy.game.version.delta.DeltaStrategyMoveResolver;
 import strategy.game.version.delta.DeltaStrategyMoveValidator;
+import strategy.game.version.epsilon.EpsilonStrategyBoardValidator;
+import strategy.game.version.epsilon.EpsilonStrategyMoveResolver;
+import strategy.game.version.epsilon.EpsilonStrategyMoveValidator;
 import strategy.game.version.gamma.GammaStrategyBoardValidator;
 import strategy.game.version.gamma.GammaStrategyMoveResolver;
 import strategy.game.version.gamma.GammaStrategyMoveValidator;
@@ -125,5 +129,34 @@ public class StrategyGameFactory
 			
 		return new BaseStrategyGameController(new DeltaStrategyBoardValidator(), new DeltaStrategyMoveValidator(),
 				new DeltaStrategyMoveResolver(), redConfiguration, blueConfiguration);
+	}
+	
+	/**
+	 * Creates a new epsilon implementation of the strategy game.
+	 * @param redConfiguration pieces provided by the red player(s)
+	 * @param blueConfiguration pieces provided by the blue player(s)
+	 * @param observers the observers that are observing the Epsilon strategy game
+	 * @return an epsilon strategy game
+	 * @throws StrategyException if there is an issue with either of the configurations
+	 */
+	public StrategyGameController makeEpsilonStrategyGame(
+			Collection<PieceLocationDescriptor> redConfiguration, 
+			Collection<PieceLocationDescriptor> blueConfiguration,
+			Collection<StrategyGameObserver> observers) throws StrategyException
+	{
+		if(redConfiguration == null || blueConfiguration == null){
+			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
+		}
+			
+		BaseStrategyGameController controller =  new BaseStrategyGameController(new EpsilonStrategyBoardValidator(), new EpsilonStrategyMoveValidator(),
+				new EpsilonStrategyMoveResolver(), redConfiguration, blueConfiguration);
+		
+		//register the observers
+		for(StrategyGameObserver observer : observers)
+		{
+			controller.register(observer);
+		}
+		
+		return controller;
 	}
 }

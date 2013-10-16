@@ -8,7 +8,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package strategy.game.version.gamma.testutil;
+package strategy.game.version.testutil;
 
 import strategy.game.common.*;
 

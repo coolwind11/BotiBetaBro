@@ -8,7 +8,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package strategy.game.version.delta;
+package strategy.game.version.epsilon;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -62,6 +62,7 @@ import static strategy.game.version.testutil.TestLocations.loc86;
 import static strategy.game.version.testutil.TestLocations.loc93;
 import static strategy.game.version.testutil.TestLocations.loc94;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -76,15 +77,17 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
-import strategy.game.version.testutil.MockDeltaStrategyController;
+import strategy.game.common.StrategyGameObserver;
+import strategy.game.version.testutil.MockEpsilonStrategyController;
 import strategy.game.version.testutil.TestConfigurationFactory;
 
 /**
- * Test file for DeltaStrategy
+ * Test file for EpsilonStrategy
  * @author cbotaish, drob
- * @version 9/26/13
+ * @version 10/15/2013
  */
-public class DeltaStrategyTest {
+public class EpsilonStrategyTest
+{
 	private final StrategyGameFactory factory = StrategyGameFactory.getInstance();
 	private List<PieceLocationDescriptor> redPieces;
 	private List<PieceLocationDescriptor> bluePieces;
@@ -92,9 +95,9 @@ public class DeltaStrategyTest {
 
 	@Before
 	public void setup() throws StrategyException{
-		redPieces = TestConfigurationFactory.getInstance().getRedDeltaConfiguration();
-		bluePieces = TestConfigurationFactory.getInstance().getBlueDeltaConfiguration();
-		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
+		redPieces = TestConfigurationFactory.getInstance().getRedEpsilonConfiguration();
+		bluePieces = TestConfigurationFactory.getInstance().getBlueEpsilonConfiguration();
+		game = factory.makeEpsilonStrategyGame(redPieces, bluePieces, new LinkedList<StrategyGameObserver>());
 	}
 	
 	@Test
@@ -487,7 +490,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void scoutMoveHorizontal() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
  
 		mockGame.startGame();
 		mockGame.move(SCOUT, loc41, loc81);
@@ -496,7 +499,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void scoutMoveVerticalBackwards() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
  
 		mockGame.startGame();
 		mockGame.move(SCOUT, loc41, loc40);
@@ -505,7 +508,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void scoutMoveHorizontalBackwars() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getScoutTestConfigurationRed(),TestConfigurationFactory.getInstance().getEmptyConfiguration());
  
 		mockGame.startGame();
 		mockGame.move(SCOUT, loc41, loc01);
@@ -523,7 +526,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void BombDoesNotMoveWhenWinner() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
 		mockGame.startGame();
 		MoveResult result = mockGame.move(SERGEANT, loc35, loc34);
 		
@@ -533,7 +536,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void MarshallDoesNotBeatBomb() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
 		mockGame.startGame();
 		MoveResult result = mockGame.move(MARSHAL, loc44, loc34); 
 		
@@ -543,7 +546,7 @@ public class DeltaStrategyTest {
 	@Test
 	public void MinerDefeatsBomb() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
 		mockGame.startGame();
 		MoveResult result = mockGame.move(MINER, loc33, loc34); 
 		
@@ -553,7 +556,7 @@ public class DeltaStrategyTest {
 	@Test
 	(expected=StrategyException.class)
 	public void BombCannotStrike() throws StrategyException {
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getBombTestConfigurationRed(),TestConfigurationFactory.getInstance().getBombTestConfigurationBlue());
 		mockGame.startGame();
 		mockGame.move(BOMB, loc34, loc33); 
 		assert(false);
@@ -614,11 +617,10 @@ public class DeltaStrategyTest {
 		assertEquals(MoveResultStatus.OK, result.getStatus());
 	}
 	
-	
 	@Test
 	public void drawWhenOnlyFlagsRemain() throws StrategyException
 	{
-		MockDeltaStrategyController mockGame = new MockDeltaStrategyController(TestConfigurationFactory.getInstance().getDrawConfigurationRed(),TestConfigurationFactory.getInstance().getDrawConfigurationBlue());
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(TestConfigurationFactory.getInstance().getDrawConfigurationRed(),TestConfigurationFactory.getInstance().getDrawConfigurationBlue());
 		mockGame.startGame();
 		MoveResult result = mockGame.move(SERGEANT, loc33, loc34);
 		

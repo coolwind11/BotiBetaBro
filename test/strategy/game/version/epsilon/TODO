@@ -1,0 +1,48 @@
+x Reject a configuration with incorrect number of pieces
+x Reject a configuration with pieces on the wrong side of the board
+x Reject a configuration with overlapping pieces
+x Reject a configuration with wrong number of piece
+x Reject a null configuration.
+x Accept a valid configuration
+x Initialize a game
+x Make a valid move
+x Make an invalid move before game starts
+x Make an invalid move to a location off the board
+x Make an invalid move onto your self
+x Make an invalid move onto a choke point
+x Make an invalid move too far
+x Make invalid move diagonally
+x Make an invalid move onto your own team
+x Make an invalid move due to move repetition
+x Win a battle
+x Lose a battle
+x Start game only can be called once
+x Cannot move bomb
+x Cannot move flag
+x Scout can move any number of open spaces in one direction
+x Scout cannot move and strike on same turn
+x Scout cannot move over pieces
+x Miner defeats a bomb
+x Spy defeats a Marshall when Spy attacks
+x Marshall defeats spy when Marshall attacks
+x Bomb defeats everything but miner
+x When a bomb defeats a piece it does not move to the empty square
+x Bomb only destroyed when miner strikes it
+x Bomb cannot strike
+
+- Draw a battle (non artistically)
+- Red Win a game
+- Red Lose a game
+- Draw a game
+
+-First lieutenant moves one square at a time
+-1st lt can strike up to two squares in a straight line away if there are no pieces in between
+-1st lt moves to opponents location if it wins (always)
+-If the opponent's piece wins during two square strike, it does not move.
+-Two flags per side
+-Accept multiple valid configurations (mutiple configurations are valid if they are only invalid because of extra flag)
+-End game when both flags captured
+-Move result status is FLAG_CAPTURED when a flag is captured first
+-A move with all null parameters is a resign
+
+-Game reporter stuff
