@@ -68,8 +68,18 @@ public class StrategyGameReporter implements StrategyGameObserver
 		System.out.println(" From: " + from);
 		System.out.println(" To: " + to);
 		
-		System.out.println(" BattleWinner: " + result.getBattleWinner().getPiece());
-		System.out.println(" Move Result: " + result.getStatus());
+		if(result != null)
+		{
+			if(result.getBattleWinner() != null)
+			{
+				System.out.println(" BattleWinner: " + result.getBattleWinner().getPiece());
+			}
+			
+			System.out.println(" Move Result: " + result.getStatus());
+		} else if(fault != null)
+		{
+			System.out.println(" Exception Caught! " + fault.getMessage());
+		}
 		
 		currentPlayer = currentPlayer == PlayerColor.RED ? PlayerColor.BLUE : PlayerColor.RED;
 	}
