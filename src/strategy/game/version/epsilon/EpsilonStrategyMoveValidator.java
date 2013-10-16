@@ -102,7 +102,7 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 					enemy = gameBoard.getPieceAt(new Location2D(toX,checkY));
 				}
 				
-				if(enemy != null){
+				if(enemy == null){
 					return;
 				}
 			}
