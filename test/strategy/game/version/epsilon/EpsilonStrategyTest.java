@@ -727,9 +727,7 @@ public class EpsilonStrategyTest
 		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
 		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc04));
 		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc14));
-		bluePieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc55));
-
-
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.BLUE), loc55));
 
 		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
 
@@ -741,7 +739,7 @@ public class EpsilonStrategyTest
 		
 		mockGame.move(FIRST_LIEUTENANT, loc55, loc56);
 		result = mockGame.move(FIRST_LIEUTENANT, loc13, loc14);
-		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc04), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc14), result.getBattleWinner());
 		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
 	}
 }

@@ -94,7 +94,9 @@ public class MockEpsilonStrategyController implements StrategyGameController {
 		
 		final MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
 	
-		if(result.getStatus() != MoveResultStatus.OK)
+		if(result.getStatus() == MoveResultStatus.BLUE_WINS || 
+				result.getStatus() == MoveResultStatus.RED_WINS ||
+				result.getStatus() == MoveResultStatus.DRAW)
 		{
 			gameOver = true;
 		}
