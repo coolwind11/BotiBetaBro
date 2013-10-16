@@ -11,6 +11,7 @@ package strategy.game.reporter;
 
 import java.util.Collection;
 
+import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
@@ -26,7 +27,11 @@ import strategy.game.common.StrategyGameObserver;
  */
 public class StrategyGameReporter implements StrategyGameObserver
 {
+	private PlayerColor currentPlayer = PlayerColor.RED;
 
+	/**
+	 * @see strategy.game.common.StrategyGameObserver#gameStart(Collection, Collection)
+	 */
 	@Override
 	public void gameStart(Collection<PieceLocationDescriptor> redConfiguration,
 			Collection<PieceLocationDescriptor> blueConfiguration)
@@ -51,12 +56,22 @@ public class StrategyGameReporter implements StrategyGameObserver
 		}
 	}
 
+	/**
+	 * @see strategy.game.common.StrategyGameObserver#moveHappened(PieceType, Location, Location, MoveResult, StrategyException)
+	 */
 	@Override
 	public void moveHappened(PieceType piece, Location from, Location to,
 			MoveResult result, StrategyException fault)
 	{
-		// TODO Auto-generated method stub
+		System.out.println(currentPlayer + " Move!");
+		System.out.println(" Piece: " + piece);
+		System.out.println(" From: " + from);
+		System.out.println(" To: " + to);
 		
+		System.out.println(" BattleWinner: " + result.getBattleWinner().getPiece());
+		System.out.println(" Move Result: " + result.getStatus());
+		
+		currentPlayer = currentPlayer == PlayerColor.RED ? PlayerColor.BLUE : PlayerColor.RED;
 	}
 
 }

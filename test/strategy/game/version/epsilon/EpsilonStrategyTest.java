@@ -24,7 +24,45 @@ import static strategy.game.common.PieceType.MINER;
 import static strategy.game.common.PieceType.SCOUT;
 import static strategy.game.common.PieceType.SERGEANT;
 import static strategy.game.common.PieceType.SPY;
-import static strategy.game.version.testutil.TestLocations.*;
+import static strategy.game.version.testutil.TestLocations.badLoc;
+import static strategy.game.version.testutil.TestLocations.loc00;
+import static strategy.game.version.testutil.TestLocations.loc01;
+import static strategy.game.version.testutil.TestLocations.loc02;
+import static strategy.game.version.testutil.TestLocations.loc03;
+import static strategy.game.version.testutil.TestLocations.loc04;
+import static strategy.game.version.testutil.TestLocations.loc05;
+import static strategy.game.version.testutil.TestLocations.loc12;
+import static strategy.game.version.testutil.TestLocations.loc13;
+import static strategy.game.version.testutil.TestLocations.loc14;
+import static strategy.game.version.testutil.TestLocations.loc15;
+import static strategy.game.version.testutil.TestLocations.loc16;
+import static strategy.game.version.testutil.TestLocations.loc17;
+import static strategy.game.version.testutil.TestLocations.loc22;
+import static strategy.game.version.testutil.TestLocations.loc23;
+import static strategy.game.version.testutil.TestLocations.loc24;
+import static strategy.game.version.testutil.TestLocations.loc33;
+import static strategy.game.version.testutil.TestLocations.loc34;
+import static strategy.game.version.testutil.TestLocations.loc35;
+import static strategy.game.version.testutil.TestLocations.loc40;
+import static strategy.game.version.testutil.TestLocations.loc41;
+import static strategy.game.version.testutil.TestLocations.loc42;
+import static strategy.game.version.testutil.TestLocations.loc43;
+import static strategy.game.version.testutil.TestLocations.loc44;
+import static strategy.game.version.testutil.TestLocations.loc45;
+import static strategy.game.version.testutil.TestLocations.loc46;
+import static strategy.game.version.testutil.TestLocations.loc51;
+import static strategy.game.version.testutil.TestLocations.loc53;
+import static strategy.game.version.testutil.TestLocations.loc54;
+import static strategy.game.version.testutil.TestLocations.loc55;
+import static strategy.game.version.testutil.TestLocations.loc56;
+import static strategy.game.version.testutil.TestLocations.loc64;
+import static strategy.game.version.testutil.TestLocations.loc81;
+import static strategy.game.version.testutil.TestLocations.loc83;
+import static strategy.game.version.testutil.TestLocations.loc84;
+import static strategy.game.version.testutil.TestLocations.loc85;
+import static strategy.game.version.testutil.TestLocations.loc86;
+import static strategy.game.version.testutil.TestLocations.loc93;
+import static strategy.game.version.testutil.TestLocations.loc94;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -44,6 +82,7 @@ import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObserver;
+import strategy.game.reporter.StrategyGameReporter;
 import strategy.game.version.testutil.MockEpsilonStrategyController;
 import strategy.game.version.testutil.TestConfigurationFactory;
 
@@ -63,7 +102,9 @@ public class EpsilonStrategyTest
 	public void setup() throws StrategyException{
 		redPieces = TestConfigurationFactory.getInstance().getRedEpsilonConfiguration();
 		bluePieces = TestConfigurationFactory.getInstance().getBlueEpsilonConfiguration();
-		game = factory.makeEpsilonStrategyGame(redPieces, bluePieces, new LinkedList<StrategyGameObserver>());
+		List<StrategyGameObserver> observers =  new LinkedList<StrategyGameObserver>();
+		observers.add(new StrategyGameReporter());
+		game = factory.makeEpsilonStrategyGame(redPieces, bluePieces, observers);
 	}
 	
 	@Test
