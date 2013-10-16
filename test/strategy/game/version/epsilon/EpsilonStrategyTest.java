@@ -665,6 +665,22 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
+	public void firstLieutenantLoseWinnerNotMovedIfDistanceIsTwo() throws StrategyException
+	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, PlayerColor.BLUE), loc05));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+		
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc05);
+		
+		assertEquals(new PieceLocationDescriptor(new Piece(MARSHAL, PlayerColor.BLUE), loc05), result.getBattleWinner());
+	}
+	
+	@Test
 	public void firstFlagCaptured() throws StrategyException
 	{
 		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();

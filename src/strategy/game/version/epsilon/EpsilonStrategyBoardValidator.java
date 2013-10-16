@@ -87,6 +87,9 @@ public class EpsilonStrategyBoardValidator extends BaseStrategyBoardValidator {
 		return otherPieces;
 	}
 	
+	/**
+	 * modified implementation of the base validator class's 
+	 */
 	@Override
 	protected boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount) {
 		

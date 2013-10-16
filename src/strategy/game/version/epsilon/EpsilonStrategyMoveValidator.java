@@ -85,26 +85,8 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 		}
 		
 		if(movePiece == PieceType.FIRST_LIEUTENANT && moveFromLocation.distanceTo(moveToLocation) == 2) {
-			if (gameBoard.getPieceAt(moveToLocation) != null) {
-				//valid first lieutenant strike is possible, check the immediate spot before for a move conflict
-				int fromX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
-				int fromY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
-				int toX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-				int toY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
-				Piece enemy = null;
-				
-				if (toY == fromY) {
-					int checkX = (toX - fromX) > 0 ? fromX + 1 : fromX - 1;
-					enemy = gameBoard.getPieceAt(new Location2D(checkX,toY));
-				
-				} else {
-					int checkY = (toY - fromY) > 0 ? fromY + 1 : fromY - 1;
-					enemy = gameBoard.getPieceAt(new Location2D(toX,checkY));
-				}
-				
-				if(enemy == null){
-					return;
-				}
+			if (lieutenantCanAttack(gameBoard,moveFromLocation,moveToLocation)){
+				return;
 			}
 		}
 		
@@ -169,5 +151,39 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 				throw new StrategyException("Cannot move scout through another piece");
 			}
 		}
+	}
+	
+	/**
+	 * check that a first lieutenant who is attempting too move two spaces can infact do so 
+	 * @param gameBoard board
+	 * @param moveFromLocation from loc
+	 * @param moveToLocation to loc
+	 * @return
+	 */
+	private boolean lieutenantCanAttack(StrategyBoard gameBoard,Location moveFromLocation, Location moveToLocation){
+		
+		if (gameBoard.getPieceAt(moveToLocation) != null) {
+			//valid first lieutenant strike is possible, check the immediate spot before for a move conflict
+			int fromX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
+			int fromY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
+			int toX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			int toY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
+			Piece enemy = null;
+			
+			if (toY == fromY) {
+				int checkX = (toX - fromX) > 0 ? fromX + 1 : fromX - 1;
+				enemy = gameBoard.getPieceAt(new Location2D(checkX,toY));
+			
+			} else {
+				int checkY = (toY - fromY) > 0 ? fromY + 1 : fromY - 1;
+				enemy = gameBoard.getPieceAt(new Location2D(toX,checkY));
+			}
+			
+			if(enemy == null){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

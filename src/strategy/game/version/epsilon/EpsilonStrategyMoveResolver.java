@@ -65,6 +65,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 			
+			//deal with double flag case
 			if ((firstResult.getStatus() == MoveResultStatus.RED_WINS && --blueFlags > 0)
 					|| (firstResult.getStatus() == MoveResultStatus.BLUE_WINS && --redFlags > 0)){
 				gameBoard.movePiece(fromLocation, toLocation);
@@ -74,9 +75,13 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		}
 		
 		//if the First Lieutenant lost, move the winning piece back to the proper spot (it doesnt swap spaces).
-		if (pieceMoving == PieceType.FIRST_LIEUTENANT && firstResult.getBattleWinner() != null && firstResult.getBattleWinner().getPiece().equals(defender)) {
-			gameBoard.movePiece(fromLocation, toLocation);
-			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,fromLocation));
+		if (pieceMoving == PieceType.FIRST_LIEUTENANT 
+				&& firstResult.getBattleWinner() != null 
+				&& firstResult.getBattleWinner().getPiece().getOwner() != currentTurn
+				&& (fromLocation.distanceTo(toLocation) > 1)) {
+			
+			gameBoard.movePiece(fromLocation, toLocation); //move winner back
+			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,toLocation));
 		}
 		
 		if (firstResult.getStatus() != MoveResultStatus.OK){
