@@ -64,7 +64,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		}
 		
 		//if the First Lieutenant lost, move the winning piece back to the proper spot (it doesnt swap spaces).
-		if (pieceMoving == PieceType.FIRST_LIEUTENANT && firstResult.getBattleWinner().getPiece().equals(defender)) {
+		if (pieceMoving == PieceType.FIRST_LIEUTENANT && firstResult.getBattleWinner() != null && firstResult.getBattleWinner().getPiece().equals(defender)) {
 			gameBoard.movePiece(toLocation, fromLocation);
 			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,fromLocation));
 		}
