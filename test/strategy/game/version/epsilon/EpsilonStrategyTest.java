@@ -776,8 +776,25 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
-	public void drawOnUnmovableEvents() throws StrategyException
+	public void drawOnUnmovablePiecesLeft() throws StrategyException
 	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.RED), loc14));
+		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.RED), loc15));
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc54));
+
+
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc04));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc05));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.BLUE), loc55));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
 		
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc54, loc55);
+		assertEquals(null, result.getBattleWinner());
+		assertEquals(MoveResultStatus.DRAW, result.getStatus());
 	}
 }
