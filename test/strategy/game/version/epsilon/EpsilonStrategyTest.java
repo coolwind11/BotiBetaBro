@@ -774,4 +774,10 @@ public class EpsilonStrategyTest
 		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc14), result.getBattleWinner());
 		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
 	}
+	
+	@Test
+	public void drawOnUnmovableEvents() throws StrategyException
+	{
+		
+	}
 }
