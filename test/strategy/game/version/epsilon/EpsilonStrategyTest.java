@@ -17,6 +17,7 @@ import static strategy.common.PlayerColor.BLUE;
 import static strategy.common.PlayerColor.RED;
 import static strategy.game.common.PieceType.BOMB;
 import static strategy.game.common.PieceType.CHOKE_POINT;
+import static strategy.game.common.PieceType.FIRST_LIEUTENANT;
 import static strategy.game.common.PieceType.FLAG;
 import static strategy.game.common.PieceType.LIEUTENANT;
 import static strategy.game.common.PieceType.MARSHAL;
@@ -423,12 +424,12 @@ public class EpsilonStrategyTest
 		game.move(SERGEANT, loc16, loc15);
 		game.move(SERGEANT, loc14, loc04);
 		game.move(SERGEANT, loc15, loc14);
-		game.move(LIEUTENANT, loc12, loc13);
+		game.move(FIRST_LIEUTENANT, loc12, loc13);
 		game.move(SCOUT, loc86, loc85);
-		MoveResult result = game.move(LIEUTENANT, loc13, loc14);
+		MoveResult result = game.move(FIRST_LIEUTENANT, loc13, loc14);
 
 		assertEquals(MoveResultStatus.OK, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(LIEUTENANT, RED), loc14), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc14), result.getBattleWinner());
 	}
 	
 	@Test
@@ -438,14 +439,14 @@ public class EpsilonStrategyTest
 		
 		game.move(SERGEANT, loc13, loc14);
 		game.move(SERGEANT, loc16, loc15);
-		game.move(LIEUTENANT, loc12, loc13);
+		game.move(FIRST_LIEUTENANT, loc12, loc13);
 		game.move(SERGEANT, loc15, loc05);
 		game.move(SERGEANT, loc14, loc15);
-		game.move(LIEUTENANT, loc17, loc16);
+		game.move(FIRST_LIEUTENANT, loc17, loc16);
 		MoveResult result = game.move(SERGEANT, loc15, loc16);
 		
 		assertEquals(MoveResultStatus.OK, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(LIEUTENANT, BLUE), loc15), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, BLUE), loc15), result.getBattleWinner());
 	}
 
 	@Test
@@ -601,7 +602,7 @@ public class EpsilonStrategyTest
 		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, RED), loc22));
 		redPieces.add(new PieceLocationDescriptor(new Piece(BOMB, RED), loc13));
 		
-		game = factory.makeDeltaStrategyGame(redPieces, bluePieces);
+		game = factory.makeEpsilonStrategyGame(redPieces, bluePieces, new LinkedList<StrategyGameObserver>());
 		game.startGame();
 		
 		game.move(SCOUT, loc83, loc84);
