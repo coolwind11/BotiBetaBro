@@ -116,7 +116,7 @@ public class TestConfigurationFactory
 		addToConfiguration(FIRST_LIEUTENANT,RED,0,2);
 		addToConfiguration(FIRST_LIEUTENANT,RED,1,2);
 		addToConfiguration(BOMB,RED,3,2);
-		addToConfiguration(MINER,RED,4,2);
+		addToConfiguration(FLAG,RED,4,2);
 		addToConfiguration(MINER,RED,5,2);
 		addToConfiguration(BOMB,RED,6,2);
 		addToConfiguration(BOMB,RED,7,2);
@@ -164,7 +164,7 @@ public class TestConfigurationFactory
 
 		addToConfiguration(FIRST_LIEUTENANT,BLUE,0,7);
 		addToConfiguration(FIRST_LIEUTENANT,BLUE,1,7);
-		addToConfiguration(BOMB,BLUE,2,7);
+		addToConfiguration(FLAG,BLUE,2,7);
 		addToConfiguration(BOMB,BLUE,3,7);
 		addToConfiguration(MINER,BLUE,4,7);
 		addToConfiguration(MINER,BLUE,5,7);
