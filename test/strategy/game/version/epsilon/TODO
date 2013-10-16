@@ -35,14 +35,14 @@ x Bomb cannot strike
 - Red Lose a game
 - Draw a game
 
--First lieutenant moves one square at a time
--1st lt can strike up to two squares in a straight line away if there are no pieces in between
--1st lt moves to opponents location if it wins (always)
--If the opponent's piece wins during two square strike, it does not move.
--Two flags per side
--Accept multiple valid configurations (mutiple configurations are valid if they are only invalid because of extra flag)
--End game when both flags captured
--Move result status is FLAG_CAPTURED when a flag is captured first
--A move with all null parameters is a resign
+- First lieutenant moves one square at a time
+- 1st lt can strike up to two squares in a straight line away if there are no pieces in between
+- 1st lt moves to opponents location if it wins (always)
+- If the opponent's piece wins during two square strike, it does not move.
+x Two flags per side
+x Accept multiple valid configurations (mutiple configurations are valid if they are only invalid because of extra flag)
+- End game when both flags captured
+- Move result status is FLAG_CAPTURED when a flag is captured first
+- A move with all null parameters is a resign
 
 -Game reporter stuff

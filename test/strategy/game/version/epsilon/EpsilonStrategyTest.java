@@ -627,4 +627,37 @@ public class EpsilonStrategyTest
 		
 		assertEquals(MoveResultStatus.DRAW,result.getStatus());
 	}
+	
+	@Test
+	public void resignTest() throws StrategyException
+	{
+		game.startGame();
+		MoveResult result = game.move(null, null, null);
+		
+		assertEquals(MoveResultStatus.BLUE_WINS, result.getStatus());
+	}
+	
+	@Test
+	public void firstLieutenantMoveSingleSpace throws StrategyException
+	{
+		game.startGame();
+		game.move(FIRST_LIEUTENANT, loc12, loc13);
+
+		assert(true);
+	}
+	
+	@Test
+	public void firstLieutenantAttackMultipleWin throws StrategyException
+	{
+		game.startGame();
+		game.move(FIRST_LIEUTENANT, loc02, loc14);
+		game.move(SERGEANT, loc16, loc15);
+		game.move(SERGEANT, loc15, loc05);
+		game.move(SERGEANT, loc14, loc15);
+		game.move(FIRST_LIEUTENANT, loc17, loc16);
+		MoveResult result = game.move(SERGEANT, loc15, loc16);
+		
+		assertEquals(MoveResultStatus.OK, result.getStatus());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, BLUE), loc15), result.getBattleWinner());
+	}
 }
