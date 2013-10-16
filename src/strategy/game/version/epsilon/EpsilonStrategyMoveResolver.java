@@ -29,6 +29,8 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 	/**
 	 * Sets up the configuration of the base resolver.
 	 */
+	protected int redFlags = 2;
+	protected int blueFlags = 2;
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
@@ -57,10 +59,18 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		final Piece defender = gameBoard.getPieceAt(toLocation);
 		final MoveResult specialResult = dealWithSpecialCases(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		final Piece mover = gameBoard.getPieceAt(fromLocation);
+		
 		if (specialResult != null){
 			firstResult = specialResult;
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
+			
+			if ((firstResult.getStatus() == MoveResultStatus.RED_WINS && --blueFlags > 0)
+					|| (firstResult.getStatus() == MoveResultStatus.BLUE_WINS && --redFlags > 0)){
+				gameBoard.movePiece(fromLocation, toLocation);
+				return new MoveResult(MoveResultStatus.FLAG_CAPTURED,new PieceLocationDescriptor(attacker,toLocation));
+			}
+		
 		}
 		
 		//if the First Lieutenant lost, move the winning piece back to the proper spot (it doesnt swap spaces).
