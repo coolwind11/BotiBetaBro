@@ -120,7 +120,7 @@ public class BaseStrategyGameController implements StrategyGameController, Strat
 		//if the game hasn't started, the move is invalid
 		if (!gameStarted)
 		{
-			StrategyException e = new StrategyException("Game hasn't been started yet.");
+			final StrategyException e = new StrategyException("Game hasn't been started yet.");
 			alertObserversOfMove(piece, from, to, null, e);
 			throw e;
 		}
@@ -128,7 +128,7 @@ public class BaseStrategyGameController implements StrategyGameController, Strat
 		//if the game is already over, the move is invalid
 		if (gameOver)
 		{
-			StrategyException e = new StrategyException("The game is already over");
+			final StrategyException e = new StrategyException("The game is already over");
 			alertObserversOfMove(piece, from, to, null, e);
 			throw e;
 		}

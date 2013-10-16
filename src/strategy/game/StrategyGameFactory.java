@@ -148,7 +148,7 @@ public class StrategyGameFactory
 			throw new StrategyException("Cannot initialize game with no piece configuration(s)");
 		}
 			
-		BaseStrategyGameController controller =  new BaseStrategyGameController(new EpsilonStrategyBoardValidator(), new EpsilonStrategyMoveValidator(),
+		final BaseStrategyGameController controller =  new BaseStrategyGameController(new EpsilonStrategyBoardValidator(), new EpsilonStrategyMoveValidator(),
 				new EpsilonStrategyMoveResolver(), redConfiguration, blueConfiguration);
 		
 		//register the observers
