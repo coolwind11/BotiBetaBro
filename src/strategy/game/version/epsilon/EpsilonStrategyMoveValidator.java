@@ -164,18 +164,18 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 		
 		if (gameBoard.getPieceAt(moveToLocation) != null) {
 			//valid first lieutenant strike is possible, check the immediate spot before for a move conflict
-			int fromX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
-			int fromY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
-			int toX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
-			int toY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
+			final int fromX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
+			final int fromY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
+			final int toX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+			final int toY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
 			Piece enemy = null;
 			
 			if (toY == fromY) {
-				int checkX = (toX - fromX) > 0 ? fromX + 1 : fromX - 1;
+				final int checkX = (toX - fromX) > 0 ? fromX + 1 : fromX - 1;
 				enemy = gameBoard.getPieceAt(new Location2D(checkX,toY));
 			
 			} else {
-				int checkY = (toY - fromY) > 0 ? fromY + 1 : fromY - 1;
+				final int checkY = (toY - fromY) > 0 ? fromY + 1 : fromY - 1;
 				enemy = gameBoard.getPieceAt(new Location2D(toX,checkY));
 			}
 			
