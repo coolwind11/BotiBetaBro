@@ -113,14 +113,14 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		boolean blueHasMoveable = false;
 		boolean redHasMoveable = false;
 		for (Piece piece : gameBoard.getRemainingPieces(PlayerColor.RED)) {
-			if (piece.getType() != PieceType.BOMB || piece.getType() != PieceType.FLAG){
+			if (piece.getType() != PieceType.BOMB && piece.getType() != PieceType.FLAG){
 				redHasMoveable = true;
 				break;
 			}
 		}
 		
 		for (Piece piece : gameBoard.getRemainingPieces(PlayerColor.BLUE)){
-			if (piece.getType() != PieceType.BOMB || piece.getType() != PieceType.FLAG){
+			if (piece.getType() != PieceType.BOMB && piece.getType() != PieceType.FLAG){
 				blueHasMoveable = true;
 				break;
 			}
