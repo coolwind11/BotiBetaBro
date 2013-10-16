@@ -12,6 +12,7 @@ package strategy.game.reporter;
 import java.util.Collection;
 
 import strategy.common.StrategyException;
+import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.PieceLocationDescriptor;
@@ -34,7 +35,10 @@ public class StrategyGameReporter implements StrategyGameObserver
 		System.out.println(" Red Piece Initial Setup: ");
 		for(PieceLocationDescriptor piece : redConfiguration)
 		{
-			
+			PieceType type = piece.getPiece().getType();
+			int xCoord = piece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
+			int yCoord = piece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
+			System.out.println("  " + type + " Location: (" + xCoord + ", " + yCoord + ")");
 		}
 	}
 
