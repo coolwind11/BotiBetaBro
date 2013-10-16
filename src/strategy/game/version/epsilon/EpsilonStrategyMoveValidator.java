@@ -14,6 +14,7 @@ import strategy.common.StrategyException;
 import strategy.game.common.Coordinate;
 import strategy.game.common.Location;
 import strategy.game.common.Location2D;
+import strategy.game.common.Piece;
 import strategy.game.common.PieceType;
 import strategy.game.version.BaseStrategyMoveValidator;
 import strategy.game.version.PieceMoveEntry;
@@ -52,6 +53,7 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 		validMoveDistances.put(PieceType.GENERAL, 1);
 		validMoveDistances.put(PieceType.CHOKE_POINT, 0);
 		validMoveDistances.put(PieceType.LIEUTENANT, 1);
+		validMoveDistances.put(PieceType.FIRST_LIEUTENANT, 1);
 		validMoveDistances.put(PieceType.MAJOR, 1);
 		validMoveDistances.put(PieceType.MARSHAL, 1);
 		validMoveDistances.put(PieceType.MINER, 1);
@@ -79,6 +81,30 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 			throw new StrategyException("Cannot move a bomb");
 		}
 		
+		if(movePiece == PieceType.FIRST_LIEUTENANT && moveFromLocation.distanceTo(moveToLocation) == 2) {
+			if (gameBoard.getPieceAt(moveToLocation) != null) {
+				//valid first lieutenant strike is possible, check the immediate spot before for a move conflict
+				int fromX = moveFromLocation.getCoordinate(Coordinate.X_COORDINATE);
+				int fromY = moveFromLocation.getCoordinate(Coordinate.Y_COORDINATE);
+				int toX = moveToLocation.getCoordinate(Coordinate.X_COORDINATE);
+				int toY = moveToLocation.getCoordinate(Coordinate.Y_COORDINATE);
+				Piece enemy = null;
+				
+				if (toY == fromY) {
+					int checkX = (toX - fromX) > 0 ? fromX + 1 : fromX - 1;
+					enemy = gameBoard.getPieceAt(new Location2D(checkX,toY));
+				
+				} else {
+					int checkY = (toY - fromY) > 0 ? fromY + 1 : fromY - 1;
+					enemy = gameBoard.getPieceAt(new Location2D(toX,checkY));
+				}
+				
+				if(enemy != null){
+					return;
+				}
+			}
+		}
+		
 		//Check the base functionality.
 		super.checkMoveValidity(gameBoard, currentTurn, movePiece, moveFromLocation, moveToLocation);
 		
@@ -97,6 +123,7 @@ public class EpsilonStrategyMoveValidator extends BaseStrategyMoveValidator
 		
 		moveRememberator.addMove(entry);
 	}
+	
 	
 	/**
 	 * Checks if the move is valid for a scout piece type

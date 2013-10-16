@@ -59,7 +59,8 @@ public class EpsilonStrategyBoardValidator extends BaseStrategyBoardValidator {
 		validPieceCount.put(PieceType.COLONEL, 2);
 		validPieceCount.put(PieceType.MAJOR, 3);
 		validPieceCount.put(PieceType.CAPTAIN, 4);
-		validPieceCount.put(PieceType.LIEUTENANT, 4);
+		validPieceCount.put(PieceType.LIEUTENANT, 2);
+		validPieceCount.put(PieceType.FIRST_LIEUTENANT, 2);
 		validPieceCount.put(PieceType.SERGEANT, 4);
 		validPieceCount.put(PieceType.MINER, 5);
 		validPieceCount.put(PieceType.SCOUT, 8);

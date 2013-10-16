@@ -37,6 +37,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		pieceRank.put(PieceType.MAJOR, 9);
 		pieceRank.put(PieceType.CAPTAIN, 8);
 		pieceRank.put(PieceType.LIEUTENANT, 7);
+		pieceRank.put(PieceType.FIRST_LIEUTENANT, 7);
 		pieceRank.put(PieceType.SERGEANT, 6);
 		pieceRank.put(PieceType.MINER, 5);
 		pieceRank.put(PieceType.SCOUT, 4);
@@ -52,14 +53,16 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{	
 		final MoveResult firstResult;
+		
+		final Piece
 		final MoveResult specialResult = dealWithSpecialCases(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
-
+		final Piece mover = gameBoard.getPieceAt(fromLocation);
 		if (specialResult != null){
 			firstResult = specialResult;
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		}
-		
+				
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
@@ -156,4 +159,5 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		battleWinner = new PieceLocationDescriptor(gameBoard.getPieceAt(toLocation), toLocation);
 		return new MoveResult(MoveResultStatus.OK, battleWinner);
 	}	
+	
 }
