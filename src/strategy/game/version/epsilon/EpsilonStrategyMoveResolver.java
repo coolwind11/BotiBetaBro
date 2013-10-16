@@ -53,8 +53,8 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 			PieceType pieceMoving, Location fromLocation, Location toLocation)
 	{	
 		final MoveResult firstResult;
-		
-		final Piece
+		final Piece attacker = gameBoard.getPieceAt(fromLocation);
+		final Piece defender = gameBoard.getPieceAt(toLocation);
 		final MoveResult specialResult = dealWithSpecialCases(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		final Piece mover = gameBoard.getPieceAt(fromLocation);
 		if (specialResult != null){
@@ -62,7 +62,12 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		} else {
 			firstResult = super.resolveMove(gameBoard, currentTurn, pieceMoving, fromLocation, toLocation);
 		}
-				
+		
+		//if the First Lieutenant lost, move the winning piece back to the proper spot (it doesnt swap spaces).
+		if (firstResult.getBattleWinner().getPiece().equals(defender)) {
+			gameBoard.movePiece(toLocation, fromLocation);
+			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,fromLocation));
+		}
 		if (firstResult.getStatus() != MoveResultStatus.OK){
 			return firstResult;
 		} else {
