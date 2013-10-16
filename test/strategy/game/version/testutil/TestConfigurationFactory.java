@@ -12,18 +12,7 @@ package strategy.game.version.testutil;
 
 import static strategy.common.PlayerColor.BLUE;
 import static strategy.common.PlayerColor.RED;
-import static strategy.game.common.PieceType.BOMB;
-import static strategy.game.common.PieceType.CAPTAIN;
-import static strategy.game.common.PieceType.COLONEL;
-import static strategy.game.common.PieceType.FLAG;
-import static strategy.game.common.PieceType.GENERAL;
-import static strategy.game.common.PieceType.LIEUTENANT;
-import static strategy.game.common.PieceType.MAJOR;
-import static strategy.game.common.PieceType.MARSHAL;
-import static strategy.game.common.PieceType.MINER;
-import static strategy.game.common.PieceType.SCOUT;
-import static strategy.game.common.PieceType.SERGEANT;
-import static strategy.game.common.PieceType.SPY;
+import static strategy.game.common.PieceType.*;
 
 import java.util.ArrayList;
 
@@ -124,8 +113,8 @@ public class TestConfigurationFactory
 		addToConfiguration(CAPTAIN,RED,8,1);
 		addToConfiguration(CAPTAIN,RED,9,1);	
 
-		addToConfiguration(LIEUTENANT,RED,0,2);
-		addToConfiguration(LIEUTENANT,RED,1,2);
+		addToConfiguration(FIRST_LIEUTENANT,RED,0,2);
+		addToConfiguration(FIRST_LIEUTENANT,RED,1,2);
 		addToConfiguration(BOMB,RED,3,2);
 		addToConfiguration(MINER,RED,4,2);
 		addToConfiguration(MINER,RED,5,2);
@@ -173,8 +162,8 @@ public class TestConfigurationFactory
 		addToConfiguration(CAPTAIN,BLUE,8,8);
 		addToConfiguration(CAPTAIN,BLUE,9,8);	
 
-		addToConfiguration(LIEUTENANT,BLUE,0,7);
-		addToConfiguration(LIEUTENANT,BLUE,1,7);
+		addToConfiguration(FIRST_LIEUTENANT,BLUE,0,7);
+		addToConfiguration(FIRST_LIEUTENANT,BLUE,1,7);
 		addToConfiguration(BOMB,BLUE,2,7);
 		addToConfiguration(BOMB,BLUE,3,7);
 		addToConfiguration(MINER,BLUE,4,7);
