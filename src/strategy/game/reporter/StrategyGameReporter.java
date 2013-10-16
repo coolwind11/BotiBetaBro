@@ -83,5 +83,13 @@ public class StrategyGameReporter implements StrategyGameObserver
 		
 		currentPlayer = currentPlayer == PlayerColor.RED ? PlayerColor.BLUE : PlayerColor.RED;
 	}
+	
+	private String colorCommenter(PieceType pieceType, PlayerColor winningColor) {
+		
+		String comment = "";
+		
+		
+		return comment;
+	}
 
 }

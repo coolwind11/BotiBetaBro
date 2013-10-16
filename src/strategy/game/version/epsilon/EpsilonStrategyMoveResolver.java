@@ -101,7 +101,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		MoveResultStatus resultStatus = firstResult.getStatus();
 		
 		//if player has no remaining pieces, or only a flag, they lose
-		 if (gameBoard.getRemainingPieceCount(PlayerColor.RED) == gameBoard.getRemainingPieceCount(PlayerColor.BLUE) 
+		if (gameBoard.getRemainingPieceCount(PlayerColor.RED) == gameBoard.getRemainingPieceCount(PlayerColor.BLUE) 
 			&& gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) {
 			resultStatus = MoveResultStatus.DRAW; //both have only flag left, so draw
 		} else if (gameBoard.getRemainingPieceCount(PlayerColor.RED) <= 1) { //assume 1 remaining piece must be flag
@@ -109,6 +109,33 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 		} else if (gameBoard.getRemainingPieceCount(PlayerColor.BLUE) <= 1) {
 			resultStatus = MoveResultStatus.RED_WINS;
 		}
+		
+		
+		//check if either player has only immovable pieces remaining
+		boolean blueHasMoveable = false;
+		boolean redHasMoveable = false;
+		for (Piece piece : gameBoard.getRemainingPieces(PlayerColor.RED)) {
+			if (piece.getType() != PieceType.BOMB || piece.getType() != PieceType.FLAG){
+				redHasMoveable = true;
+				break;
+			}
+		}
+		
+		for (Piece piece : gameBoard.getRemainingPieces(PlayerColor.BLUE)){
+			if (piece.getType() != PieceType.BOMB || piece.getType() != PieceType.FLAG){
+				blueHasMoveable = true;
+				break;
+			}
+		}
+		
+		if(!redHasMoveable && !blueHasMoveable) {
+			resultStatus = MoveResultStatus.DRAW;
+		} else if (!redHasMoveable){
+			resultStatus = MoveResultStatus.BLUE_WINS;
+		} else if (!blueHasMoveable){
+			resultStatus = MoveResultStatus.RED_WINS;
+		}
+			
 		return new MoveResult(resultStatus, firstResult.getBattleWinner());
 	}
 

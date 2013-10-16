@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.version;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +87,22 @@ public class StrategyBoard
 	 */
 	public int getRemainingPieceCount(PlayerColor forColor) {
 		return forColor == PlayerColor.BLUE ? bluePieceCount : redPieceCount;
+	}
+	
+	/**
+	 * get the remaining pieces on the board for a player of given color
+	 * @param forColor the color of the player
+	 * @return
+	 */
+	public Collection<Piece> getRemainingPieces(PlayerColor forColor) {
+		Collection<Piece> remaining = new ArrayList<Piece>();
+		for (Piece piece : boardRepresentationMap.values()) {
+			if (piece.getOwner() == forColor) {
+				remaining.add(piece);
+			}
+		}
+		
+		return remaining;
 	}
 }
 
