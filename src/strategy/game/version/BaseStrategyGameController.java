@@ -21,6 +21,8 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.common.StrategyGameObservable;
+import strategy.game.common.StrategyGameObserver;
 
 /**
  * An implementation of the game controller for the Beta Strategy version.
@@ -28,7 +30,7 @@ import strategy.game.common.PieceType;
  * @author Dan Robertson, Chris Botaish
  * @version Sep 9, 2013
  */
-public class BaseStrategyGameController implements StrategyGameController
+public class BaseStrategyGameController implements StrategyGameController, StrategyGameObservable
 {
 	private final StrategyBoardValidator boardValidator;
 	
@@ -38,6 +40,11 @@ public class BaseStrategyGameController implements StrategyGameController
 
 	private final StrategyBoard gameBoard;
 	
+	private final Collection<StrategyGameObserver> observers;
+	
+	private final Collection<PieceLocationDescriptor> redConfig;
+	private final Collection<PieceLocationDescriptor> blueConfig;
+
 	private boolean gameStarted = false;
 	private boolean gameOver = false;
 
@@ -61,6 +68,8 @@ public class BaseStrategyGameController implements StrategyGameController
 		this.moveResolver = moveResolver;
 		this.moveValidator = moveValidator;
 
+		observers = new LinkedList<StrategyGameObserver>();
+		
 		if(!this.boardValidator.isValidInitialSetup(redPieces, bluePieces))
 		{
 			throw new StrategyException("Game board is invalid!");
@@ -73,6 +82,9 @@ public class BaseStrategyGameController implements StrategyGameController
 		allPieces.addAll(boardValidator.getGameSpecificPieces());
 		
 		gameBoard = new StrategyBoard(allPieces);
+		
+		redConfig = redPieces;
+		blueConfig = bluePieces;
 	}
 
 	/**
@@ -82,14 +94,19 @@ public class BaseStrategyGameController implements StrategyGameController
 	public void startGame() throws StrategyException
 	{
 		if(gameStarted) {
-			throw new StrategyException("Must complete the current game "
-					+ "before beginning a new one");
+			throw new StrategyException("Cannot start multiple games.");
 		}
 		
 		gameStarted = true;
 		gameOver = false;
 		
 		playerTurn = PlayerColor.RED;
+		
+		//Alert all observers that the game started.
+		for(StrategyGameObserver observer : observers)
+		{
+			observer.gameStart(redConfig, blueConfig);
+		}
 	}
 
 	/**
@@ -103,16 +120,28 @@ public class BaseStrategyGameController implements StrategyGameController
 		//if the game hasn't started, the move is invalid
 		if (!gameStarted)
 		{
-			throw new StrategyException("Game hasn't been started yet.");
+			StrategyException e = new StrategyException("Game hasn't been started yet.");
+			alertObserversOfMove(piece, from, to, null, e);
+			throw e;
 		}
 
 		//if the game is already over, the move is invalid
 		if (gameOver)
 		{
-			throw new StrategyException("The game is already over");
+			StrategyException e = new StrategyException("The game is already over");
+			alertObserversOfMove(piece, from, to, null, e);
+			throw e;
 		}
 		
-		moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
+		try
+		{
+			moveValidator.checkMoveValidity(gameBoard, playerTurn, piece, from, to);
+		}
+		catch(StrategyException e)
+		{
+			alertObserversOfMove(piece, from, to, null, e);
+			throw e;
+		}
 		
 		final MoveResult result = moveResolver.resolveMove(gameBoard, playerTurn, piece, from, to);
 	
@@ -123,6 +152,8 @@ public class BaseStrategyGameController implements StrategyGameController
 		
 		playerTurn = playerTurn == PlayerColor.BLUE ? PlayerColor.RED
 				: PlayerColor.BLUE; // change the player turn
+		
+		alertObserversOfMove(piece, from, to, result, null);
 		
 		return result;
 	}
@@ -135,4 +166,40 @@ public class BaseStrategyGameController implements StrategyGameController
 	{
 		return gameBoard.getPieceAt(location);
 	}
+
+	/**
+	 * @see strategy.game.common.StrategyGameObservable#register(StrategyGameObserver)
+	 */
+	@Override
+	public void register(StrategyGameObserver observer)
+	{
+		observers.add(observer);		
+	}
+
+	/**
+	 * @see strategy.game.common.StrategyGameObservable#unregister(StrategyGameObserver)
+	 */
+	@Override
+	public void unregister(StrategyGameObserver observer)
+	{
+		observers.remove(observer);
+	}
+	
+	/**
+	 * Alerts the observers that a move occurred
+	 * @param piece the piece that was moved 
+	 * @param from the location it was moved from
+	 * @param to the location it was moved to
+	 * @param result the result of the move.  This will be null if an exception occurred.
+	 * @param fault if there was an exception that occurred, the exception will be passed here. 
+	 * Otherwise, this will be null.
+	 */
+	private void alertObserversOfMove(PieceType piece, Location from, Location to, MoveResult result, StrategyException fault)
+	{
+		for(StrategyGameObserver observer : observers)
+		{
+			observer.moveHappened(piece, from, to, result, fault);
+		}
+	}
+
 }
