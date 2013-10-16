@@ -63,12 +63,14 @@ import static strategy.game.version.testutil.TestLocations.loc86;
 import static strategy.game.version.testutil.TestLocations.loc93;
 import static strategy.game.version.testutil.TestLocations.loc94;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
@@ -629,58 +631,54 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
-	public void firstLieutenantMoveSingleSpace() throws StrategyException
-	{
-		game.startGame();
-		game.move(FIRST_LIEUTENANT, loc12, loc13);
-
-		assert(true);
-	}
-	
-	@Test
 	public void firstLieutenantAttackMultipleWin() throws StrategyException
 	{
-		game.startGame();
-		game.move(FIRST_LIEUTENANT, loc02, loc03);
-		game.move(SERGEANT, loc16, loc15);
-		game.move(FIRST_LIEUTENANT, loc03, loc04);
-		game.move(SERGEANT, loc14, loc15);
-		MoveResult result = game.move(FIRST_LIEUTENANT, loc04, loc06);
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc05);
 		
-		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc05), result.getBattleWinner());
 	}
 	
 	@Test
 	(expected=StrategyException.class)
 	public void firstLieutenantAttackMultipleThroughPieces() throws StrategyException
 	{
-		game.startGame();
-		game.move(FIRST_LIEUTENANT, loc12, loc13);
-		game.move(SERGEANT, loc16, loc15);
-		game.move(FIRST_LIEUTENANT, loc14, loc04);
-		game.move(SERGEANT, loc14, loc15);
-		game.move(FIRST_LIEUTENANT, loc04, loc05);
-		game.move(SERGEANT, loc15, loc14);
-		game.move(FIRST_LIEUTENANT, loc03, loc04);
-		game.move(SERGEANT, loc15, loc16);
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc04));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
 
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc05);
 		
-		//assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
-		//assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc05), result.getBattleWinner());
 	}
 	
 	@Test
 	public void firstFlagCaptured() throws StrategyException
 	{
-		game.startGame();
-		game.move(FIRST_LIEUTENANT, loc02, loc03);
-		game.move(SERGEANT, loc16, loc15);
-		game.move(FIRST_LIEUTENANT, loc03, loc04);
-		game.move(SERGEANT, loc14, loc15);
-		MoveResult result = game.move(FIRST_LIEUTENANT, loc04, loc06);
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc05));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc05);
 		
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc05), result.getBattleWinner());
 		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
-		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc06), result.getBattleWinner());
+
 	}
 }
