@@ -90,8 +90,8 @@ public class EpsilonStrategyBoardValidator extends BaseStrategyBoardValidator {
 	@Override
 	protected boolean hasRightNumberOfPieces(Map<PieceType, Integer> redPieceCount, Map<PieceType, Integer> bluePieceCount) {
 		
-		int offBy = 0;
-		
+		int redOffby = 0;
+		int blueOffby = 0;
 		for(PieceType piece : validPieceCount.keySet())
 		{
 			int requiredNumber = validPieceCount.get(piece);
@@ -104,14 +104,15 @@ public class EpsilonStrategyBoardValidator extends BaseStrategyBoardValidator {
 				return false;
 			}
 			
-			if(redCount != requiredNumber || blueCount != requiredNumber)
-			{
-				int using = redCount != requiredNumber ? redCount : blueCount;
-				offBy += Math.abs(requiredNumber - using);
+			if(redCount != requiredNumber){
+				redOffby += Math.abs(redCount - requiredNumber);
+			}
+			if(blueCount != requiredNumber) {
+				blueOffby += Math.abs(blueCount - requiredNumber);
 			}
 		}
 		
-		if (offBy > 1){
+		if (redOffby > 1 || blueOffby > 1){
 			return false;
 		}
 		
