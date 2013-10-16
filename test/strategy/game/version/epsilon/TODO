@@ -38,11 +38,11 @@ x Bomb cannot strike
 x First lieutenant moves one square at a time
 x 1st lt can strike up to two squares in a straight line away if there are no pieces in between
 x 1st lt moves to opponents location if it wins (always)
-- 1st lt cannot move two squares if there are pieces in between.
-- If the opponent's piece wins during two square strike, it does not move.
+x 1st lt cannot move two squares if there are pieces in between.
+x If the opponent's piece wins during two square strike, it does not move.
 x Two flags per side
 x Accept multiple valid configurations (mutiple configurations are valid if they are only invalid because of extra flag)
-- End game when both flags captured
+x End game when both flags captured
 x Move result status is FLAG_CAPTURED when a flag is captured first
 x A move with all null parameters is a resign
 
