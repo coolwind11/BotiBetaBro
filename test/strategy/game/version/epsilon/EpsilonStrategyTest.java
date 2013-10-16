@@ -24,44 +24,7 @@ import static strategy.game.common.PieceType.MINER;
 import static strategy.game.common.PieceType.SCOUT;
 import static strategy.game.common.PieceType.SERGEANT;
 import static strategy.game.common.PieceType.SPY;
-import static strategy.game.version.testutil.TestLocations.badLoc;
-import static strategy.game.version.testutil.TestLocations.loc00;
-import static strategy.game.version.testutil.TestLocations.loc01;
-import static strategy.game.version.testutil.TestLocations.loc02;
-import static strategy.game.version.testutil.TestLocations.loc03;
-import static strategy.game.version.testutil.TestLocations.loc04;
-import static strategy.game.version.testutil.TestLocations.loc05;
-import static strategy.game.version.testutil.TestLocations.loc06;
-import static strategy.game.version.testutil.TestLocations.loc12;
-import static strategy.game.version.testutil.TestLocations.loc13;
-import static strategy.game.version.testutil.TestLocations.loc14;
-import static strategy.game.version.testutil.TestLocations.loc15;
-import static strategy.game.version.testutil.TestLocations.loc16;
-import static strategy.game.version.testutil.TestLocations.loc17;
-import static strategy.game.version.testutil.TestLocations.loc22;
-import static strategy.game.version.testutil.TestLocations.loc23;
-import static strategy.game.version.testutil.TestLocations.loc24;
-import static strategy.game.version.testutil.TestLocations.loc33;
-import static strategy.game.version.testutil.TestLocations.loc34;
-import static strategy.game.version.testutil.TestLocations.loc35;
-import static strategy.game.version.testutil.TestLocations.loc40;
-import static strategy.game.version.testutil.TestLocations.loc41;
-import static strategy.game.version.testutil.TestLocations.loc42;
-import static strategy.game.version.testutil.TestLocations.loc43;
-import static strategy.game.version.testutil.TestLocations.loc44;
-import static strategy.game.version.testutil.TestLocations.loc45;
-import static strategy.game.version.testutil.TestLocations.loc46;
-import static strategy.game.version.testutil.TestLocations.loc51;
-import static strategy.game.version.testutil.TestLocations.loc53;
-import static strategy.game.version.testutil.TestLocations.loc54;
-import static strategy.game.version.testutil.TestLocations.loc64;
-import static strategy.game.version.testutil.TestLocations.loc81;
-import static strategy.game.version.testutil.TestLocations.loc83;
-import static strategy.game.version.testutil.TestLocations.loc84;
-import static strategy.game.version.testutil.TestLocations.loc85;
-import static strategy.game.version.testutil.TestLocations.loc86;
-import static strategy.game.version.testutil.TestLocations.loc93;
-import static strategy.game.version.testutil.TestLocations.loc94;
+import static strategy.game.version.testutil.TestLocations.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -636,7 +599,7 @@ public class EpsilonStrategyTest
 		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
 		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
 		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
-		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
 
 		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
 
@@ -647,6 +610,38 @@ public class EpsilonStrategyTest
 	}
 	
 	@Test
+	public void firstLtLoseAttackMultipleSpaces() throws StrategyException
+	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, PlayerColor.BLUE), loc05));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc05);
+		
+		assertEquals(new PieceLocationDescriptor(new Piece(MARSHAL, BLUE), loc05), result.getBattleWinner());
+	}
+	
+	@Test
+	public void firstLtLoseAttackSingleSpaces() throws StrategyException
+	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc04));
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		bluePieces.add(new PieceLocationDescriptor(new Piece(MARSHAL, PlayerColor.BLUE), loc05));
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc04, loc05);
+		
+		assertEquals(new PieceLocationDescriptor(new Piece(MARSHAL, BLUE), loc04), result.getBattleWinner());
+	}
+	
+	@Test
 	(expected=StrategyException.class)
 	public void firstLieutenantAttackMultipleThroughPieces() throws StrategyException
 	{
@@ -654,7 +649,7 @@ public class EpsilonStrategyTest
 		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
 		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc04));
 		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
-		redPieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(SERGEANT, PlayerColor.BLUE), loc05));
 
 		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
 
@@ -670,7 +665,7 @@ public class EpsilonStrategyTest
 		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
 		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
 		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
-		redPieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc04));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc04));
 
 		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
 
@@ -679,6 +674,33 @@ public class EpsilonStrategyTest
 		
 		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc04), result.getBattleWinner());
 		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
+	}
+	
+	@Test
+	public void bothFlagsCapturedWin() throws StrategyException
+	{
+		Collection<PieceLocationDescriptor> redPieces = new LinkedList<PieceLocationDescriptor>();
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc03));
+		redPieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc13));
 
+		Collection<PieceLocationDescriptor> bluePieces = new LinkedList<PieceLocationDescriptor>();
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc04));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FLAG, PlayerColor.BLUE), loc14));
+		bluePieces.add(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, PlayerColor.RED), loc55));
+
+
+
+		MockEpsilonStrategyController mockGame = new MockEpsilonStrategyController(redPieces, bluePieces);
+
+		mockGame.startGame();
+		MoveResult result = mockGame.move(FIRST_LIEUTENANT, loc03, loc04);
+		
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc04), result.getBattleWinner());
+		assertEquals(MoveResultStatus.FLAG_CAPTURED, result.getStatus());
+		
+		mockGame.move(FIRST_LIEUTENANT, loc55, loc56);
+		result = mockGame.move(FIRST_LIEUTENANT, loc13, loc14);
+		assertEquals(new PieceLocationDescriptor(new Piece(FIRST_LIEUTENANT, RED), loc04), result.getBattleWinner());
+		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
 	}
 }

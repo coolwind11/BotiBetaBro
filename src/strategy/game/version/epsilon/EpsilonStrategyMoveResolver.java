@@ -31,6 +31,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 	 */
 	protected int redFlags = 2;
 	protected int blueFlags = 2;
+	
 	@Override
 	protected void setupResolverConfiguration() {
 		pieceRank.put(PieceType.MARSHAL, 12);
