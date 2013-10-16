@@ -40,6 +40,15 @@ public class StrategyGameReporter implements StrategyGameObserver
 			int yCoord = piece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
 			System.out.println("  " + type + " Location: (" + xCoord + ", " + yCoord + ")");
 		}
+		
+		System.out.println("\n Blue Piece Initial Setup: ");
+		for(PieceLocationDescriptor piece : blueConfiguration)
+		{
+			PieceType type = piece.getPiece().getType();
+			int xCoord = piece.getLocation().getCoordinate(Coordinate.X_COORDINATE);
+			int yCoord = piece.getLocation().getCoordinate(Coordinate.Y_COORDINATE);
+			System.out.println("  " + type + " Location: (" + xCoord + ", " + yCoord + ")");
+		}
 	}
 
 	@Override
