@@ -83,12 +83,10 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 			return new MoveResult(firstResult.getStatus(),new PieceLocationDescriptor(defender,toLocation));
 		}
 		
-		if (firstResult.getStatus() != MoveResultStatus.OK){
-			return firstResult;
-		} else {
-			return handleEndGame(gameBoard, firstResult);
-		}
+		return checkForEndgame(gameBoard, firstResult);
+		
 	}
+	
 	
 	/**
 	 * Handles the end game conditions to see if any player won.
@@ -96,7 +94,7 @@ public class EpsilonStrategyMoveResolver extends BaseStrategyMoveResolver {
 	 * @param firstResult the initial move result
 	 * @return the new move result if the game has been won or lost.
 	 */
-	private MoveResult handleEndGame(StrategyBoard gameBoard,
+	private MoveResult checkForEndgame(StrategyBoard gameBoard,
 			MoveResult firstResult) {
 		MoveResultStatus resultStatus = firstResult.getStatus();
 		
